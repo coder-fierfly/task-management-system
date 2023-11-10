@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { DataContext } from '../App';
 
 function DistributionOfTasks() {
+
+
   return (
     <div>
-      <h1>DistributionOfTasks</h1>
+      <h2>Window 4</h2>
     </div>
   );
 }

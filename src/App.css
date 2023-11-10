@@ -36,3 +36,53 @@
     transform: rotate(360deg);
   }
 }
+
+.floating-button-container {
+  background-color: "background.paper";
+  position: "relative";
+  /* min-height: 200; */
+  width: 100% !important;
+}
+
+/* .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+  height: 200px;
+  width: ;
+} */
+
+.floating-button-container {
+  display: flex;
+  flex-direction: column;
+  background-color: "background.paper";
+  width: 600px;
+  position: "relative";
+  /* min-height: 200px; */
+}
+
+.tab-buttons {
+  flex: 1;
+  display: flex;
+}
+
+.tab-button {
+  flex: 1;
+  max-width: none !important;
+}
+
+.form-container {
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    1fr
+  ); /* Два столбца с равными долями ширины */
+  gap: 16px; /* Расстояние между элементами */
+  padding: 16px; /* Отступ вокруг формы */
+}
+
+.label {
+  text-align: right;
+  font-size: 20px;
+}
+
+.input-field {
+  width: 50%;
+}

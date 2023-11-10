@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
 function Head() {
     console.log('Рендер компонента Section1');
     return (
         <div>
             <div>
-                <Link to="/сonnection">Connection </Link>
-                <Link to="/workSettings">WorkSettings </Link>
-                <Link to="/tasks">Tasks </Link>
-                <Link to="/distributionOfTasks">DistributionOfTasks </Link>
+                <Link to="/сonnection">Подключение</Link>
+                <Link to="/workSettings">Настройка работы </Link>
+                <Link to="/tasks">Задачи </Link>
+                <Link to="/distributionOfTasks">Распределение задач </Link>
             </div>
         </div>
     );
