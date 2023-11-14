@@ -13,6 +13,11 @@ import Tasks from './Tasks';
 import DistributionOfTasks from './DistributionOfTasks';
 import "../App.css";
 
+// TODO Уменьшить размер полей с настройками 
+// Увеличить кнопки запуска проверки
+// Перенести проверку задачи по id на первую вкладку
+// Отвязать выбор в выпадающих списках друг от друга
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 

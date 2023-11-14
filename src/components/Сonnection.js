@@ -1,79 +1,85 @@
 import React, { useState } from 'react';
 import "../App.css"
+import DropdownList from './DropdownList';
 
 function Connection() {
-    const [selectedOption, setSelectedOption] = useState('');
+    const [listVOfDirectors, setListVOfDirectors] = useState('');
+    const [listVOfProjects, setListVOfProjects] = useState('');
+    const [listVOfIterations, setListVOfIterations] = useState('');
 
-    const handleChange = (event) => {
-        setSelectedOption(event.target.value); 
+    // TODO список сделать правильные опции чтобы они были в списках
+    // варианты в выпадающем списке
+    const listOfDirectors = ['Option 1', 'Option 2', 'Option 3'];
+    const listOfProjects = ['A2', 'B2', 'C2'];
+    const listOfIterations = ['A3', 'B3', 'C3'];
+
+    const [checkboxValues, setCheckboxValues] = useState({
+        checkboxShowAns: false,
+        checkboxAllIterations: false,
+    });
+
+    // сменяет значение в checkbox
+    const handleCheckboxChange = (checkboxName) => {
+        setCheckboxValues((prevValues) => ({
+            ...prevValues,
+            [checkboxName]: !prevValues[checkboxName],
+        }));
     };
 
-    const [isChecked1, setChecked1] = useState(false);
-    const [isChecked2, setChecked2] = useState(false);
-
-    const handleCheckboxChange = (checkboxNumber, isChecked) => {
-        if (checkboxNumber === 1) {
-            setChecked1(isChecked);
-        } else if (checkboxNumber === 2) {
-            setChecked2(isChecked);
-        }
+    const [inputUrl, setInputUrl] = useState('');
+    // реагирует на изменение в поле ввода
+    const handleInputChange = (event) => {
+        setInputUrl(event.target.value);
     };
 
     return (
         <>
             <div className="form-container">
                 <label className="label">Введите url ресурса:</label>
-                <input className="input-field" type="text" />
+                <input className="input-field" type="text" value={inputUrl}
+                    onChange={handleInputChange} />
                 <label className="label">Выберите руководителя проектов:</label>
-                {/* TODO список сделать правильные опции чтобы они были в списках*/}
+                <DropdownList
+                    options={listOfDirectors}
+                    selectedValue={listVOfDirectors}
+                    onSelectedValueChange={setListVOfDirectors}
+                />
 
-                <select className="input-field" value={selectedOption} onChange={handleChange}>
-                    <option value="">Выберите...</option>
-                    <option value="option1">Опция 1</option>
-                    <option value="option2">Опция 2</option>
-                    <option value="option3">Опция 3</option>
-                </select>
                 <label className="label">Выберите проект:</label>
-                <select className="input-field" value={selectedOption} onChange={handleChange}>
-                    <option value="">Выберите...</option>
-                    <option value="option1">Опция 1</option>
-                    <option value="option2">Опция 2</option>
-                    <option value="option3">Опция 3</option>
-                </select>
-                <label className="label">Выберите проект:</label>
-                <select className="input-field" value={selectedOption} onChange={handleChange}>
-                    <option value="">Выберите...</option>
-                    <option value="option1">Опция 1</option>
-                    <option value="option2">Опция 2</option>
-                    <option value="option3">Опция 3</option>
-                </select>
+                <DropdownList
+                    options={listOfProjects}
+                    selectedValue={listVOfProjects}
+                    onSelectedValueChange={setListVOfProjects}
+                />
+
                 <label className="label">Выберите итерацию:</label>
-                <select className="input-field" value={selectedOption} onChange={handleChange}>
-                    <option value="">Выберите...</option>
-                    <option value="option1">Опция 1</option>
-                    <option value="option2">Опция 2</option>
-                    <option value="option3">Опция 3</option>
-                </select>
+                <DropdownList
+                    options={listOfIterations}
+                    selectedValue={listVOfIterations}
+                    onSelectedValueChange={setListVOfIterations}
+                />
                 <label className="label">
                     <input
                         type="checkbox"
-                        checked={isChecked1}
-                        onChange={() => handleCheckboxChange(1, !isChecked1)}
+                        checked={checkboxValues.checkboxShowAns}
+                        onChange={() => handleCheckboxChange('checkboxShowAns')}
                     />
                     Показывать ответ в случае ошибки
                 </label>
                 <label className="label">
                     <input
                         type="checkbox"
-                        checked={isChecked2}
-                        onChange={() => handleCheckboxChange(2, !isChecked2)}
+                        checked={checkboxValues.checkboxAllIterations}
+                        onChange={() => handleCheckboxChange('checkboxAllIterations')}
                     />
                     Проверять все итерации проекта
                 </label>
-
             </div>
-            <button>Начать проверку</button>
-            <button>Скачать результаты</button>
+            <div className="b-wrapper">
+                <button className="b-button">Начать проверку</button>
+                <button className="b-button">Скачать результаты</button>
+            </div>
+
         </>
     );
 }

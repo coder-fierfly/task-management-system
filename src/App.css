@@ -86,3 +86,26 @@
 .input-field {
   width: 50%;
 }
+
+.b-button {
+  width: 25%;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  background-color: #3498db;
+  color: #fff;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  margin-bottom: 0.5%;
+  display: block;
+}
+
+.b-button:hover {
+  background-color: #2980b9;
+}
+
+.b-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
