@@ -109,3 +109,11 @@
   align-items: center;
   flex-direction: column;
 }
+
+.flex-line {
+  display: inline-flex;
+}
+
+.input-height {
+  height: 25vh;
+}

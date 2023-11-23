@@ -5,6 +5,17 @@ function WorkSettings() {
   // State для отслеживания выбранной радиокнопки
   const [selectedOptionSuccess, setSelectedOptionSuccess] = useState('');
   const [selectedOptionTranslate, setSelectedOptionTranslate] = useState('');
+  const [checkboxValues, setCheckboxValues] = useState({
+    checkboxLint: false,
+    checkboxErrorLimit: false,
+    checkboxRating: false,
+    checkboxSuccess: false
+  });
+
+  const listOptionsRating = ['Option 1', 'Option 2', 'Option 3'];
+  const [listValueRating, setListRating] = useState('');
+  const listOptionsErrLint = ['Option 11', 'Option 22', 'Option 33'];
+  const [listValueErrLint, setListValueErrLint] = useState('');
 
   // Функция для обработки изменений в радиокнопке
   const handleRadioChangeSuccess = (event) => {
@@ -14,18 +25,7 @@ function WorkSettings() {
     setSelectedOptionTranslate(event.target.value);
   };
 
-  const [checkboxValues, setCheckboxValues] = useState({
-    checkboxLint: false,
-    checkboxErrorLimit: false,
-    checkboxRating: false,
-    checkboxSuccess: false
-  });
-  const listOptionsRating = ['Option 1', 'Option 2', 'Option 3'];
-  const [listValueRating, setListRating] = useState('');
-  const listOptionsErrLint = ['Option 11', 'Option 22', 'Option 33'];
-  const [listValueErrLint, setListValueErrLint] = useState('');
-
-
+  // смена значений в checkbox
   const handleCheckboxChange = (checkboxName) => {
     setCheckboxValues((prevValues) => ({
       ...prevValues,
@@ -38,6 +38,10 @@ function WorkSettings() {
     setInputValue(event.target.value);
     console.log(event.target.value)
   };
+
+  const handleSaveSettings = () => {
+    console.log("сохранить настройки");
+  }
 
   return (
     <>
@@ -133,7 +137,7 @@ function WorkSettings() {
         </label></div>
 
       </div>
-      <div className="b-wrapper"><button className="b-button">Сохранить настройки</button></div>
+      <div className="b-wrapper"><button onClick={handleSaveSettings} className="b-button">Сохранить настройки</button></div>
 
     </>
   );
