@@ -17,7 +17,7 @@ function WorkSettings() {
   const listOptionsErrLint = ['Option 11', 'Option 22', 'Option 33'];
   const [listValueErrLint, setListValueErrLint] = useState('');
 
-  // Функция для обработки изменений в радиокнопке
+  // Функция для обработки изменений в radio button
   const handleRadioChangeSuccess = (event) => {
     setSelectedOptionSuccess(event.target.value);
   };

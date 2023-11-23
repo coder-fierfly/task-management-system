@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import "../App.css"
 import DropdownList from './DropdownList';
+import Plagiarism from './Plagiarism';
 
 function Connection() {
     // выпадающие списки руководитель, проект и итерация
@@ -12,11 +13,16 @@ function Connection() {
 
     const [inputNumber, setInputNumber] = useState('');
 
+    const [isPlagiarismOpen, setPlagiarismOpen] = useState(false);
+
     // TODO список сделать правильные опции чтобы они были в списках
     // варианты в выпадающем списке
     const listOfDirectors = ['Option 1', 'Option 2', 'Option 3'];
     const listOfProjects = ['A2', 'B2', 'C2'];
     const listOfIterations = ['A3', 'B3', 'C3'];
+
+    const listOfStudents = ['A', 'B', 'C'];
+
 
     // значения checkbox
     const [checkboxValues, setCheckboxValues] = useState({
@@ -53,9 +59,14 @@ function Connection() {
         console.log('Кнопка скачать нажата')
     }
     // проверка на плагиат
-    const handleCheckForPlagiarism = () => {
-        console.log('Кнопка плагиат нажата')
-    }
+    const openPlagiarism = () => {
+        setPlagiarismOpen(true);
+    };
+
+    const closePlagiarism = () => {
+        setPlagiarismOpen(false);
+    };
+
     // нажата проверить задачу
     const handleCheckTask = () => {
         console.log('Кнопка проверить задачу нажата')
@@ -65,6 +76,8 @@ function Connection() {
     const handleViewTests = () => {
         console.log("Кнопка просмотр текстов нажата");
     }
+
+
 
     return (
         <>
@@ -115,7 +128,7 @@ function Connection() {
                 </div>
                 <div className='flex-line'>
                     <button onClick={handleViewTests} className="b-button">Посмотреть тесты</button>
-                    <button onClick={handleCheckForPlagiarism} className="b-button">Плагиат</button>
+                    <button onClick={openPlagiarism} className="b-button">Плагиат</button>
                 </div>
             </div>
 
@@ -123,6 +136,8 @@ function Connection() {
                 <button onClick={handleStartChecking} className="b-button">Начать проверку</button>
                 <button onClick={handleDownload} className="b-button">Скачать результаты</button>
             </div>
+
+            <Plagiarism isOpen={isPlagiarismOpen} onClose={closePlagiarism} listOfStudents={listOfStudents} />
 
         </>
     );
