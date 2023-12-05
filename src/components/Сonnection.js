@@ -4,6 +4,15 @@ import DropdownList from './DropdownList';
 import Plagiarism from './Plagiarism';
 
 function Connection() {
+    // TODO url сразу редмайн
+    // в личном кабе долджны быть данные из файлика имя, id проекта, человекочитаемое имя, apikey для реда.
+    // итерации будут грущится из реда
+    // кнопку смотреть тесты в задачи 
+    // начать проверку побольше
+    // сохранить настройки сращу сохранять кнопку досвидания
+    // 
+
+
     // выпадающие списки руководитель, проект и итерация
     const [listVOfDirectors, setListVOfDirectors] = useState('');
     const [listVOfProjects, setListVOfProjects] = useState('');
@@ -72,10 +81,6 @@ function Connection() {
         console.log('Кнопка проверить задачу нажата')
     }
 
-    // просмотр тестов
-    const handleViewTests = () => {
-        console.log("Кнопка просмотр текстов нажата");
-    }
 
 
 
@@ -127,7 +132,6 @@ function Connection() {
                     <button onClick={handleCheckTask} className="b-button">Проверить задачу</button>
                 </div>
                 <div className='flex-line'>
-                    <button onClick={handleViewTests} className="b-button">Посмотреть тесты</button>
                     <button onClick={openPlagiarism} className="b-button">Плагиат</button>
                 </div>
             </div>

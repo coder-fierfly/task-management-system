@@ -17,6 +17,12 @@ function Tasks() {
     setData(event.target.value);
   };
 
+
+  // просмотр тестов
+  const handleViewTests = () => {
+    console.log("Кнопка просмотр текстов нажата");
+  }
+
   // реагирует на изменение в поле ввода с ожидаемым результатом
   const handleInputExpRes = (event) => {
     setExpRes(event.target.value);
@@ -107,6 +113,7 @@ function Tasks() {
         <button onClick={handleRight} className="b-button">R</button>
         <button onClick={handleSaveNewTask} className="b-button">Сохранить "новые" задачи проекта</button>
         <button onClick={handleYourIter} className="b-button">Добавить задачу себе в итерацию</button>
+        <button onClick={handleViewTests} className="b-button">Посмотреть тесты</button>
       </div>
     </>
   );
