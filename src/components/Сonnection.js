@@ -4,13 +4,9 @@ import DropdownList from './DropdownList';
 import Plagiarism from './Plagiarism';
 
 function Connection() {
-    // TODO url сразу редмайн
     // в личном кабе долджны быть данные из файлика имя, id проекта, человекочитаемое имя, apikey для реда.
-    // итерации будут грущится из реда
-    // кнопку смотреть тесты в задачи 
-    // начать проверку побольше
-    // сохранить настройки сращу сохранять кнопку досвидания
-    // 
+    // итерации будут грузится из реда 
+    // кнопку начать проверку побольше
 
 
     // выпадающие списки руководитель, проект и итерация
@@ -18,7 +14,7 @@ function Connection() {
     const [listVOfProjects, setListVOfProjects] = useState('');
     const [listVOfIterations, setListVOfIterations] = useState('');
     // здесь хранится введенный url
-    const [inputUrl, setInputUrl] = useState('');
+    const [inputUrl, setInputUrl] = useState('https://www.hostedredmine.com/');
 
     const [inputNumber, setInputNumber] = useState('');
 
@@ -82,10 +78,9 @@ function Connection() {
     }
 
 
-
-
     return (
         <>
+            <Plagiarism isOpen={isPlagiarismOpen} onClose={closePlagiarism} listOfStudents={listOfStudents} />
             <div className="form-container">
                 <label className="label">Введите url ресурса:</label>
                 <input className="input-field" type="text" value={inputUrl}
@@ -140,9 +135,6 @@ function Connection() {
                 <button onClick={handleStartChecking} className="b-button">Начать проверку</button>
                 <button onClick={handleDownload} className="b-button">Скачать результаты</button>
             </div>
-
-            <Plagiarism isOpen={isPlagiarismOpen} onClose={closePlagiarism} listOfStudents={listOfStudents} />
-
         </>
     );
 }

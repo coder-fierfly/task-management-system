@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import "../App.css"
 import DropdownList from './DropdownList';
+import CreateNewTask from './CreateNewTask';
 
 function Tasks() {
   const [inputData, setData] = useState(''); // входные данные
@@ -16,6 +17,8 @@ function Tasks() {
   const handleInputData = (event) => {
     setData(event.target.value);
   };
+
+  const [isCreateNewTaskOpen, setCreateNewTaskOpen] = useState(false);
 
 
   // просмотр тестов
@@ -38,8 +41,13 @@ function Tasks() {
 
   // кнопки к задачам, плюс, корзина и информация
   const handlePlusTask = () => {
+    setCreateNewTaskOpen(true);
     console.log("кнопка плюс задача");
   }
+  const closeCreateNewTask = () => {
+    setCreateNewTaskOpen(false);
+  };
+
   const handleTrashTask = () => {
     console.log("кнопка задачки в мусор")
   }
@@ -115,6 +123,7 @@ function Tasks() {
         <button onClick={handleYourIter} className="b-button">Добавить задачу себе в итерацию</button>
         <button onClick={handleViewTests} className="b-button">Посмотреть тесты</button>
       </div>
+      <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} />
     </>
   );
 }

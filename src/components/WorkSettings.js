@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DropdownList from './DropdownList';
+// import _debounce from 'lodash/debounce';
+// import useDebounce from './useDebounce';
 
 function WorkSettings() {
   // State для отслеживания выбранной радиокнопки
@@ -39,9 +41,28 @@ function WorkSettings() {
     console.log(event.target.value)
   };
 
-  const handleSaveSettings = () => {
-    console.log("сохранить настройки");
-  }
+  // Состояние для хранения измененных настроек
+  const [debouncedSettings, setDebouncedSettings] = useState();
+
+  // Эффект для обновления debouncedSettings при изменении настроек
+  useEffect(() => {
+    console.log("поменяли")
+    setDebouncedSettings({
+      selectedOptionSuccess,
+      selectedOptionTranslate,
+      checkboxValues,
+      listValueRating,
+      listValueErrLint,
+      inputValue,
+    });
+  }, [
+    selectedOptionSuccess,
+    selectedOptionTranslate,
+    checkboxValues,
+    listValueRating,
+    listValueErrLint,
+    inputValue,
+  ]);
 
   return (
     <>
@@ -137,7 +158,7 @@ function WorkSettings() {
         </label></div>
 
       </div>
-      <div className="b-wrapper"><button onClick={handleSaveSettings} className="b-button">Сохранить настройки</button></div>
+      {/* <div className="b-wrapper"><button onClick={handleSaveSettings} className="b-button">Сохранить настройки</button></div> */}
 
     </>
   );
