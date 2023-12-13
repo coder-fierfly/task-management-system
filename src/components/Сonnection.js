@@ -8,7 +8,6 @@ function Connection() {
     // итерации будут грузится из реда 
     // кнопку начать проверку побольше
 
-
     // выпадающие списки руководитель, проект и итерация
     const [listVOfDirectors, setListVOfDirectors] = useState('');
     const [listVOfProjects, setListVOfProjects] = useState('');
@@ -80,6 +79,7 @@ function Connection() {
 
     return (
         <>
+
             <Plagiarism isOpen={isPlagiarismOpen} onClose={closePlagiarism} listOfStudents={listOfStudents} />
             <div className="form-container">
                 <label className="label">Введите url ресурса:</label>

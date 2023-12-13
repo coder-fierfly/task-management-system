@@ -1,97 +1,72 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
-import { useTheme } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import React, { useState } from 'react';
 import Connection from './Сonnection';
 import WorkSettings from './WorkSettings';
 import Tasks from './Tasks';
 import DistributionOfTasks from './DistributionOfTasks';
 import "../App.css";
-
-// TODO Уменьшить размер полей с настройками 
-// Перенести проверку задачи по id на первую вкладку
-
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      id={`action-tabpanel-${index}`}
-      aria-labelledby={`action-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box className="floating-button-container">{children}</Box>}
-    </Typography>
-  );
-}
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
 
-function a11yProps(index) {
-  return {
-    id: `action-tab-${index}`,
-    'aria-controls': `action-tabpanel-${index}`,
-  };
-}
+export default function TabPanel() {
+  const [activeButton, setActiveButton] = useState(0);
 
-export default function FloatingActionButtonZoom() {
-  const theme = useTheme();
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleChangeIndex = (index) => {
-    setValue(index);
+  const handleClick = (button) => {
+    setActiveButton(button);
   };
 
   return (
-    <Box className="floating-button-container"
-    //TODO кинуть в css
-    >
-      <AppBar position="static" color="default">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          className="tab-buttons"
-        >
-          <Tab label="Подключение" {...a11yProps(0)} className="tab-button" />
-          <Tab label="Настройки работы" {...a11yProps(1)} className="tab-button" />
-          <Tab label="Задачи" {...a11yProps(2)} className="tab-button" />
-          <Tab label="Распределение задач" {...a11yProps(3)} className="tab-button" />
-        </Tabs>
-      </AppBar>
-      <SwipeableViews
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      >
-        <TabPanel value={value} index={0}>
-          <Connection />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <WorkSettings />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <Tasks />
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <DistributionOfTasks />
-        </TabPanel>
-      </SwipeableViews>
-    </Box>
+    <>
+      <div className="my-header">
+        <div className="per-acc-group" id="224:641">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="23" viewBox="0 0 25 23" fill="none">
+            <ellipse cx="12.4997" cy="5.65968" rx="4.16667" ry="3.77297" fill="#1C274C" />
+            <ellipse cx="12.4997" cy="16.0352" rx="7.29167" ry="3.77297" fill="#1C274C" />
+          </svg>
+          <p className="item--VVe" id="224:642">Личный кабинет</p>
+        </div>
+      </div>
+      <Router>
+        <div className='group_head_btns'>
+          <Link to='/con'>
+            <button
+              className={activeButton === 0 ? 'conn-btn-active' : 'conn-btn'}
+              onClick={() => handleClick(0)}
+            >  Подключение
+            </button>
+          </Link>
+          <Link to='/set'>
+            <button
+              className={activeButton === 1 ? 'set-btn-active' : 'set-btn'}
+              onClick={() => handleClick(1)}
+            >
+              Настройки работы
+            </button>
+          </Link>
+          <Link to='/tasks'>
+            <button
+              className={activeButton === 2 ? 'main-tasks-btn-active' : 'main-tasks-btn'}
+              onClick={() => handleClick(2)}
+            >
+              Задачи
+            </button>
+          </Link>
+          <Link to='distribution'>
+            <button
+              className={activeButton === 3 ? 'main-dist-btn-active' : 'main-dist-btn'}
+              onClick={() => handleClick(3)}
+            >
+              Распределение задач
+            </button>
+          </Link>
+        </div>
+        <Routes>
+          <Route path='/con' element={<Connection />} />
+          <Route path='/set' element={<WorkSettings />} />
+          <Route path='/tasks' element={<Tasks />} />
+          <Route path='/distribution' element={<DistributionOfTasks />} />
+        </Routes>
+      </Router>
+    </>
   );
 }

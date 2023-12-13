@@ -184,3 +184,75 @@ th {
 .scrollable-container::-webkit-scrollbar-track {
   background-color: #f1f1f1;
 }
+
+.my-header {
+  background-color: #a1b8d0;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  height: 3.5rem;
+  width: 100%;
+}
+
+.item--VVe {
+  color: #1c274c;
+  flex-shrink: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2125;
+  white-space: nowrap;
+}
+
+.group_head_btns {
+  position: relative;
+  height: 2rem;
+}
+
+.group_head_btns button.conn-btn-active,
+.group_head_btns button.set-btn-active,
+.group_head_btns button.main-tasks-btn-active,
+.group_head_btns button.main-dist-btn-active {
+  background-color: #ffffff;
+  border-radius: 2rem 2rem 0 0;
+}
+
+.conn-btn:hover,
+.set-btn:hover,
+.main-tasks-btn:hover,
+.main-dist-btn:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 2rem 2rem 0 0;
+}
+
+.group_head_btns a {
+  flex: 1;
+  text-decoration: none;
+}
+
+.group_head_btns {
+  background-color: #a1b8d0;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex: 1;
+}
+
+.group_head_btns button {
+  flex: 1;
+  color: #1c274c;
+  border: none;
+  width: 100%;
+  text-align: center;
+  background-color: #a1b8d0;
+  cursor: pointer;
+  padding: 10px;
+  height: 100%;
+}
+
+.per-acc-group {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  height: 100%;
+  float: right;
+  padding-right: 2.2rem;
+}
