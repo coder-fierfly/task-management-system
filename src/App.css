@@ -1,81 +1,15 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.floating-button-container {
-  background-color: "background.paper";
-  position: "relative";
-  /* min-height: 200; */
-  width: 100% !important;
-}
-
-/* .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
-  height: 200px;
-  width: ;
-} */
-
-.floating-button-container {
-  display: flex;
-  flex-direction: column;
-  background-color: "background.paper";
-  width: 600px;
-  position: "relative";
-  /* min-height: 200px; */
-}
-
-.tab-buttons {
-  flex: 1;
-  display: flex;
-}
-
-.tab-button {
-  flex: 1;
-  max-width: none !important;
-}
-
 .form-container {
   display: grid;
   grid-template-columns: repeat(
     2,
     1fr
   ); /* Два столбца с равными долями ширины */
-  gap: 16px; /* Расстояние между элементами */
-  padding: 16px; /* Отступ вокруг формы */
+  gap: 16px;
+  padding: 16px;
+}
+
+.all-header {
+  width: 100%;
 }
 
 .label {
@@ -193,13 +127,10 @@ th {
   width: 100%;
 }
 
-.item--VVe {
+.per-text {
   color: #1c274c;
-  flex-shrink: 0;
   font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.2125;
-  white-space: nowrap;
+  text-decoration: none !important;
 }
 
 .group_head_btns {
@@ -213,6 +144,15 @@ th {
 .group_head_btns button.main-dist-btn-active {
   background-color: #ffffff;
   border-radius: 2rem 2rem 0 0;
+}
+
+.group_head_btns .conn-btn,
+.group_head_btns .set-btn,
+.group_head_btns .main-tasks-btn,
+.group_head_btns .main-dist-btn {
+  /* background-color: #ffffff; */
+  border-radius: 2rem 2rem 0 0;
+  box-shadow: 0 0.8rem 0.6rem 0 rgba(0, 0, 0, 0.1);
 }
 
 .conn-btn:hover,
@@ -233,7 +173,7 @@ th {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  flex: 1;
+  /* flex: 1; */
 }
 
 .group_head_btns button {
@@ -244,7 +184,6 @@ th {
   text-align: center;
   background-color: #a1b8d0;
   cursor: pointer;
-  padding: 10px;
   height: 100%;
 }
 
@@ -254,5 +193,102 @@ th {
   display: flex;
   height: 100%;
   float: right;
-  padding-right: 2.2rem;
+  padding-right: 1.2rem;
+}
+
+.group_head_btns p {
+  font-size: 1.2em;
+}
+
+/* .per-acc-group {
+  background-color: #ffffff;
+} */
+
+.per-acc-btn,
+.per-acc-btn-active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px; /* Adjust the padding to make the button smaller */
+  border: none;
+  cursor: pointer;
+  text-decoration: none !important;
+  border-radius: 1rem;
+}
+.per-acc-btn {
+  background-color: #a1b8d0;
+}
+.per-acc-btn-active {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.per-acc-btn:hover,
+.per-acc-btn-active:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.log-pass-label {
+  color: #1c274c;
+  font-size: 1.3rem;
+}
+
+.log-pass-holder {
+  background-color: #f3f6f9;
+  border-radius: 0.4rem;
+  box-shadow: inset 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+  height: 1.5rem;
+  border: none;
+  padding: 0.2rem;
+  color: #333;
+}
+
+.enter-btn {
+  height: 1.9rem;
+  flex-shrink: 0;
+  border-radius: 0.4rem;
+  background: #d9e1e9;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2px);
+  border: none;
+  color: #1c274c;
+  font-size: 1.1rem;
+}
+
+.enter-btn-wrapper {
+  padding-top: 1.4rem;
+  width: 100%;
+}
+
+.auth-label {
+  font-size: 2.5em;
+  padding-bottom: 2.5rem;
+  color: #1c274c;
+}
+
+.log_group,
+.enter-btn {
+  width: 100%;
+}
+
+.log-pass-holder {
+  width: calc(100% - 0.4rem);
+}
+
+.log_group {
+  padding-bottom: 1.5rem;
+}
+.auth-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 4rem;
+}
+
+.main-auth-group {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25rem;
 }
