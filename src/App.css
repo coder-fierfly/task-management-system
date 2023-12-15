@@ -1,11 +1,15 @@
 .form-container {
   display: grid;
-  grid-template-columns: repeat(
-    2,
-    1fr
-  ); /* Два столбца с равными долями ширины */
-  gap: 16px;
-  padding: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 4rem;
+  row-gap: 1.5rem;
+  margin-bottom: 1.3rem;
+}
+
+.label-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
 }
 
 .all-header {
@@ -13,29 +17,28 @@
 }
 
 .label {
+  display: flex; /* Добавляем flex-контейнер */
+  align-items: center;
   text-align: right;
-  font-size: 20px;
+  margin-right: 0;
+  font-size: 1.3rem;
+  color: #1c274c;
 }
-
-.input-field {
-  width: 50%;
-}
-
 .b-button {
-  width: 25%;
-  font-size: 16px;
+  width: 100%;
+  font-size: 1rem;
   text-align: center;
-  text-decoration: none;
-  background-color: #3498db;
-  color: #fff;
-  border-radius: 5px;
+  color: #1c274c;
   transition: background-color 0.3s;
-  margin-bottom: 0.5%;
-  display: block;
+  border-radius: 0.4rem;
+  background-color: #d9e1e9;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 .b-button:hover {
-  background-color: #2980b9;
+  background-color: #cde2f6;
 }
 
 .b-wrapper {
@@ -44,8 +47,13 @@
   flex-direction: column;
 }
 
-.flex-line {
+.flex-line,
+.flex-class {
   display: inline-flex;
+}
+
+.flex-class {
+  gap: 1.3rem;
 }
 
 .input-height {
@@ -231,7 +239,8 @@ th {
   font-size: 1.3rem;
 }
 
-.log-pass-holder {
+.log-pass-holder,
+.input-field {
   background-color: #f3f6f9;
   border-radius: 0.4rem;
   box-shadow: inset 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
@@ -239,6 +248,13 @@ th {
   border: none;
   padding: 0.2rem;
   color: #333;
+  width: calc(100% - 0.4rem);
+}
+
+.input-field:focus-visible {
+  border: none;
+  outline: none;
+  background-color: #f2f2f2;
 }
 
 .enter-btn {
@@ -269,10 +285,6 @@ th {
   width: 100%;
 }
 
-.log-pass-holder {
-  width: calc(100% - 0.4rem);
-}
-
 .log_group {
   padding-bottom: 1.5rem;
 }
@@ -291,4 +303,214 @@ th {
   align-items: center;
   justify-content: center;
   width: 25rem;
+}
+
+.dropdown {
+  width: 100%;
+  height: 1.9rem;
+  border: none;
+  background: #d9e1e9;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 0.4rem;
+  padding-inline: 0.2rem;
+}
+
+.checkbox {
+  position: absolute;
+  opacity: 0;
+}
+
+.checkbox:checked + label::before {
+  border-color: #6ba2e2;
+  background-color: #6ba2e2;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.checkbox + label {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+.checkbox + label::before {
+  content: "";
+  display: inline-block;
+  background: #f3f6f9;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  flex-grow: 0;
+  border: 1px solid rgb(200, 207, 214);
+  border-radius: 0.25em;
+  margin-right: 0.5em;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 75% 75%;
+}
+
+.left-label {
+  text-align: left;
+}
+
+.tasks-flex-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1.3rem;
+}
+
+.main-conn-wrap {
+  align-items: center;
+  align-items: center;
+  justify-content: center;
+  width: 50rem;
+  display: flex;
+  flex: 1;
+}
+
+.start-check {
+  width: 50%;
+  height: 3.8rem;
+}
+
+.dowland-wrapper {
+  display: inline-block;
+  position: fixed;
+  bottom: 2rem; /* Отступ снизу */
+  left: 4rem; /* Отступ слева */
+}
+
+.dowland-btn {
+  padding-top: 0.3rem;
+  padding-inline: 0.3rem;
+}
+
+.label-center {
+  display: flex;
+  align-items: center;
+}
+
+/* Стили для основного контейнера выпадающего списка */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Стили для кнопки */
+.dropbtn {
+  background-color: #3498db;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Стили для выпадающего контейнера */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Стили для опций в выпадающем списке */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown option:hover {
+  background-color: #a61515; /* Любой цвет при наведении */
+}
+
+/* Изменение стиля опций при наведении */
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Отображение выпадающего списка при нажатии на кнопку */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.form-control {
+  font-family: system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.1;
+  display: grid;
+  grid-template-columns: 1em auto;
+  gap: 0.5em;
+}
+
+.form-control + .form-control {
+  margin-top: 1em;
+}
+
+.form-control:focus-within {
+  color: var(--form-control-color);
+}
+
+input[type="radio"] {
+  /* Add if not using autoprefixer */
+  /* -webkit-appearance: none; */
+  /* Remove most all native input styles */
+  /* appearance: none; */
+  /* For iOS < 15 */
+  background-color: var(--form-background);
+  /* Not removed via appearance */
+  margin: 0;
+
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 50%;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="radio"]:focus-visible {
+  border: none;
+  outline: none;
+  /* background-color: #f2f2f2; */
+}
+input[type="radio"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--form-control-color);
+  /* Windows High Contrast Mode */
+  background-color: CanvasText;
+  background-color: #6ba2e2;
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
+  background-color: #6ba2e2;
+}
+
+input[type="radio"]:focus {
+  outline: max(2px, 0.15em) solid currentColor;
+  outline-offset: max(2px, 0.15em);
+  background-color: #6ba2e2;
+}
+
+.form_radio {
+  display: flex;
+  align-items: center;
+}
+
+.margin-form {
+  margin-left: 1rem;
 }

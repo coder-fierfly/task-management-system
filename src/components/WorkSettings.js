@@ -65,36 +65,45 @@ function WorkSettings() {
   ]);
 
   return (
-    <>
+    <div className='main-conn-wrap'>
       <div className="form-container">
-        <label className="label">
-          <input
+        <div className='label-center'>
+          <input className='checkbox'
             type="checkbox"
             checked={checkboxValues.checkboxLint}
             onChange={() => handleCheckboxChange('checkboxLint')}
           />
-          Требуется Lint?
-        </label>
+          <label className="label">
+
+            Требуется Lint?
+          </label>
+        </div>
         <br />
-        <label className="label">
-          <input
+        <div className='label-center'>
+          <input className='checkbox'
             type="checkbox"
             checked={checkboxValues.checkboxErrorLimit}
             onChange={() => handleCheckboxChange('checkboxErrorLimit')}
           />
-          Порог ошибок (Java,C++)
-        </label>
+          <label className="label">
+            Порог ошибок (Java,C++)
+          </label>
+        </div>
         <input className="input-field" type="text" value={inputValue}
           onChange={handleInputChange} />
 
-        <label className="label">
-          <input
+
+        <div className='label-center'>
+          <input className='checkbox'
             type="checkbox"
             checked={checkboxValues.checkboxRating}
             onChange={() => handleCheckboxChange('checkboxRating')}
           />
-          Допустимый рейтинг (Python)
-        </label>
+          <label className="label">
+            Допустимый рейтинг (Python)
+          </label>
+        </div>
+
         <DropdownList
           options={listOptionsRating}
           selectedValue={listValueRating}
@@ -106,61 +115,69 @@ function WorkSettings() {
           selectedValue={listValueErrLint}
           onSelectedValueChange={setListValueErrLint}
         />
-        <div><label className="label">
-          <input
-            type="checkbox"
-            checked={checkboxValues.checkboxSuccess}
-            onChange={() => handleCheckboxChange('checkboxSuccess')}
-          />
-          Успешно проверенные задачи:
-        </label>
-          <label><input
-            type="radio"
-            name="successfully"
-            value="close"
-            checked={selectedOptionSuccess === 'close'}
-            onChange={handleRadioChangeSuccess}
-          />
-            Close</label>
-          <label>
-            <input
+        <div>
+          <div className='label-center'>
+            <input className='checkbox'
+              type="checkbox"
+              checked={checkboxValues.checkboxSuccess}
+              onChange={() => handleCheckboxChange('checkboxSuccess')}
+            />
+            <label className="label">
+              Успешно проверенные задачи:
+            </label>
+          </div>
+          <div className='label-container'>
+            <div className='form_radio margin-form'><input
+              type="radio"
+              name="successfully"
+              value="close"
+              checked={selectedOptionSuccess === 'close'}
+              onChange={handleRadioChangeSuccess}
+            />
+              <label className="label">
+                Close</label></div>
+
+            <div className='form_radio'><input
               type="radio"
               name="successfully"
               value="approve"
               checked={selectedOptionSuccess === 'approve'}
               onChange={handleRadioChangeSuccess}
             />
-            Approve
-          </label>
+              <label className="label">
+                Approve
+              </label></div>
+          </div>
         </div>
         <br />
-        <div><label><label>
-          На кого переводить задачи?
-          <input
-            type="radio"
-            name="translateTasksTo"
-            value="student"
-            checked={selectedOptionTranslate === 'student'}
-            onChange={handleRadioChangeTranslate}
-          />
-          Студент
-        </label>
-          <label>
-            <input
-              type="radio"
-              name="translateTasksTo"
-              value="teacher"
-              checked={selectedOptionTranslate === 'teacher'}
-              onChange={handleRadioChangeTranslate}
-            />
-            Преподаватель
+        <div>
+          <label className="label">
+            На кого переводить задачи?
           </label>
-        </label></div>
+          <div className='label-container'>
+            <div className='form_radio margin-form'>
+              <input
+                type="radio"
+                name="translateTasksTo"
+                value="student"
+                checked={selectedOptionTranslate === 'student'}
+                onChange={handleRadioChangeTranslate}
+              />
+              <label className="label">Студент</label>
+            </div>
+            <div class="form_radio">
+              <input id="contactChoice1" type="radio" name="radio" value="teacher"
+                checked={selectedOptionTranslate === 'teacher'}
+                onChange={handleRadioChangeTranslate} />
+              <label className="label">Преподаватель</label>
+            </div>
+          </div>
 
+        </div>
       </div>
       {/* <div className="b-wrapper"><button onClick={handleSaveSettings} className="b-button">Сохранить настройки</button></div> */}
 
-    </>
+    </div>
   );
 }
 

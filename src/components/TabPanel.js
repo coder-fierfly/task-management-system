@@ -12,7 +12,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 
 export default function TabPanel() {
-  const [activeButton, setActiveButton] = useState(1);
+  const [activeButton, setActiveButton] = useState(0);
   const [isLogged, setLogged] = useState(false);
 
   const handleClick = (button) => {

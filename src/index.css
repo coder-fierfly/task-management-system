@@ -34,3 +34,7 @@ a {
   align-items: center;
   height: 100vh;
 }
+
+select:focus-visible {
+  outline: none;
+}

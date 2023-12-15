@@ -23,14 +23,14 @@ const Authorization = ({ handleLogin }) => {
                     onChange={handleLogChange}
                 /></div>
                 <div className='log_group'><p className='log-pass-label'>Пароль</p><input className='log-pass-holder'
-                    type="text"
+                    type='password'
                     value={passValue}
                     onChange={handlePassChange}
                 /></div>
                 <div className='enter-btn-wrapper'>
-                <button className='enter-btn' onClick={handleLoginClick}>Войти</button>
+                    <button className='enter-btn' onClick={handleLoginClick}>Войти</button>
                 </div>
-                
+
             </div>
         </div>
     );
