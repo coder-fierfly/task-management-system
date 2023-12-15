@@ -22,7 +22,7 @@ function Connection() {
 
     // TODO список сделать правильные опции чтобы они были в списках
     // варианты в выпадающем списке
-    const listOfDirectors = ['Option 1', 'Option 2', 'Option 3'];
+
     const listOfProjects = ['A2', 'B2', 'C2'];
     const listOfIterations = ['A3', 'B3', 'C3'];
 
@@ -89,13 +89,7 @@ function Connection() {
 
                         <input className="input-field" type="text" value={inputUrl}
                             onChange={handleInputChange} />
-                        <div className="label-container"><label className="label">Выберите руководителя проектов:</label></div>
-            
-                        <DropdownList
-                            options={listOfDirectors}
-                            selectedValue={listVOfDirectors}
-                            onSelectedValueChange={setListVOfDirectors}
-                        />
+
                         <div className="label-container">  <label className="label">Выберите проект:</label></div>
                         <DropdownList
                             options={listOfProjects}
@@ -115,7 +109,6 @@ function Connection() {
                                 onChange={() => handleCheckboxChange('checkboxShowAns')}
                             />
                             <label className="label">
-
                                 Показывать ответ в случае ошибки
                             </label>
                         </div>

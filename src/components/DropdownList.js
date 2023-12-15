@@ -1,16 +1,15 @@
 import React from 'react';
 
-const DropdownList = ({ options, selectedValue, onSelectedValueChange }) => {
+const DropdownList = ({ options, selectedValue, onSelectedValueChange, outputLabel }) => {
     return (
-        <div className='dropdown-wrapper'>
-            <select className="dropdown" value={selectedValue} onChange={(e) => onSelectedValueChange(e.target.value)}>
-                {options.map((option) => (
-                    <option key={option} value={option}>
-                        {option}
-                    </option>
-                ))}
-            </select>
-        </div>
+        <select className="dropdown" value={selectedValue} onChange={(e) => onSelectedValueChange(e.target.value)}>
+            <option value="" disabled hidden><label className="label">{outputLabel}</label></option>
+            {options.map((option) => (
+                <option key={option} value={option}>
+                    {option}
+                </option>
+            ))}
+        </select>
     );
 };
 

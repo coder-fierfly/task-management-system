@@ -165,7 +165,7 @@ function WorkSettings() {
               />
               <label className="label">Студент</label>
             </div>
-            <div class="form_radio">
+            <div className="form_radio">
               <input id="contactChoice1" type="radio" name="radio" value="teacher"
                 checked={selectedOptionTranslate === 'teacher'}
                 onChange={handleRadioChangeTranslate} />

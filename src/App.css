@@ -16,6 +16,9 @@
   width: 100%;
 }
 
+.left-btn {
+  margin-left: 0;
+}
 .label {
   display: flex; /* Добавляем flex-контейнер */
   align-items: center;
@@ -51,13 +54,26 @@
 .flex-class {
   display: inline-flex;
 }
+.flex-line-tasks {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.flex-line-right {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  gap: 1rem;
+}
 
 .flex-class {
   gap: 1.3rem;
 }
 
 .input-height {
-  height: 25vh;
+  height: 4rem !important;
 }
 
 .popup-overlay {
@@ -362,7 +378,7 @@ th {
   align-items: center;
   align-items: center;
   justify-content: center;
-  width: 50rem;
+  width: 70%;
   display: flex;
   flex: 1;
 }
@@ -513,4 +529,45 @@ input[type="radio"]:focus {
 
 .margin-form {
   margin-left: 1rem;
+}
+
+.little-btn {
+  height: 1.9rem;
+  width: 1.9rem;
+}
+
+.trash-btn {
+  height: 1.9rem;
+  width: 1.9rem;
+}
+
+.center-label {
+  align-items: center;
+  text-align: center;
+  display: block;
+}
+
+.flex {
+  display: flex;
+}
+
+.tasks-wrap {
+  flex-direction: column;
+  width: 70%;
+  gap: 1rem;
+}
+
+.dropdown-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  gap: 1rem;
+  width: 60%;
+}
+.opt-cl {
+  font-size: 25px;
+}
+
+.form-width {
+  width: 100%;
 }
