@@ -5,9 +5,9 @@ const PersonalAcc = ({ handleLogout }) => {
         handleLogout();
     };
     return (
-        <div>
+        <div className='main-conn-wrap'>
             <h1>Добро пожаловать в личный кабинет!</h1>
-            <button onClick={handleLogoutClick}>Выйти</button>
+            <button className="b-button" onClick={handleLogoutClick}>Выйти</button>
         </div>
     );
 };

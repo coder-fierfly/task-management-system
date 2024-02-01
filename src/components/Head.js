@@ -7,7 +7,7 @@ function Head() {
     return (
         <div>
             <div>
-                <Link to="/сonnection">Подключение</Link>
+                <Link to="/сonnection">Главная</Link>
                 <Link to="/workSettings">Настройка работы </Link>
                 <Link to="/tasks">Задачи </Link>
                 <Link to="/distributionOfTasks">Распределение задач </Link>

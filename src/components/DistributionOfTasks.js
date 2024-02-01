@@ -65,10 +65,13 @@ function DistributionOfTasks() {
   }
 
   return (
-    <div>
-      <button onClick={handleClickDownloadList}>Загрузить списки</button>
-      <button onClick={handleClickCopy}>Раскопировать "всё-всем"</button>
-      <button onClick={handleClickAppoint}>Назначить выделенное</button>
+    <div className='main-conn-wrap tasks-wrap'>
+      <button className="b-button" onClick={handleClickDownloadList}>Загрузить списки</button>
+      <br />
+      <button className="b-button" onClick={handleClickCopy}>Раскопировать "всё-всем"</button>
+      <br />
+      <button className="b-button" onClick={handleClickAppoint}>Назначить выделенное</button>
+      <br />
       <div style={{ maxHeight: '200px', maxWidth: '200px', overflowY: 'auto', backgroundColor: 'beige' }}>
         {checkboxes.map((checkbox) => (
           <div key={checkbox.id}>

@@ -4,6 +4,7 @@ import DropdownList from './DropdownList';
 // import useDebounce from './useDebounce';
 
 function WorkSettings() {
+ 
   // State для отслеживания выбранной радиокнопки
   const [selectedOptionSuccess, setSelectedOptionSuccess] = useState('');
   const [selectedOptionTranslate, setSelectedOptionTranslate] = useState('');
@@ -70,11 +71,11 @@ function WorkSettings() {
         <div className='label-center'>
           <input className='checkbox'
             type="checkbox"
+            id="lintCheckId"
             checked={checkboxValues.checkboxLint}
             onChange={() => handleCheckboxChange('checkboxLint')}
           />
-          <label className="label">
-
+          <label className="label" for="lintCheckId">
             Требуется Lint?
           </label>
         </div>
@@ -82,24 +83,24 @@ function WorkSettings() {
         <div className='label-center'>
           <input className='checkbox'
             type="checkbox"
+            id="limitErrCheckId"
             checked={checkboxValues.checkboxErrorLimit}
             onChange={() => handleCheckboxChange('checkboxErrorLimit')}
           />
-          <label className="label">
+          <label className="label" for="limitErrCheckId">
             Порог ошибок (Java,C++)
           </label>
         </div>
-        <input className="input-field" type="text" value={inputValue}
+        <input className="input-field" type="text" id="limitErrInputId" value={inputValue}
           onChange={handleInputChange} />
-
-
         <div className='label-center'>
           <input className='checkbox'
             type="checkbox"
+            id="ratingCheckId"
             checked={checkboxValues.checkboxRating}
             onChange={() => handleCheckboxChange('checkboxRating')}
           />
-          <label className="label">
+          <label className="label" for="ratingCheckId">
             Допустимый рейтинг (Python)
           </label>
         </div>
@@ -108,21 +109,24 @@ function WorkSettings() {
           options={listOptionsRating}
           selectedValue={listValueRating}
           onSelectedValueChange={setListRating}
+          id="listRatingId"
         />
-        <label className="label">Как оповещать об ошибках линта:</label>
+        <p className="label">Как оповещать об ошибках линта:</p>
         <DropdownList
           options={listOptionsErrLint}
           selectedValue={listValueErrLint}
           onSelectedValueChange={setListValueErrLint}
+          id="listOptionsErrId"
         />
         <div>
           <div className='label-center'>
             <input className='checkbox'
               type="checkbox"
+              id="checkboxSuccessId"
               checked={checkboxValues.checkboxSuccess}
               onChange={() => handleCheckboxChange('checkboxSuccess')}
             />
-            <label className="label">
+            <label className="label" for="checkboxSuccessId">
               Успешно проверенные задачи:
             </label>
           </div>
@@ -134,8 +138,8 @@ function WorkSettings() {
               checked={selectedOptionSuccess === 'close'}
               onChange={handleRadioChangeSuccess}
             />
-              <label className="label">
-                Close</label></div>
+              <p className="label">
+                Close</p></div>
 
             <div className='form_radio'><input
               type="radio"
@@ -144,16 +148,16 @@ function WorkSettings() {
               checked={selectedOptionSuccess === 'approve'}
               onChange={handleRadioChangeSuccess}
             />
-              <label className="label">
+              <p className="label">
                 Approve
-              </label></div>
+              </p></div>
           </div>
         </div>
         <br />
         <div>
-          <label className="label">
+          <p className="label">
             На кого переводить задачи?
-          </label>
+          </p>
           <div className='label-container'>
             <div className='form_radio margin-form'>
               <input
@@ -163,13 +167,13 @@ function WorkSettings() {
                 checked={selectedOptionTranslate === 'student'}
                 onChange={handleRadioChangeTranslate}
               />
-              <label className="label">Студент</label>
+              <p className="label">Студент</p>
             </div>
             <div className="form_radio">
               <input id="contactChoice1" type="radio" name="radio" value="teacher"
                 checked={selectedOptionTranslate === 'teacher'}
                 onChange={handleRadioChangeTranslate} />
-              <label className="label">Преподаватель</label>
+              <p className="label">Преподаватель</p>
             </div>
           </div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Connection from './Сonnection';
 import WorkSettings from './WorkSettings';
 import Tasks from './Tasks';
@@ -13,7 +13,11 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 export default function TabPanel() {
   const [activeButton, setActiveButton] = useState(0);
-  const [isLogged, setLogged] = useState(false);
+  const [isLogged, setLogged] = useState(() => {
+    // Проверка состояния авторизации при первом рендеринге компонента
+    const storedIsLogged = localStorage.getItem('isLogged');
+    return storedIsLogged === 'true';
+  }); //вошел пользователь в аккаунт или нет
 
   const handleClick = (button) => {
     setActiveButton(button);
@@ -21,13 +25,32 @@ export default function TabPanel() {
 
   const handleLogin = () => {
     setLogged(true);
-
+    localStorage.setItem('isLogged', 'true');
+    console.log(" setLogged(true);")
   };
 
   const handleLogout = () => {
     setLogged(false);
+    localStorage.removeItem('isLogged');
   };
 
+  const handleBeforeUnload = () => {
+    // Сбрасываем авторизацию при закрытии страницы
+    localStorage.removeItem('isLoggedIn');
+  };
+
+  // useEffect(() => {
+  //   // Устанавливаем обработчик события перед выгрузкой страницы
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //   };
+  // })
+  // useEffect(() => {
+  //   sessionStorage.setItem('isLogged', isLogged);
+  // }, [isLogged]);
+
+  //TODO делать кнопку активной под вкладку
   return (
     <>
       <Router>
@@ -46,42 +69,45 @@ export default function TabPanel() {
               </Link>
             </div>
           </div>
-          <div className='group_head_btns'>
-            <Link to='/con'>
-              <button
-                className={activeButton === 0 ? 'conn-btn-active' : 'conn-btn'}
-                onClick={() => handleClick(0)}
+          {isLogged ? (
+            <div className='group_head_btns'>
+              <Link to='/con'>
+                <button
+                  className={activeButton === 0 ? 'conn-btn-active' : 'conn-btn'}
+                  onClick={() => handleClick(0)}
 
-              > <p>Подключение</p>
-              </button>
-            </Link>
-            <Link to='/set'>
-              <button
-                className={activeButton === 1 ? 'set-btn-active' : 'set-btn'}
-                onClick={() => handleClick(1)}
-              >
-                <p>Настройки работы</p>
-              </button>
-            </Link>
-            <Link to='/tasks'>
-              <button
-                className={activeButton === 2 ? 'main-tasks-btn-active' : 'main-tasks-btn'}
-                onClick={() => handleClick(2)}
-              >
-                <p>Задачи</p>
-              </button>
-            </Link>
-            <Link to='distribution'>
-              <button
-                className={activeButton === 3 ? 'main-dist-btn-active' : 'main-dist-btn'}
-                onClick={() => handleClick(3)}
-              >
-                <p>Распределение задач</p>
-              </button>
-            </Link>
-          </div>
+                > <p>Подключение</p>
+                </button>
+              </Link>
+              <Link to='/set'>
+                <button
+                  className={activeButton === 1 ? 'set-btn-active' : 'set-btn'}
+                  onClick={() => handleClick(1)}
+                >
+                  <p>Настройки работы</p>
+                </button>
+              </Link>
+              <Link to='/tasks'>
+                <button
+                  className={activeButton === 2 ? 'main-tasks-btn-active' : 'main-tasks-btn'}
+                  onClick={() => handleClick(2)}
+                >
+                  <p>Задачи</p>
+                </button>
+              </Link>
+              <Link to='distribution'>
+                <button
+                  className={activeButton === 3 ? 'main-dist-btn-active' : 'main-dist-btn'}
+                  onClick={() => handleClick(3)}
+                >
+                  <p>Распределение задач</p>
+                </button>
+              </Link>
+            </div>
+          ) : (<></>)}
         </div>
         <Routes>
+          <Route path="/" element={<Navigate to="/authorization" />} />
           <Route path='/con' element={<Connection />} />
           <Route path='/set' element={<WorkSettings />} />
           <Route path='/tasks' element={<Tasks />} />

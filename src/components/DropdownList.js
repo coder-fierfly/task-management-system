@@ -1,9 +1,9 @@
 import React from 'react';
 
-const DropdownList = ({ options, selectedValue, onSelectedValueChange, outputLabel }) => {
+const DropdownList = ({ options, selectedValue, onSelectedValueChange, outputLabel, id }) => {
     return (
-        <select className="dropdown" value={selectedValue} onChange={(e) => onSelectedValueChange(e.target.value)}>
-            <option value="" disabled hidden><label className="label">{outputLabel}</label></option>
+        <select className="dropdown" id={id} value={selectedValue} onChange={(e) => onSelectedValueChange(e.target.value)}>
+            <option value="" disabled hidden>{outputLabel}</option>
             {options.map((option) => (
                 <option key={option} value={option}>
                     {option}

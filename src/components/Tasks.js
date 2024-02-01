@@ -10,9 +10,15 @@ function Tasks() {
   const [listVOfThemes, setListVOfThemes] = useState(''); // тема
   const [listVOfTasks, setListVOfTasks] = useState(''); // задачи
   const [listVOfTests, setListVOfTests] = useState(''); // тесты
-  const listOfThemes = ['A2', 'B2', 'C2']; // список тем
+  const listOfThemes = ['A2', 'B2', 'AAA2', 'C2']; // список тем
   const listOfTests = ['A11', 'B11', 'C11']; // список тестов
   const listOfTasks = ['A1', 'B1', 'C1']; // список заданий
+
+  // сортировка списков и добавление варианта в начало
+  listOfThemes.sort();
+  listOfTasks.sort();
+  listOfTests.sort();
+  listOfThemes.unshift('Все темы');
 
   // реагирует на изменение в поле ввода с входными данными
   const handleInputData = (event) => {
@@ -127,19 +133,20 @@ function Tasks() {
             </button>
           </div>
         </div>
-        <div className='form-container form-width'>
-          <label className="label">Входные данные</label>
-          <label className="label">Ожидаемый результат</label>
+        <div className='check-container form-width'>
+          <label className="label center-label">Входные данные</label>
+          <label className="label center-label">Ожидаемый результат</label>
 
           <input className="input-field input-height" type="text" value={inputData}
             onChange={handleInputData} />
           <input className="input-field input-height" type="text" value={inputExpRes}
             onChange={handleInputExpRes} />
 
-          <button onClick={handleLeft} className="b-button">L</button>
-          <button onClick={handleRight} className="b-button">R</button>
-          <button onClick={handleViewTests} className="b-button">Посмотреть тесты</button>
+          <button onClick={handleLeft} className="b-button little-btn right-btn ">{'<'}</button>
+          <button onClick={handleRight} className="b-button little-btn">{'>'}</button>
+
         </div>
+        <button onClick={handleViewTests} className="b-button b-width">Сохранить</button>
         {/* </div> */}
         <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} />
       </div>
