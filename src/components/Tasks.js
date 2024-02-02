@@ -4,7 +4,7 @@ import DropdownList from './DropdownList';
 import CreateNewTask from './CreateNewTask';
 
 function Tasks() {
-  // TODO сделать input-height другой высоты
+  // TODO: сделать input-height другой высоты
   const [inputData, setData] = useState(''); // входные данные
   const [inputExpRes, setExpRes] = useState(''); // ожидаемый результат
   const [listVOfThemes, setListVOfThemes] = useState(''); // тема
@@ -147,7 +147,7 @@ function Tasks() {
 
         </div>
         <button onClick={handleViewTests} className="b-button b-width">Сохранить</button>
-        {/* </div> */}
+
         <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} />
       </div>
     </>

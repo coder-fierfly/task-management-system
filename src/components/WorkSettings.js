@@ -4,10 +4,10 @@ import DropdownList from './DropdownList';
 // import useDebounce from './useDebounce';
 
 function WorkSettings() {
- 
+
   // State для отслеживания выбранной радиокнопки
   const [selectedOptionSuccess, setSelectedOptionSuccess] = useState('');
-  const [selectedOptionTranslate, setSelectedOptionTranslate] = useState('');
+  const [selectedOptionTranslate, setSelectedOptionTranslate] = useState('teacher');
   const [checkboxValues, setCheckboxValues] = useState({
     checkboxLint: false,
     checkboxErrorLimit: false,
@@ -75,7 +75,7 @@ function WorkSettings() {
             checked={checkboxValues.checkboxLint}
             onChange={() => handleCheckboxChange('checkboxLint')}
           />
-          <label className="label" for="lintCheckId">
+          <label className="label" htmlFor="lintCheckId">
             Требуется Lint?
           </label>
         </div>
@@ -87,7 +87,7 @@ function WorkSettings() {
             checked={checkboxValues.checkboxErrorLimit}
             onChange={() => handleCheckboxChange('checkboxErrorLimit')}
           />
-          <label className="label" for="limitErrCheckId">
+          <label className="label" htmlFor="limitErrCheckId">
             Порог ошибок (Java,C++)
           </label>
         </div>
@@ -100,7 +100,7 @@ function WorkSettings() {
             checked={checkboxValues.checkboxRating}
             onChange={() => handleCheckboxChange('checkboxRating')}
           />
-          <label className="label" for="ratingCheckId">
+          <label className="label" htmlFor="ratingCheckId">
             Допустимый рейтинг (Python)
           </label>
         </div>
@@ -126,7 +126,7 @@ function WorkSettings() {
               checked={checkboxValues.checkboxSuccess}
               onChange={() => handleCheckboxChange('checkboxSuccess')}
             />
-            <label className="label" for="checkboxSuccessId">
+            <label className="label" htmlFor="checkboxSuccessId">
               Успешно проверенные задачи:
             </label>
           </div>

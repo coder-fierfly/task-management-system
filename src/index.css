@@ -28,7 +28,7 @@ a {
 
 #root {
   display: flex;
-  /* TODO в column трабл.... */
+  /* TODO: в column трабл.... */
   flex-direction: column;
   flex-wrap: nowrap;
   align-content: center;

@@ -7,9 +7,14 @@ const Plagiarism = ({ isOpen, onClose, listOfStudents }) => {
     return (
         <div className="popup-overlay">
             <div className="popup">
+                <div className="close-btn-container">
+                    <button className="clear-btn" onClick={onClose}>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg>
+                    </button>
+                </div>
                 <div className="popup-content">
-                    <button onClick={onClose}>Закрыть</button>
-                    <table>
+                <div className="table-container-wrapper">
+                    <table className="table-container">
                         <thead>
                             <tr>
                                 <th>Задание</th>
@@ -29,7 +34,10 @@ const Plagiarism = ({ isOpen, onClose, listOfStudents }) => {
                             ))}
                         </tbody>
                     </table>
+                    
+                    </div>
                 </div>
+
             </div>
         </div>
     );

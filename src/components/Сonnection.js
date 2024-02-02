@@ -10,7 +10,6 @@ function Connection() {
     // кнопку начать проверку побольше
 
     // выпадающие списки руководитель, проект и итерация
-    const [listVOfDirectors, setListVOfDirectors] = useState('');
     const [listVOfProjects, setListVOfProjects] = useState('');
     const [listVOfIterations, setListVOfIterations] = useState('');
     // здесь хранится введенный url
@@ -20,12 +19,11 @@ function Connection() {
 
     const [isPlagiarismOpen, setPlagiarismOpen] = useState(false);
 
-    // TODO список сделать правильные опции чтобы они были в списках
+    // TODO: список сделать правильные опции чтобы они были в списках
     // варианты в выпадающем списке
 
     const listOfProjects = ['A2', 'B2', 'C2'];
     const listOfIterations = ['A3', 'B3', 'C3'];
-
     const listOfStudents = ['A', 'B', 'C'];
 
 
@@ -57,7 +55,6 @@ function Connection() {
     // нажатие на кнопку начать проверку
     const handleStartChecking = () => {
         console.log('Кнопка проверки была нажата');
-        console.log(listVOfDirectors + ' руководитель')
     };
 
     // нажатие на скачивание
@@ -85,7 +82,7 @@ function Connection() {
             <div className='main-conn-wrap'>
                 <div>
                     <div className="form-container">
-                        <div className='label-container'><label for="urlInputId" className="label">Введите url ресурса:</label></div>
+                        <div className='label-container'><label htmlFor="urlInputId" className="label">Введите url ресурса:</label></div>
 
                         <input id="urlInputId" className="input-field" type="text" value={inputUrl}
                             onChange={handleInputChange} />
@@ -113,7 +110,7 @@ function Connection() {
                                 checked={checkboxValues.checkboxShowAns}
                                 onChange={() => handleCheckboxChange('checkboxShowAns')}
                             />
-                            <label for="checkboxShowAnsId" className="label">
+                            <label htmlFor="checkboxShowAnsId" className="label">
                                 Показывать ответ в случае ошибки
                             </label>
                         </div>
@@ -123,7 +120,7 @@ function Connection() {
                             checked={checkboxValues.checkboxAllIterations}
                             onChange={() => handleCheckboxChange('checkboxAllIterations')}
                         />
-                            <label for="checkboxAllIterId" className="label">Проверять все итерации проекта</label></div>
+                            <label htmlFor="checkboxAllIterId" className="label">Проверять все итерации проекта</label></div>
                     </div>
                     <div className="form-container">
                         <input className="input-field" id="inputNumId" type="text" value={inputNumber}

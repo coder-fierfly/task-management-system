@@ -50,7 +50,7 @@ export default function TabPanel() {
   //   sessionStorage.setItem('isLogged', isLogged);
   // }, [isLogged]);
 
-  //TODO делать кнопку активной под вкладку
+  //TODO: делать кнопку активной под вкладку
   return (
     <>
       <Router>
