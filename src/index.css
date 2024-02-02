@@ -8,9 +8,12 @@ body {
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   display: flex;
   flex-direction: column;
+}
+
+select {
+  font-family: "Inter", sans-serif;
 }
 
 code {

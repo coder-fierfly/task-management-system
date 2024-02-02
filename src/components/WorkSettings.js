@@ -132,6 +132,7 @@ function WorkSettings() {
           </div>
           <div className='label-container'>
             <div className='form_radio margin-form'><input
+            className='radio'
               type="radio"
               name="successfully"
               value="close"
@@ -142,6 +143,7 @@ function WorkSettings() {
                 Close</p></div>
 
             <div className='form_radio'><input
+            className='radio'
               type="radio"
               name="successfully"
               value="approve"
@@ -161,6 +163,7 @@ function WorkSettings() {
           <div className='label-container'>
             <div className='form_radio margin-form'>
               <input
+              className='radio'
                 type="radio"
                 name="translateTasksTo"
                 value="student"
@@ -170,7 +173,7 @@ function WorkSettings() {
               <p className="label">Студент</p>
             </div>
             <div className="form_radio">
-              <input id="contactChoice1" type="radio" name="radio" value="teacher"
+              <input className="radio" id="contactChoice1" type="radio" name="radio" value="teacher"
                 checked={selectedOptionTranslate === 'teacher'}
                 onChange={handleRadioChangeTranslate} />
               <p className="label">Преподаватель</p>

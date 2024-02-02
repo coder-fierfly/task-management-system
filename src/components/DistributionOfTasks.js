@@ -65,13 +65,7 @@ function DistributionOfTasks() {
   }
 
   return (
-    <div className='main-conn-wrap tasks-wrap'>
-      <button className="b-button" onClick={handleClickDownloadList}>Загрузить списки</button>
-      <br />
-      <button className="b-button" onClick={handleClickCopy}>Раскопировать "всё-всем"</button>
-      <br />
-      <button className="b-button" onClick={handleClickAppoint}>Назначить выделенное</button>
-      <br />
+    <div className='main-conn-wrap distr-wrap'>
       <div style={{ maxHeight: '200px', maxWidth: '200px', overflowY: 'auto', backgroundColor: 'beige' }}>
         {checkboxes.map((checkbox) => (
           <div key={checkbox.id}>
@@ -86,7 +80,6 @@ function DistributionOfTasks() {
           </div>
         ))}
       </div>
-      <br></br>
       <div style={{ maxHeight: '200px', maxWidth: '200px', overflowY: 'auto', backgroundColor: 'beige' }}>
         {checkboxes1.map((checkbox) => (
           <div key={checkbox.id}>
@@ -100,6 +93,11 @@ function DistributionOfTasks() {
             </label>
           </div>
         ))}
+      </div>
+      <div>
+        <button className="b-button" onClick={handleClickDownloadList}>Загрузить списки</button>
+        <button className="b-button" onClick={handleClickCopy}>Раскопировать "всё-всем"</button>
+        <button className="b-button" onClick={handleClickAppoint}>Назначить выделенное</button>
       </div>
     </div>
   );
