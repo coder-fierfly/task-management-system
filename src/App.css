@@ -591,6 +591,18 @@ input[type="radio"]:focus {
   width: 1.9rem;
 }
 
+.checkbox-list {
+  height: 25rem;
+  width: 15rem;
+  background-color: #ecf3fa;
+  border-radius: 1rem;
+  box-shadow: inset 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
 .center-label {
   align-items: center;
   text-align: center;

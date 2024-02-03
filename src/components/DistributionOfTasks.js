@@ -66,29 +66,31 @@ function DistributionOfTasks() {
 
   return (
     <div className='main-conn-wrap distr-wrap'>
-      <div style={{ maxHeight: '200px', maxWidth: '200px', overflowY: 'auto', backgroundColor: 'beige' }}>
+      <div className="checkbox-list">
         {checkboxes.map((checkbox) => (
           <div key={checkbox.id}>
+            <input
+              className='checkbox'
+              type="checkbox"
+              checked={checkbox.isChecked}
+              onChange={() => handleCheckboxChange(checkbox.id)}
+            />
             <label>
-              <input
-                type="checkbox"
-                checked={checkbox.isChecked}
-                onChange={() => handleCheckboxChange(checkbox.id)}
-              />
               {checkbox.label}
             </label>
           </div>
         ))}
       </div>
-      <div style={{ maxHeight: '200px', maxWidth: '200px', overflowY: 'auto', backgroundColor: 'beige' }}>
+      <div className="checkbox-list">
         {checkboxes1.map((checkbox) => (
           <div key={checkbox.id}>
+            <input
+              className='checkbox'
+              type="checkbox"
+              checked={checkbox.isChecked}
+              onChange={() => handleCheckboxChange1(checkbox.id)}
+            />
             <label>
-              <input
-                type="checkbox"
-                checked={checkbox.isChecked}
-                onChange={() => handleCheckboxChange1(checkbox.id)}
-              />
               {checkbox.label}
             </label>
           </div>
