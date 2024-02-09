@@ -13,28 +13,28 @@ const Plagiarism = ({ isOpen, onClose, listOfStudents }) => {
                     </button>
                 </div>
                 <div className="popup-content">
-                <div className="table-container-wrapper">
-                    <table className="table-container">
-                        <thead>
-                            <tr>
-                                <th>Задание</th>
-                                {listOfStudents.map((student, index) => (
-                                    <th key={index}>{student}</th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {listOfStudents.map((student, rowIndex) => (
-                                <tr key={rowIndex}>
-                                    <td>{student}</td>
-                                    {listOfStudents.map((_, colIndex) => (
-                                        <td key={colIndex + rowIndex}>{rowIndex * listOfStudents.length + colIndex} , ключ {colIndex + rowIndex}</td>
+                    <div>
+                        <table className="table-container">
+                            <thead>
+                                <tr>
+                                    <th>Задание</th>
+                                    {listOfStudents.map((student, index) => (
+                                        <th key={index}>{student}</th>
                                     ))}
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    
+                            </thead>
+                            <tbody>
+                                {listOfStudents.map((student, rowIndex) => (
+                                    <tr key={rowIndex}>
+                                        <td>{student}</td>
+                                        {listOfStudents.map((_, colIndex) => (
+                                            <td key={colIndex + rowIndex}>{rowIndex * listOfStudents.length + colIndex} , ключ {colIndex + rowIndex}</td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+
                     </div>
                 </div>
 

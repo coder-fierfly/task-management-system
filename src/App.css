@@ -55,7 +55,7 @@
 }
 .b-button {
   width: 100%;
-  font-size: 1rem;
+  font-size: 1.1rem;
   text-align: center;
   color: #1c274c;
   transition: background-color 0.3s;
@@ -129,18 +129,27 @@
   align-items: center;
 }
 
+.desk-wrap {
+  grid-gap: 0.7rem;
+  display: grid;
+}
+
 .clear-btn {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  padding-top: 0.2rem;
-  padding-right: 0.2rem;
+  padding-top: 0.3rem;
+  padding-right: 0.3rem;
+}
+
+.new-task-wrapper {
+  width: 30rem;
 }
 
 .popup {
   background: white;
   /* padding: 20px; */
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   position: relative;
 }
@@ -360,6 +369,9 @@ th {
   width: 100%;
   height: 1.9rem;
   border: none;
+  position: relative;
+  display: inline-block;
+  font-size: 1.1rem;
   background: #d9e1e9;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   border-radius: 0.4rem;
@@ -411,7 +423,6 @@ th {
 
 .main-conn-wrap {
   align-items: center;
-  align-items: center;
   justify-content: center;
   display: flex;
   flex: 1;
@@ -458,12 +469,6 @@ th {
 /* Стили для левого столбца */
 .table-container td:first-child {
   background-color: #e6f0f9;
-}
-
-/* Стили для основного контейнера выпадающего списка */
-.dropdown {
-  position: relative;
-  display: inline-block;
 }
 
 /* Стили для кнопки */
@@ -581,6 +586,10 @@ input[type="radio"]:focus {
   margin-right: 2rem;
 }
 
+.table-style {
+  margin-bottom: 2rem;
+}
+
 .little-btn {
   height: 1.9rem;
   width: 1.9rem;
@@ -591,16 +600,57 @@ input[type="radio"]:focus {
   width: 1.9rem;
 }
 
+.little-per-wrap {
+  width: 100%;
+  align-items: flex-start;
+  display: grid;
+  grid-gap: 1rem;
+  margin-bottom: 1rem;
+}
+
 .checkbox-list {
-  height: 25rem;
-  width: 15rem;
+  height: 80%;
+  width: 70%;
   background-color: #ecf3fa;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   box-shadow: inset 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   flex-shrink: 0;
-  overflow-y: auto;
   padding: 0.5rem;
+}
+
+.scroll-checkbox {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.scroll-checkbox::-webkit-scrollbar {
+  width: 8px;
+  height: 10px;
+}
+
+.scroll-checkbox::-webkit-scrollbar-thumb {
+  background-color: #c8ccd0b2;
+  border-radius: 6px;
+  height: 10px;
+}
+
+.scroll-checkbox::-webkit-scrollbar-track {
+  /* background-color: #ffffff; */
+  border-radius: 6px;
+}
+
+.margin-btn {
+  margin-bottom: 2rem;
+  height: 2rem;
+  width: 70%;
+}
+
+.per-acc-wrap {
+  flex-direction: column;
+  justify-content: flex-start;
+  display: flex;
+  max-width: 80%;
 }
 
 .center-label {
@@ -623,6 +673,9 @@ input[type="radio"]:focus {
   justify-items: center;
 }
 
+.btn-row-cont {
+  text-align: center; /* Центрируем содержимое кнопок внутри btn-row-cont */
+}
 .tasks-wrap {
   flex-direction: column;
   width: 70%;
