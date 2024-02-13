@@ -73,9 +73,17 @@
 .b-wrapper {
   display: flex;
   align-items: center;
-  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 3rem;
 }
 
+.b-button.start-check {
+  width: 50%; /* Кнопка занимает половину ширины контейнера */
+}
+
+.b-button:active {
+  background-color: #c1d6eb;
+}
 .flex-line,
 .flex-class {
   display: inline-flex;
@@ -119,6 +127,14 @@
   align-items: center;
 }
 
+.ws-container {
+  grid-template-columns: 1fr !important;
+}
+
+.radio-conn {
+  margin-top: 1rem;
+}
+
 .popup-overlay1 {
   top: 0;
   left: 0;
@@ -134,6 +150,59 @@
   display: grid;
 }
 
+.modal-wrapper {
+  position: relative;
+}
+
+.more-info-cont {
+  height: 100% !important;
+}
+.more-info-container {
+  height: 100%;
+}
+.modal {
+  border-radius: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  height: 20rem;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: white;
+  width: 300px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal.open {
+  display: block; /* Показываем модальное окно, если есть класс "open" */
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.group-62-Dsb {
+  background-color: #cde2f6;
+  border-radius: 4.25rem;
+  box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  height: 3.8rem;
+  cursor: pointer;
+  border: none;
+  width: 3.8rem;
+}
+
+.more-info-xKP {
+  color: #1c274c;
+  text-align: center;
+  font-size: 0.8rem;
+  /* margin-left: auto; */
+}
 .clear-btn {
   background-color: transparent;
   border: none;
@@ -148,7 +217,6 @@
 
 .popup {
   background: white;
-  /* padding: 20px; */
   border-radius: 0.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   position: relative;
@@ -432,7 +500,7 @@ th {
 .start-check {
   width: 50%;
   height: 3.8rem;
-  margin-top: 3rem;
+  margin: 0 auto;
 }
 
 .dowland-wrapper {

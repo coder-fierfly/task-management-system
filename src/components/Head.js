@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 
 function Head() {
-    console.log('Рендер компонента Section1');
     return (
         <div>
             <div>

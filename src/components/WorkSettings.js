@@ -67,7 +67,7 @@ function WorkSettings() {
 
   return (
     <div className='main-conn-wrap'>
-      <div className="form-container">
+      <div className="form-container ws-container">
         <div className='label-center'>
           <input className='checkbox'
             type="checkbox"
@@ -79,38 +79,6 @@ function WorkSettings() {
             Требуется Lint?
           </label>
         </div>
-        <br />
-        <div className='label-center'>
-          <input className='checkbox'
-            type="checkbox"
-            id="limitErrCheckId"
-            checked={checkboxValues.checkboxErrorLimit}
-            onChange={() => handleCheckboxChange('checkboxErrorLimit')}
-          />
-          <label className="label" htmlFor="limitErrCheckId">
-            Порог ошибок (Java,C++)
-          </label>
-        </div>
-        <input className="input-field" type="text" id="limitErrInputId" value={inputValue}
-          onChange={handleInputChange} />
-        <div className='label-center'>
-          <input className='checkbox'
-            type="checkbox"
-            id="ratingCheckId"
-            checked={checkboxValues.checkboxRating}
-            onChange={() => handleCheckboxChange('checkboxRating')}
-          />
-          <label className="label" htmlFor="ratingCheckId">
-            Допустимый рейтинг (Python)
-          </label>
-        </div>
-
-        <DropdownList
-          options={listOptionsRating}
-          selectedValue={listValueRating}
-          onSelectedValueChange={setListRating}
-          id="listRatingId"
-        />
         <p className="label">Как оповещать об ошибках линта:</p>
         <DropdownList
           options={listOptionsErrLint}
@@ -130,9 +98,9 @@ function WorkSettings() {
               Успешно проверенные задачи:
             </label>
           </div>
-          <div className='label-container'>
+          <div className='label-container radio-conn'>
             <div className='form_radio margin-form'><input
-            className='radio'
+              className='radio'
               type="radio"
               name="successfully"
               value="close"
@@ -143,7 +111,7 @@ function WorkSettings() {
                 Close</p></div>
 
             <div className='form_radio'><input
-            className='radio'
+              className='radio'
               type="radio"
               name="successfully"
               value="approve"
@@ -155,15 +123,14 @@ function WorkSettings() {
               </p></div>
           </div>
         </div>
-        <br />
         <div>
           <p className="label">
             На кого переводить задачи?
           </p>
-          <div className='label-container'>
-            <div className='form_radio margin-form'>
+          <div className='label-container radio-conn'>
+            <div className='form_radio margin-form '>
               <input
-              className='radio'
+                className='radio'
                 type="radio"
                 name="translateTasksTo"
                 value="student"

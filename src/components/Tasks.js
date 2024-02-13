@@ -4,7 +4,6 @@ import DropdownList from './DropdownList';
 import CreateNewTask from './CreateNewTask';
 
 function Tasks() {
-  // TODO: сделать input-height другой высоты
   const [inputData, setData] = useState(''); // входные данные
   const [inputExpRes, setExpRes] = useState(''); // ожидаемый результат
   const [listVOfThemes, setListVOfThemes] = useState(''); // тема
