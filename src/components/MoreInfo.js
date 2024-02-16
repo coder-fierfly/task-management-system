@@ -15,7 +15,9 @@ const MoreInfo = ({ isOpen, toggleModal }) => {
                     </button>
                 </div>
                 <div className='more-info-container'>
-                    букавы
+                    <div className='t-a-cont'>
+                    <textarea className='t-a-more'>букавы</textarea>
+                    </div>
                 </div>
             </div>
         </div>

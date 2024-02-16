@@ -4,7 +4,7 @@ import DropdownList from './DropdownList';
 import CreateNewTask from './CreateNewTask';
 
 function Tasks() {
-  const [inputData, setData] = useState(''); // входные данные
+  const [inputData, setData] = useState('asssssssssssss ssssssssssss sssssssssssssss sssssssssss aaaaaaaaaaaaaaaaaaaaaaaaaaaa wwwwwwwwwwwww wwwwwwwwwwwww qqqqqqqqqqqqqqqqqqqqq qwwww asssssssssssss ssssssssssss sssssssssssssss sssssssssss aaaaaaaaaaaaaaaaaaaaaaaaaaaa wwwwwwwwwwwww wwwwwwwwwwwww qqqqqqqqqqqqqqqqqqqqq qwwww asssssssssssss ssssssssssss sssssssssssssss sssssssssss aaaaaaaaaaaaaaaaaaaaaaaaaaaa wwwwwwwwwwwww wwwwwwwwwwwww qqqqqqqqqqqqqqqqqqqqq qwwww asssssssssssss ssssssssssss sssssssssssssss sssssssssss aaaaaaaaaaaaaaaaaaaaaaaaaaaa wwwwwwwwwwwww wwwwwwwwwwwww qqqqqqqqqqqqqqqqqqqqq qwwww'); // входные данные
   const [inputExpRes, setExpRes] = useState(''); // ожидаемый результат
   const [listVOfThemes, setListVOfThemes] = useState(''); // тема
   const [listVOfTasks, setListVOfTasks] = useState(''); // задачи
@@ -136,9 +136,9 @@ function Tasks() {
           <label className="label center-label">Входные данные</label>
           <label className="label center-label">Ожидаемый результат</label>
 
-          <input className="input-field input-height" type="text" value={inputData}
+          <textarea className="input-field input-height" type="textarea" value={inputData}
             onChange={handleInputData} />
-          <input className="input-field input-height" type="text" value={inputExpRes}
+          <textarea className="input-field input-height" type="text" value={inputExpRes}
             onChange={handleInputExpRes} />
 
           <button onClick={handleLeft} className="b-button little-btn right-btn ">{'<'}</button>
