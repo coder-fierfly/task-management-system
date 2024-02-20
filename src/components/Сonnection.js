@@ -20,8 +20,6 @@ function Connection() {
 
     const [isPlagiarismOpen, setPlagiarismOpen] = useState(false);
 
-    const [isMoreInfoOpen, setMoreInfoOpen] = useState(false);
-
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleModal = () => {
@@ -68,23 +66,20 @@ function Connection() {
         }
     }
 
+    //текст ошибки
     const [error, setError] = useState('');
-
 
     // нажатие на кнопку начать проверку
     const handleStartChecking = () => {
         console.log('Кнопка проверки была нажата');
     };
 
-    // нажатие на скачивание
-    const handleDownload = () => {
-        console.log('Кнопка скачать нажата')
-    }
-    // проверка на плагиат
+    // открытие окошка плагиата
     const openPlagiarism = () => {
         setPlagiarismOpen(true);
     };
 
+    //закрытие окошка плагиата
     const closePlagiarism = () => {
         setPlagiarismOpen(false);
     };
@@ -93,7 +88,6 @@ function Connection() {
     const handleCheckTask = () => {
         console.log('Кнопка проверить задачу нажата')
     }
-
 
     return (
         <>
@@ -151,8 +145,8 @@ function Connection() {
                     </div>
                     <div className="b-wrapper">
                         <button onClick={handleStartChecking} className="b-button start-check">Начать проверку</button>
-                        <button onClick={toggleModal} class="b-button group-62-Dsb">
-                            <p class="more-info-xKP">
+                        <button onClick={toggleModal} className="b-button group-62-Dsb">
+                            <p className="more-info-xKP">
                                 MORE
                                 <br />
                                 INFO

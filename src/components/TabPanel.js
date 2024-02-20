@@ -32,17 +32,6 @@ export default function TabPanel() {
     localStorage.removeItem('isLogged');
   };
 
-  // useEffect(() => {
-  //   // Устанавливаем обработчик события перед выгрузкой страницы
-  //   window.addEventListener('beforeunload', handleBeforeUnload);
-  //   return () => {
-  //     window.removeEventListener('beforeunload', handleBeforeUnload);
-  //   };
-  // })
-  // useEffect(() => {
-  //   sessionStorage.setItem('isLogged', isLogged);
-  // }, [isLogged]);
-
   return (
     <>
       <Router>
@@ -67,7 +56,7 @@ export default function TabPanel() {
                 <button
                   className={window.location.pathname === '/con' ? 'conn-btn-active' : 'conn-btn'}
                   onClick={() => handleClick(0)}
-                > <p>Подключение</p>
+                > <p className="per-text" >Подключение</p>
                 </button>
               </Link>
               <Link to='/set'>
@@ -75,7 +64,7 @@ export default function TabPanel() {
                   className={window.location.pathname === '/set' ? 'set-btn-active' : 'set-btn'}
                   onClick={() => handleClick(1)}
                 >
-                  <p>Настройки работы</p>
+                  <p className="per-text">Настройки работы</p>
                 </button>
               </Link>
               <Link to='/tasks'>
@@ -83,7 +72,7 @@ export default function TabPanel() {
                   className={window.location.pathname === '/tasks' ? 'main-tasks-btn-active' : 'main-tasks-btn'}
                   onClick={() => handleClick(2)}
                 >
-                  <p>Задачи</p>
+                  <p className="per-text">Задачи</p>
                 </button>
               </Link>
               <Link to='distribution'>
@@ -91,7 +80,7 @@ export default function TabPanel() {
                   className={window.location.pathname === '/distribution' ? 'main-dist-btn-active' : 'main-dist-btn'}
                   onClick={() => handleClick(3)}
                 >
-                  <p>Распределение задач</p>
+                  <p className="per-text">Распределение задач</p>
                 </button>
               </Link>
             </div>

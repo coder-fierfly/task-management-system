@@ -76,10 +76,10 @@ function WorkSettings() {
             onChange={() => handleCheckboxChange('checkboxLint')}
           />
           <label className="label" htmlFor="lintCheckId">
-            Требуется Lint?
+            Использование статического анализатора кода
           </label>
         </div>
-        <p className="label">Как оповещать об ошибках линта:</p>
+        <p className="label">Способ оповещения об ошибках: </p>
         <DropdownList
           options={listOptionsErrLint}
           selectedValue={listValueErrLint}
@@ -95,7 +95,7 @@ function WorkSettings() {
               onChange={() => handleCheckboxChange('checkboxSuccess')}
             />
             <label className="label" htmlFor="checkboxSuccessId">
-              Успешно проверенные задачи:
+              Статус задачи при успешной проверке
             </label>
           </div>
           <div className='label-container radio-conn'>
@@ -108,7 +108,7 @@ function WorkSettings() {
               onChange={handleRadioChangeSuccess}
             />
               <p className="label">
-                Close</p></div>
+                Закрыто</p></div>
 
             <div className='form_radio'><input
               className='radio'
@@ -119,13 +119,13 @@ function WorkSettings() {
               onChange={handleRadioChangeSuccess}
             />
               <p className="label">
-                Approve
+                Принято
               </p></div>
           </div>
         </div>
         <div>
           <p className="label">
-            На кого переводить задачи?
+            Назначение задачи по результатам проверки
           </p>
           <div className='label-container radio-conn'>
             <div className='form_radio margin-form '>
@@ -137,13 +137,13 @@ function WorkSettings() {
                 checked={selectedOptionTranslate === 'student'}
                 onChange={handleRadioChangeTranslate}
               />
-              <p className="label">Студент</p>
+              <p className="label">На студента</p>
             </div>
             <div className="form_radio">
               <input className="radio" id="contactChoice1" type="radio" name="radio" value="teacher"
                 checked={selectedOptionTranslate === 'teacher'}
                 onChange={handleRadioChangeTranslate} />
-              <p className="label">Преподаватель</p>
+              <p className="label">На преподавателя</p>
             </div>
           </div>
 
