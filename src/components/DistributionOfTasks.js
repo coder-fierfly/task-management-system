@@ -3,7 +3,7 @@ import { DataContext } from '../App';
 import "../App.css";
 function DistributionOfTasks() {
 
-  // TODO: добавить подписи над списками и вынести чек-бокс из списка
+
   const initialCheckboxes = [
     { id: 0, label: 'Выбрать всех', isChecked: false },
     { id: 1, label: 'Option 1', isChecked: false },
@@ -92,7 +92,7 @@ function DistributionOfTasks() {
   return (
     <div className='main-conn-wrap distr-wrap'>
       <div className='checkbox-wrap'>
-        <h3 className='h3-class'>Студенты</h3>
+        <label className='label-class' >Студенты</label>
         <div className='padding-wrap'>
           <input
             className='checkbox'
@@ -123,7 +123,7 @@ function DistributionOfTasks() {
         </div>
       </div>
       <div className='checkbox-wrap'>
-        <h3 className='h3-class'>Задачи</h3>
+        <label className='label-class'>Задачи</label>
         <div className='padding-wrap'>
           <input
             className='checkbox'

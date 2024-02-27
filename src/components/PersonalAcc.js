@@ -9,6 +9,7 @@ const PersonalAcc = ({ handleLogout }) => {
             <h1>Личный кабинет</h1>
             <div className='little-per-wrap'>
                 <p>Имя: </p>
+                <p>Имя в редмайн: </p>
                 <p>API KEY: </p>
             </div>
             <div>

@@ -3,7 +3,7 @@
   grid-template-columns: 1fr 1.5fr;
   column-gap: 4rem;
   row-gap: 1.5rem;
-  margin-bottom: 1.3rem;
+  margin-bottom: 1.5rem;
 }
 
 .check-container {
@@ -16,13 +16,12 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 0.5rem;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .label-container {
   display: flex;
   align-items: center;
-  /* flex-direction: row-reverse; */
 }
 
 .close-btn-container {
@@ -41,26 +40,34 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 999; /* Опционально: задайте z-index, чтобы убедиться, что шапка находится над другими элементами */
+  z-index: 999;
 }
 
 .left-btn {
   margin-left: 0;
 }
+
+.css-1elwnq4-MuiPaper-root-MuiAccordion-root.Mui-expanded {
+  margin: 0 !important;
+}
+.save-btn {
+  width: 40% !important;
+  height: 1.9rem;
+}
 .right-btn {
   margin-left: auto;
 }
 .label {
-  display: flex; /* Добавляем flex-контейнер */
+  display: flex;
   align-items: center;
   text-align: right;
   margin-right: 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #1c274c;
 }
 .b-button {
   width: 100%;
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-align: center;
   color: #1c274c;
   transition: background-color 0.3s;
@@ -77,13 +84,14 @@
 
 .b-wrapper {
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: space-between;
-  margin-top: 3rem;
+  margin-top: 1.5rem;
+  margin-bottom: 3rem;
 }
 
 .b-button.start-check {
-  width: 50%; /* Кнопка занимает половину ширины контейнера */
+  width: 50%;
 }
 
 .b-button:active {
@@ -128,7 +136,6 @@
   height: 100%;
 }
 
-/* TODO: поколдовать с высотой */
 .input-height {
   resize: none !important;
   white-space: pre-wrap;
@@ -167,7 +174,6 @@
 
 .t-a-more::-webkit-scrollbar-track,
 .input-height::-webkit-scrollbar-track {
-  /* background-color: #ffffff; */
   border-radius: 6px;
 }
 
@@ -200,6 +206,14 @@
   background: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
+}
+
+.btn-wrap {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .desk-wrap {
@@ -263,7 +277,6 @@
   color: #1c274c;
   text-align: center;
   font-size: 0.8rem;
-  /* margin-left: auto; */
 }
 .clear-btn {
   background-color: transparent;
@@ -277,6 +290,10 @@
   width: 30rem;
 }
 
+.del-wind {
+  width: 20rem;
+  margin-top: 1rem;
+}
 .popup {
   background: white;
   border-radius: 0.5rem;
@@ -295,7 +312,6 @@
 table {
   width: 100%;
   border-collapse: collapse;
-  /* margin-top: 10px; */
 }
 
 th,
@@ -309,11 +325,10 @@ th {
 }
 
 .scrollable-container {
-  max-height: 300px; /* Set a maximum height for the container */
-  overflow-y: auto; /* Enable vertical scrollbar */
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-/* Optional: Customize scrollbar appearance */
 .scrollable-container::-webkit-scrollbar {
   width: 12px;
 }
@@ -336,7 +351,7 @@ th {
 
 .per-text {
   color: #1c274c;
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-decoration: none !important;
 }
 
@@ -357,7 +372,6 @@ th {
 .group_head_btns .set-btn,
 .group_head_btns .main-tasks-btn,
 .group_head_btns .main-dist-btn {
-  /* background-color: #ffffff; */
   border-radius: 2rem 2rem 0 0;
   box-shadow: 0 0.8rem 0.6rem 0 rgba(0, 0, 0, 0.1);
 }
@@ -407,7 +421,7 @@ th {
 }
 
 .group_head_btns p {
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .per-acc-btn,
@@ -464,7 +478,7 @@ th {
   backdrop-filter: blur(2px);
   border: none;
   color: #1c274c;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .enter-btn-wrapper {
@@ -509,7 +523,7 @@ th {
   border: none;
   position: relative;
   display: inline-block;
-  font-size: 1.2rem;
+  font-size: 1rem;
   background: #d9e1e9;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   border-radius: 0.4rem;
@@ -527,7 +541,18 @@ th {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
 }
 
+.more-info-xKP {
+  text-decoration: underline;
+  color: #2074c4;
+}
+
+.more-info-xKP:hover {
+  color: #1c274c;
+  cursor: pointer;
+}
+
 .checkbox + label {
+  color: #1c274c;
   display: inline-flex;
   align-items: center;
   user-select: none;
@@ -556,7 +581,7 @@ th {
 .tasks-flex-container {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
-  gap: 1.3rem;
+  gap: 1rem;
 }
 
 .main-conn-wrap {
@@ -576,8 +601,8 @@ th {
 .dowland-wrapper {
   display: inline-block;
   position: fixed;
-  bottom: 2rem; /* Отступ снизу */
-  left: 4rem; /* Отступ слева */
+  bottom: 2rem;
+  left: 4rem;
 }
 
 .dowland-btn {
@@ -587,9 +612,13 @@ th {
 
 .table-container {
   border-collapse: collapse;
-  /* border: 1px solid #a2b9d0; */
   border-radius: 0rem 0rem 0.5rem 0.5rem;
   overflow: hidden;
+}
+
+.width-btn {
+  width: 6rem;
+  height: 1.5rem;
 }
 
 .table-container th {
@@ -604,22 +633,19 @@ th {
   background-color: #f6faff;
 }
 
-/* Стили для левого столбца */
 .table-container td:first-child {
   background-color: #e6f0f9;
 }
 
-/* Стили для кнопки */
 .dropbtn {
   background-color: #3498db;
   color: white;
   padding: 10px;
-  font-size: 1.2rem;
+  font-size: 1rem;
   border: none;
   cursor: pointer;
 }
 
-/* Стили для выпадающего контейнера */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -637,18 +663,29 @@ th {
   display: block;
 }
 
-.dropdown option:hover {
-  background-color: #a61515; /* Любой цвет при наведении */
-}
-
-/* Изменение стиля опций при наведении */
 .dropdown-content a:hover {
   background-color: #f1f1f1;
 }
 
-/* Отображение выпадающего списка при нажатии на кнопку */
+option {
+  size: 1;
+}
+
+option:checked,
+option:hover {
+  background-color: lime;
+}
+
+option:hover {
+  box-shadow: 0 0 10px 100px orange inset;
+}
+
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+.error-message {
+  font-size: 0.7rem;
 }
 
 .form-control {
@@ -746,10 +783,12 @@ input[type="radio"]:focus {
   margin-bottom: 1rem;
 }
 
-.h3-class {
+.label-class {
   text-align: center;
   color: #1c274c;
   margin-top: 0;
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
 }
 .padding-wrap {
   padding: 0rem 0rem 0.5rem 0.5rem;
@@ -790,7 +829,6 @@ input[type="radio"]:focus {
 }
 
 .scroll-checkbox::-webkit-scrollbar-track {
-  /* background-color: #ffffff; */
   border-radius: 6px;
 }
 
@@ -828,7 +866,7 @@ input[type="radio"]:focus {
 }
 
 .btn-row-cont {
-  text-align: center; /* Центрируем содержимое кнопок внутри btn-row-cont */
+  text-align: center;
 }
 
 .t-w {
@@ -837,8 +875,8 @@ input[type="radio"]:focus {
 .tasks-wrap {
   flex-direction: column;
   width: 70%;
-  gap: 1rem;
-  height: 90%;
+  gap: 1.5rem;
+  height: 85%;
   align-items: center;
   display: flex;
   justify-content: center;

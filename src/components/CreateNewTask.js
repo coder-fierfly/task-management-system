@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../App.css";
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -6,20 +6,21 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const CreateNewTask = ({ isOpen, onClose }) => {
+const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc }) => {
 
-
-    const [input1, setInput1] = useState('');
-    const [input2, setInput2] = useState('');
-    const [input3, setInput3] = useState('');
     const [inputName, setInputName] = useState('');
     const [inputDesc, setInputDesc] = useState('');
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState('panel1');
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
 
+    // применение переданной информации к полям
+    useEffect(() => {
+        setInputName(passedName);
+        setInputDesc(passedDesc);
+    }, [passedName, passedDesc]);
 
     // изменение в поле названия задачи
     const handleInputName = (event) => {
@@ -31,27 +32,24 @@ const CreateNewTask = ({ isOpen, onClose }) => {
         setInputDesc(event.target.value);
     }
 
-    const handleInputChange = (e, setInput) => {
-        setInput(e.target.value);
-    };
+    const onCloseBtn = () => {
+        setExpanded('panel1');
+        onClose();
+    }
 
-    const handleSubmit = () => {
-        // Ваша логика обработки данных, например, отправка на сервер
-        console.log('Данные отправлены:', input1, input2, input3);
-    };
+    const handleSave = () => {
+        console.log("сохраняем")
+    }
 
+    // если закрыто, то не отображается
     if (!isOpen) {
         return null;
     }
     return (
-
-
-
-
         <div className="popup-overlay">
             <div className="popup">
                 <div className="close-btn-container">
-                    <button className="clear-btn" onClick={onClose}>
+                    <button className="clear-btn" onClick={onCloseBtn}>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg>
                     </button>
                 </div>
@@ -70,11 +68,11 @@ const CreateNewTask = ({ isOpen, onClose }) => {
                                         </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails className='desk-wrap'>
-
                                         <input className="input-field" id="inputNumId" type="text" value={inputName}
                                             onChange={handleInputName} placeholder="Название" />
-                                        <input className="input-field" type="text" value={inputName}
+                                        <input className="input-field" type="text" value={inputDesc}
                                             onChange={handleInputDesc} placeholder="Описание" />
+                                        <button onClick={handleSave} className="b-button right-btn save-btn">Сохранить</button>
 
                                     </AccordionDetails>
                                 </Accordion>
@@ -114,21 +112,6 @@ const CreateNewTask = ({ isOpen, onClose }) => {
         </div>
     );
 };
-
-function CustomAccordion({ summary, children, defaultExpanded }) {
-    return (
-        <Accordion defaultExpanded={defaultExpanded}>
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1-content"
-                id="panel1-header"
-            >
-                {summary}
-            </AccordionSummary>
-            {children}
-        </Accordion>
-    );
-}
 
 export default CreateNewTask;
 

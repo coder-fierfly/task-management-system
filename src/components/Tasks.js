@@ -1,23 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "../App.css"
 import DropdownList from './DropdownList';
 import CreateNewTask from './CreateNewTask';
+import ConfirmationWindow from './ConfirmationWindow';
 
-// TODO: по корзинке плажка "вы уверены что хотите удалить?"
-// TODO: всегда после выбора задачи должен отображаться по дефолту первый тест, если ничего, то добавляем.
-// TODO: по i тоже самое что и по + только передаем туда информацию о задаче
-
-
-
+// TODO: сделать чтобы тесты показывались после выбора задачи
 function Tasks() {
-  const [inputData, setData] = useState('asssssssssssss ssssssssssss sssssssssssssss sssssssssss aaaaaaaaaaaaaaaaaaaaaaaaaaaa wwwwwwwwwwwww wwwwwwwwwwwww qqqqqqqqqqqqqqqqqqqqq qwwww asssssssssssss ssssssssssss sssssssssssssss sssssssssss aaaaaaaaaaaaaaaaaaaaaaaaaaaa wwwwwwwwwwwww wwwwwwwwwwwww qqqqqqqqqqqqqqqqqqqqq qwwww asssssssssssss ssssssssssss sssssssssssssss sssssssssss aaaaaaaaaaaaaaaaaaaaaaaaaaaa wwwwwwwwwwwww wwwwwwwwwwwww qqqqqqqqqqqqqqqqqqqqq qwwww asssssssssssss ssssssssssss sssssssssssssss sssssssssss aaaaaaaaaaaaaaaaaaaaaaaaaaaa wwwwwwwwwwwww wwwwwwwwwwwww qqqqqqqqqqqqqqqqqqqqq qwwww'); // входные данные
-  const [inputExpRes, setExpRes] = useState(''); // ожидаемый результат
+  const listInputData = ['000aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaa ssssssssssssss dddddddddddddddd wwwwwwwwwwwwwww 000aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaa ssssssssssssss dddddddddddddddd wwwww 000aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaa ssssssssssssss dddddddddddddddd wwwww 000aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaa ssssssssssssss dddddddddddddddd wwwww 000aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaa ssssssssssssss dddddddddddddddd wwwww 000aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaa ssssssssssssss dddddddddddddddd wwwww 000aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaa ssssssssssssss dddddddddddddddd wwwww 000aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaa ssssssssssssss dddddddddddddddd wwwww 000aaaaaaaaaaaa aaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaa ssssssssssssss dddddddddddddddd wwwww', '1', '2', '3']; // входные данные
+  const listInputExpRes = ['0001', '11', '21', '31']; // входные данные
   const [listVOfThemes, setListVOfThemes] = useState(''); // тема
   const [listVOfTasks, setListVOfTasks] = useState(''); // задачи
   const [listVOfTests, setListVOfTests] = useState(''); // тесты
   const listOfThemes = ['A2', 'B2', 'AAA2', 'C2']; // список тем
   const listOfTests = ['A11', 'B11', 'C11']; // список тестов
   const listOfTasks = ['A1', 'B1', 'C1']; // список заданий
+  const [nameOfTask, setNameOfTask] = useState('');
+  const [nameConf, setConf] = useState('');
+  const [descOfTask, setDeskOfTask] = useState('');
+  const [currentIndex, setCurrentIndex] = useState(0); // индекс текущего элемента
+  const [inputData, setData] = useState(listInputData[currentIndex]); // входные данные
+  const [inputExpRes, setExpRes] = useState(listInputExpRes[currentIndex]); // ожидаемый результат
 
   // сортировка списков и добавление варианта в начало
   listOfThemes.sort();
@@ -25,12 +27,18 @@ function Tasks() {
   listOfTests.sort();
   listOfThemes.unshift('Все темы');
 
+
   // реагирует на изменение в поле ввода с входными данными
   const handleInputData = (event) => {
     setData(event.target.value);
   };
 
+  const setDel = () => {
+    console.log("удаляяяем")
+  }
+
   const [isCreateNewTaskOpen, setCreateNewTaskOpen] = useState(false);
+  const [isConfOpen, setConfOpen] = useState(false);
 
   // просмотр тестов
   const handleViewTests = () => {
@@ -44,14 +52,18 @@ function Tasks() {
 
   // кнопки лево и право
   const handleLeft = () => {
-    console.log('левый');
+    const newIndex = currentIndex === 0 ? listInputData.length - 1 : currentIndex - 1;
+    setCurrentIndex(newIndex);
   }
   const handleRight = () => {
-    console.log('правый');
+    const newIndex = currentIndex === listInputData.length - 1 ? 0 : currentIndex + 1;
+    setCurrentIndex(newIndex);
   }
 
   // кнопки к задачам, плюс, корзина и информация
   const handlePlusTask = () => {
+    setNameOfTask('');
+    setDeskOfTask('');
     setCreateNewTaskOpen(true);
     console.log("кнопка плюс задача");
   }
@@ -59,10 +71,26 @@ function Tasks() {
     setCreateNewTaskOpen(false);
   };
 
+  const closeConf = () => {
+    setConfOpen(false);
+  };
+
   const handleTrashTask = () => {
+    setConf('задачу');
+    setConfOpen(true);
     console.log("кнопка задачки в мусор")
   }
+
+  const handleTrashTest = () => {
+    setConf('тест');
+    setConfOpen(true);
+    console.log("кнопка теста в мусор")
+  }
+
   const handleInfoTask = () => {
+    setNameOfTask('название');
+    setDeskOfTask('инфа много много');
+    setCreateNewTaskOpen(true);
     console.log("кнопка информации о задачке")
   }
 
@@ -70,9 +98,7 @@ function Tasks() {
   const handlePlusTest = () => {
     console.log("кнопка плюс тест")
   }
-  const handleTrashTest = () => {
-    console.log("кнопка теста в мусор")
-  }
+
 
   const handleYourIter = () => {
     console.log("добавить задачу себе в итерацию")
@@ -80,6 +106,11 @@ function Tasks() {
   const handleSaveNewTask = () => {
     console.log("сохранить новые задачи")
   }
+
+  useEffect(() => {
+    setData(listInputData[currentIndex]);
+    setExpRes(listInputExpRes[currentIndex]);
+  }, [currentIndex]);
 
   return (
     <>
@@ -100,10 +131,15 @@ function Tasks() {
             />
             <div className="flex-line-tasks">
               <button onClick={handleYourIter} className="b-button left-btn">Добавить задачу себе в итерацию</button>
-              <div>  <button onClick={handleInfoTask} className="b-button little-btn "><label className="label center-label info-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" fill="#1C274C" /></svg>
-              </label></button></div>
-              <div> <button onClick={handlePlusTask} className="b-button little-btn"><label className="label center-label">+</label></button></div>
+              <div>
+                {/* кнопка информации */}
+                <button onClick={handleInfoTask} className="b-button little-btn "><label className="label center-label info-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" fill="#1C274C" /></svg>
+                </label></button></div>
+              <div>
+                {/* кнопка плюс */}
+                <button onClick={handlePlusTask} className="b-button little-btn"><label className="label center-label">+</label></button></div>
+              {/* кнопка мусорки */}
               <button onClick={handleTrashTask} className="b-button trash-btn">
                 <div className='flex'>
                   <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg" xlinkHref="http://www.w3.org/1999/xlink">
@@ -158,7 +194,8 @@ function Tasks() {
           </div>
           <button onClick={handleViewTests} className="b-button b-width">Сохранить</button>
 
-          <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} />
+          <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} passedName={nameOfTask} passedDesc={descOfTask} />
+          <ConfirmationWindow isOpen={isConfOpen} onClose={closeConf} delBtn={setDel} whatDel={nameConf} />
         </div>
       </div>
     </>

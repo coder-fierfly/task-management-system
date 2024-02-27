@@ -1,6 +1,9 @@
 import React from 'react';
+import "../App.css"
 
 const DropdownList = ({ options, selectedValue, onSelectedValueChange, outputLabel, id }) => {
+
+
     return (
         <select className="dropdown" id={id} value={selectedValue} onChange={(e) => onSelectedValueChange(e.target.value)}>
             <option value="" disabled hidden>{outputLabel}</option>

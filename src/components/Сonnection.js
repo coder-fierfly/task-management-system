@@ -107,13 +107,15 @@ function Connection() {
                             onSelectedValueChange={setListVOfProjects}
                             id="listOfProjectsId"
                         />
-                        <div className="label-container">  <p className="label">Выберите итерацию:</p></div>
+                        <div className="label-container">  <p className="label">Выберите итерацию:</p>
+                        </div>
                         <DropdownList
                             options={listOfIterations}
                             selectedValue={listVOfIterations}
                             onSelectedValueChange={setListVOfIterations}
                             id="listOfIterId"
                         />
+
                     </div>
                     <div className='check-container'>
                         <div className='label-center'>
@@ -135,6 +137,15 @@ function Connection() {
                         />
                             <label htmlFor="checkboxAllIterId" className="label">Проверять все итерации проекта</label></div>
                     </div>
+
+                    <div className="b-wrapper">
+                        <button onClick={handleStartChecking} className="b-button start-check">Начать проверку</button>
+                        <div onClick={toggleModal} >
+                            <p className="more-info-xKP">
+                                Отчет
+                            </p>
+                        </div>
+                    </div>
                     <div className="form-container">
                         <div>
                             <input className="input-field" id="inputNumId" type="textarea" value={inputNumber}
@@ -142,16 +153,6 @@ function Connection() {
                             {error && <div className="error-message">{error}</div>}</div>
                         <div className='flex-class'>  <button onClick={handleCheckTask} className="b-button b-height">Проверить задачу</button>
                             <button onClick={openPlagiarism} className="b-button b-height">Плагиат</button></div>
-                    </div>
-                    <div className="b-wrapper">
-                        <button onClick={handleStartChecking} className="b-button start-check">Начать проверку</button>
-                        <button onClick={toggleModal} className="b-button group-62-Dsb">
-                            <p className="more-info-xKP">
-                                MORE
-                                <br />
-                                INFO
-                            </p>
-                        </button>
                     </div>
                 </div>
             </div >

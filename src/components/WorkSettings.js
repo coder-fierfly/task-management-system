@@ -47,7 +47,6 @@ function WorkSettings() {
 
   // Эффект для обновления debouncedSettings при изменении настроек
   useEffect(() => {
-    console.log("поменяли")
     setDebouncedSettings({
       selectedOptionSuccess,
       selectedOptionTranslate,
@@ -106,6 +105,7 @@ function WorkSettings() {
               value="close"
               checked={selectedOptionSuccess === 'close'}
               onChange={handleRadioChangeSuccess}
+              disabled={!checkboxValues.checkboxSuccess}
             />
               <p className="label">
                 Закрыто</p></div>
@@ -117,6 +117,7 @@ function WorkSettings() {
               value="approve"
               checked={selectedOptionSuccess === 'approve'}
               onChange={handleRadioChangeSuccess}
+              disabled={!checkboxValues.checkboxSuccess}
             />
               <p className="label">
                 Принято
