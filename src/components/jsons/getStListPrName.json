@@ -1,0 +1,13 @@
+{
+    "studentList": [
+        {"studentName": "Иванов", "studentId": "studentId1"},
+        {"studentName": "Пиванов", "studentId": "studentId2"},
+        {"studentName": "Сидоров", "studentId": "studentId3"}
+    ],
+    "taskList": [
+        {"taskName": "h", "taskId": "taskId1"},
+        {"taskName": "c", "taskId": "taskId2"},
+        {"taskName": "o", "taskId": "taskId3"},
+        {"taskName": "я", "taskId": "taskId4"}
+    ]
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-function Head() {
+const Head = () => {
     return (
         <div>
             <div>

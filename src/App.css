@@ -82,6 +82,13 @@
   background-color: #cde2f6;
 }
 
+.b-button:disabled {
+  color: rgb(170, 170, 170);
+}
+
+.b-button:disabled:active {
+  background-color: #cde2f6;
+}
 .b-wrapper {
   display: flex;
   align-items: end;
@@ -852,6 +859,10 @@ input[type="radio"]:focus {
   pointer-events: none;
 }
 
+.lable:disabled {
+  color: red;
+}
+
 .flex {
   display: flex;
 }
@@ -872,6 +883,7 @@ input[type="radio"]:focus {
 .t-w {
   width: 100%;
 }
+
 .tasks-wrap {
   flex-direction: column;
   width: 70%;

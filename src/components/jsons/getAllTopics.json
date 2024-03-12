@@ -1,0 +1,7 @@
+{
+    "listOfThemes": [
+        {"themeName": "math", "themeId": "1"},
+        {"themeName": "c", "themeId": "2"},
+        {"themeName": "o", "themeId": "3"}
+    ]
+}

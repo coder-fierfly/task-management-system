@@ -1,0 +1,8 @@
+{
+    "projectId": "project1Id",
+    "iteration": "iteration",
+    "check_all_iterations": false,
+    "show_error_response": true,
+    "need_lint": true,
+    "assing_tasks_to_student": true
+}

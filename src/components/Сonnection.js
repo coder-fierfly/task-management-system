@@ -5,7 +5,7 @@ import Plagiarism from './Plagiarism';
 import Dropdown from 'react-bootstrap/Dropdown';
 import MoreInfo from './MoreInfo';
 
-function Connection() {
+const Connection =() => {
     // в личном кабе долджны быть данные из файлика имя, id проекта, человекочитаемое имя, apikey для реда.
     // итерации будут грузится из реда 
     // кнопку начать проверку побольше
@@ -148,7 +148,7 @@ function Connection() {
                     </div>
                     <div className="form-container">
                         <div>
-                            <input className="input-field" id="inputNumId" type="textarea" value={inputNumber}
+                            <input className="input-field" id="inputNumId" type="textarea" defaultValue={inputNumber}
                                 onChange={handleInputNumber} placeholder="Введите номер задачи" />
                             {error && <div className="error-message">{error}</div>}</div>
                         <div className='flex-class'>  <button onClick={handleCheckTask} className="b-button b-height">Проверить задачу</button>

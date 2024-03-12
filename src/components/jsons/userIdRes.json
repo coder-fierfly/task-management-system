@@ -1,0 +1,10 @@
+{
+	"name": "Ivan Petrov",
+	"url": "https://hostedredmine.com",
+	"apikey": "string",
+	"projectsList": [
+		{"projectName":"project1","projectId": "project1Id"},
+		{"projectName":"project2","projectId": "project2Id"},
+		{"projectName":"project3","projectId": "project3Id"}
+		]
+}

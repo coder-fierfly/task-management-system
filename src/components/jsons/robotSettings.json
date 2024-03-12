@@ -1,0 +1,6 @@
+{
+    "show_error_response": true,
+    "check_all_iterations": false,
+    "need_lint": true,
+    "assing_tasks_to_student": true
+}

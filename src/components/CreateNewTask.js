@@ -6,7 +6,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc }) => {
+const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, saveBtn }) => {
 
     const [inputName, setInputName] = useState('');
     const [inputDesc, setInputDesc] = useState('');
@@ -35,10 +35,6 @@ const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc }) => {
     const onCloseBtn = () => {
         setExpanded('panel1');
         onClose();
-    }
-
-    const handleSave = () => {
-        console.log("сохраняем")
     }
 
     // если закрыто, то не отображается
@@ -72,7 +68,7 @@ const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc }) => {
                                             onChange={handleInputName} placeholder="Название" />
                                         <input className="input-field" type="text" value={inputDesc}
                                             onChange={handleInputDesc} placeholder="Описание" />
-                                        <button onClick={handleSave} className="b-button right-btn save-btn">Сохранить</button>
+                                        <button onClick={saveBtn} className="b-button right-btn save-btn">Сохранить</button>
 
                                     </AccordionDetails>
                                 </Accordion>

@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import DropdownList from './DropdownList';
-// import _debounce from 'lodash/debounce';
-// import useDebounce from './useDebounce';
+import React, { useState, useEffect } from "react";
+import DropdownList from "./DropdownList";
 
-function WorkSettings() {
+const WorkSettings = () => {
 
   // State для отслеживания выбранной радиокнопки
-  const [selectedOptionSuccess, setSelectedOptionSuccess] = useState('');
-  const [selectedOptionTranslate, setSelectedOptionTranslate] = useState('teacher');
+  const [selectedOptionSuccess, setSelectedOptionSuccess] = useState("");
+  const [selectedOptionTranslate, setSelectedOptionTranslate] = useState("teacher");
   const [checkboxValues, setCheckboxValues] = useState({
     checkboxLint: false,
     checkboxErrorLimit: false,
@@ -15,10 +13,10 @@ function WorkSettings() {
     checkboxSuccess: false
   });
 
-  const listOptionsRating = ['Option 1', 'Option 2', 'Option 3'];
-  const [listValueRating, setListRating] = useState('');
-  const listOptionsErrLint = ['Option 11', 'Option 22', 'Option 33'];
-  const [listValueErrLint, setListValueErrLint] = useState('');
+  const listOptionsRating = ["Option 1", "Option 2", "Option 3"];
+  const [listValueRating, setListRating] = useState("");
+  const listOptionsErrLint = ["Option 11", "Option 22", "Option 33"];
+  const [listValueErrLint, setListValueErrLint] = useState("");
 
   // Функция для обработки изменений в radio button
   const handleRadioChangeSuccess = (event) => {
@@ -30,13 +28,18 @@ function WorkSettings() {
 
   // смена значений в checkbox
   const handleCheckboxChange = (checkboxName) => {
+    if (checkboxName === "checkboxSuccess" && checkboxValues.checkboxSuccess) {
+      // Сбросить выбранный вариант, если флажок снимается
+      console.log("за")
+      setSelectedOptionSuccess("");
+    }
     setCheckboxValues((prevValues) => ({
       ...prevValues,
       [checkboxName]: !prevValues[checkboxName],
     }));
   };
 
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
     console.log(event.target.value)
@@ -65,14 +68,14 @@ function WorkSettings() {
   ]);
 
   return (
-    <div className='main-conn-wrap'>
+    <div className="main-conn-wrap">
       <div className="form-container ws-container">
-        <div className='label-center'>
-          <input className='checkbox'
+        <div className="label-center">
+          <input className="checkbox"
             type="checkbox"
             id="lintCheckId"
             checked={checkboxValues.checkboxLint}
-            onChange={() => handleCheckboxChange('checkboxLint')}
+            onChange={() => handleCheckboxChange("checkboxLint")}
           />
           <label className="label" htmlFor="lintCheckId">
             Использование статического анализатора кода
@@ -86,65 +89,68 @@ function WorkSettings() {
           id="listOptionsErrId"
         />
         <div>
-          <div className='label-center'>
-            <input className='checkbox'
+          <div className="label-center">
+            <input className="checkbox"
               type="checkbox"
               id="checkboxSuccessId"
               checked={checkboxValues.checkboxSuccess}
-              onChange={() => handleCheckboxChange('checkboxSuccess')}
+              onChange={() => handleCheckboxChange("checkboxSuccess")}
             />
-            <label className="label" htmlFor="checkboxSuccessId">
+            <label className="setSelectedOptionSuccesslabel" htmlFor="checkboxSuccessId">
               Статус задачи при успешной проверке
             </label>
           </div>
-          <div className='label-container radio-conn'>
-            <div className='form_radio margin-form'><input
-              className='radio'
+          <div className="label-container radio-conn">
+            <div className="form_radio margin-form"><input
+              className="radio"
               type="radio"
+              id="radioClose"
               name="successfully"
               value="close"
-              checked={selectedOptionSuccess === 'close'}
+              checked={selectedOptionSuccess === "close"}
               onChange={handleRadioChangeSuccess}
               disabled={!checkboxValues.checkboxSuccess}
             />
-              <p className="label">
-                Закрыто</p></div>
+              <label className="label" htmlFor="radioClose">
+                Закрыто</label></div>
 
-            <div className='form_radio'><input
-              className='radio'
+            <div className="form_radio"><input
+              className="radio"
               type="radio"
               name="successfully"
+              id="radioApprove"
               value="approve"
-              checked={selectedOptionSuccess === 'approve'}
+              checked={selectedOptionSuccess === "approve"}
               onChange={handleRadioChangeSuccess}
               disabled={!checkboxValues.checkboxSuccess}
             />
-              <p className="label">
+              <label className="label" htmlFor="radioApprove">
                 Принято
-              </p></div>
+              </label></div>
           </div>
         </div>
         <div>
-          <p className="label">
+          <label className="label">
             Назначение задачи по результатам проверки
-          </p>
-          <div className='label-container radio-conn'>
-            <div className='form_radio margin-form '>
+          </label>
+          <div className="label-container radio-conn">
+            <div className="form_radio margin-form ">
               <input
-                className='radio'
+                className="radio"
+                id="toStudent"
                 type="radio"
                 name="translateTasksTo"
                 value="student"
-                checked={selectedOptionTranslate === 'student'}
+                checked={selectedOptionTranslate === "student"}
                 onChange={handleRadioChangeTranslate}
               />
-              <p className="label">На студента</p>
+              <label className="label" htmlFor="toStudent">На студента</label>
             </div>
             <div className="form_radio">
-              <input className="radio" id="contactChoice1" type="radio" name="radio" value="teacher"
-                checked={selectedOptionTranslate === 'teacher'}
+              <input className="radio" id="toTeacher" type="radio" name="radio" value="teacher"
+                checked={selectedOptionTranslate === "teacher"}
                 onChange={handleRadioChangeTranslate} />
-              <p className="label">На преподавателя</p>
+              <label className="label" htmlFor="toTeacher">На преподавателя</label>
             </div>
           </div>
 
