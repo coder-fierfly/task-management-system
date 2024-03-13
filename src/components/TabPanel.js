@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Connection from './Сonnection';
-import WorkSettings from './WorkSettings';
-import Tasks from './Tasks';
-import DistributionOfTasks from './DistributionOfTasks';
-import PersonalAcc from './PersonalAcc';
-import Authorization from './Authorization';
+import Connection from './pages/Сonnection';
+import WorkSettings from './pages/WorkSettings';
+import Tasks from './pages/Tasks';
+import DistributionOfTasks from './pages/DistributionOfTasks';
+import PersonalAcc from './pages/PersonalAcc';
+import Authorization from './pages/Authorization';
 import { Navigate } from 'react-router-dom';
 import "../App.css";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
@@ -56,7 +56,7 @@ export default function TabPanel() {
                 <button
                   className={window.location.pathname === '/con' ? 'conn-btn-active' : 'conn-btn'}
                   onClick={() => handleClick(0)}
-                > <p className="per-text" >Подключение</p>
+                > <p className="per-text" >Главная</p>
                 </button>
               </Link>
               <Link to='/set'>

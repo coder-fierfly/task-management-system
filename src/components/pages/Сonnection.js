@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import "../App.css"
-import DropdownList from './DropdownList';
-import Plagiarism from './Plagiarism';
+import '../../App.css';
+import DropdownList from '../mini-elements/DropdownList';
+import Plagiarism from '../mini-elements/Plagiarism';
 import Dropdown from 'react-bootstrap/Dropdown';
-import MoreInfo from './MoreInfo';
+import MoreInfo from '../mini-elements/MoreInfo';
 
-const Connection =() => {
+const Connection = () => {
     // в личном кабе долджны быть данные из файлика имя, id проекта, человекочитаемое имя, apikey для реда.
     // итерации будут грузится из реда 
     // кнопку начать проверку побольше
@@ -92,8 +92,8 @@ const Connection =() => {
     return (
         <>
             <Plagiarism isOpen={isPlagiarismOpen} onClose={closePlagiarism} listOfStudents={listOfStudents} />
-            <div className='main-conn-wrap'>
-                <div>
+            <div className='main-conn-wrap connection-wrap'>
+                <div className='mini-conn-wrap'>
                     <div className="form-container">
                         <div className='label-container'><label htmlFor="urlInputId" className="label">Введите url ресурса:</label></div>
 

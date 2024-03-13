@@ -1,6 +1,5 @@
 import React from 'react';
-import "../App.css";
-
+import '../../App.css';
 
 const MoreInfo = ({ isOpen, toggleModal }) => {
     if (!isOpen) {

@@ -4,8 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-
+// Создание корневого элемента ReactDOM
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// Рендеринг корневого компонента приложения в корневой элемент
 root.render(
   <React.StrictMode>
     <App />

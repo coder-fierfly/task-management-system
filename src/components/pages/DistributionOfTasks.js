@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { DataContext } from '../App';
-import "../App.css";
+import { DataContext } from '../../App';
+import '../../App.css';
 const DistributionOfTasks = () => {
 
 

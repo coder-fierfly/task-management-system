@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import "../App.css"
-import DropdownList from './DropdownList';
-import CreateNewTask from './CreateNewTask';
-import ConfirmationWindow from './ConfirmationWindow';
-import getAllTopics from './jsons/getAllTopics.json'; // Используем require
+import '../../App.css';
+import DropdownList from '../mini-elements/DropdownList';
+import CreateNewTask from '../mini-elements/CreateNewTask';
+import ConfirmationWindow from '../mini-elements/ConfirmationWindow';
+import getAllTopics from '../jsons/getAllTopics.json'; // Используем require
 // TODO: сделать чтобы тесты показывались после выбора задачи
 // TODO: handleSetDel что надо передавать?
 function Tasks() {
@@ -169,7 +169,6 @@ function Tasks() {
                 {/* кнопка плюс */}
                 <button onClick={handlePlusTask} className="b-button little-btn" disabled={!chosenTheme}>+</button></div>
               {/* кнопка мусорки */}
-
               <button onClick={handleTrashTask} className="b-button trash-btn" disabled={!chosenTheme}>
                 <div className='flex'>
                   {chosenTask ?

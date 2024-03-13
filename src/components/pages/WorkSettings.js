@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import DropdownList from "./DropdownList";
+import DropdownList from "../mini-elements/DropdownList";
 
 const WorkSettings = () => {
 
