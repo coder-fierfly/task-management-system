@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DropdownList from "../mini-elements/DropdownList";
 
 const WorkSettings = () => {
@@ -8,13 +8,9 @@ const WorkSettings = () => {
   const [selectedOptionTranslate, setSelectedOptionTranslate] = useState("teacher");
   const [checkboxValues, setCheckboxValues] = useState({
     checkboxLint: false,
-    checkboxErrorLimit: false,
-    checkboxRating: false,
     checkboxSuccess: false
   });
 
-  const listOptionsRating = ["Option 1", "Option 2", "Option 3"];
-  const [listValueRating, setListRating] = useState("");
   const listOptionsErrLint = ["Option 11", "Option 22", "Option 33"];
   const [listValueErrLint, setListValueErrLint] = useState("");
 
@@ -38,34 +34,6 @@ const WorkSettings = () => {
       [checkboxName]: !prevValues[checkboxName],
     }));
   };
-
-  const [inputValue, setInputValue] = useState("");
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-    console.log(event.target.value)
-  };
-
-  // Состояние для хранения измененных настроек
-  const [debouncedSettings, setDebouncedSettings] = useState();
-
-  // Эффект для обновления debouncedSettings при изменении настроек
-  useEffect(() => {
-    setDebouncedSettings({
-      selectedOptionSuccess,
-      selectedOptionTranslate,
-      checkboxValues,
-      listValueRating,
-      listValueErrLint,
-      inputValue,
-    });
-  }, [
-    selectedOptionSuccess,
-    selectedOptionTranslate,
-    checkboxValues,
-    listValueRating,
-    listValueErrLint,
-    inputValue,
-  ]);
 
   return (
     <div className="main-conn-wrap">
@@ -96,7 +64,7 @@ const WorkSettings = () => {
               checked={checkboxValues.checkboxSuccess}
               onChange={() => handleCheckboxChange("checkboxSuccess")}
             />
-            <label className="setSelectedOptionSuccesslabel" htmlFor="checkboxSuccessId">
+            <label htmlFor="checkboxSuccessId">
               Статус задачи при успешной проверке
             </label>
           </div>
@@ -113,7 +81,6 @@ const WorkSettings = () => {
             />
               <label className="label" htmlFor="radioClose">
                 Закрыто</label></div>
-
             <div className="form_radio"><input
               className="radio"
               type="radio"
@@ -153,11 +120,8 @@ const WorkSettings = () => {
               <label className="label" htmlFor="toTeacher">На преподавателя</label>
             </div>
           </div>
-
         </div>
       </div>
-      {/* <div className="b-wrapper"><button onClick={handleSaveSettings} className="b-button">Сохранить настройки</button></div> */}
-
     </div>
   );
 }

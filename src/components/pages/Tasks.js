@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import '../../App.css';
 import DropdownList from '../mini-elements/DropdownList';
@@ -25,9 +26,6 @@ function Tasks() {
   const [currentIndex, setCurrentIndex] = useState(0); // индекс текущего элемента
   const [inputData, setData] = useState(listInputData[currentIndex]); // входные данные
   const [inputExpRes, setExpRes] = useState(listInputExpRes[currentIndex]); // ожидаемый результат
-
-  const [fileContent, setFileContent] = useState("");
-
 
   const themeList = getAllTopics.listOfThemes;
   const themeNamesArray = themeList.map((theme) => theme.themeName);
@@ -133,7 +131,7 @@ function Tasks() {
   useEffect(() => {
     setData(listInputData[currentIndex]);
     setExpRes(listInputExpRes[currentIndex]);
-  }, [currentIndex]);
+  }, [currentIndex, listInputData, listInputExpRes]);
 
   return (
     <>

@@ -10,12 +10,22 @@ import "../App.css";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 export default function TabPanel() {
-  const [activeButton, setActiveButton] = useState(0);
+  const [activeButton, setActiveButton] = useState(() => {
+    // Проверка состояния активной кнопки при первом рендеринге компонента
+    const storedActiveButton = localStorage.getItem('activeButton');
+    return storedActiveButton ? parseInt(storedActiveButton) : 0;
+  });
+
   const [isLogged, setLogged] = useState(() => {
     // Проверка состояния авторизации при первом рендеринге компонента
     const storedIsLogged = localStorage.getItem('isLogged');
     return storedIsLogged === 'true';
   }); //вошел пользователь в аккаунт или нет
+
+  useEffect(() => {
+    // Сохраняем состояние активной кнопки в локальное хранилище при изменении
+    localStorage.setItem('activeButton', activeButton);
+  }, [activeButton]);
 
   const handleClick = (button) => {
     setActiveButton(button);
@@ -24,7 +34,6 @@ export default function TabPanel() {
   const handleLogin = () => {
     setLogged(true);
     localStorage.setItem('isLogged', 'true');
-    console.log(" setLogged(true);")
   };
 
   const handleLogout = () => {

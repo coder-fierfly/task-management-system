@@ -2,14 +2,9 @@ import React, { useState } from 'react';
 import '../../App.css';
 import DropdownList from '../mini-elements/DropdownList';
 import Plagiarism from '../mini-elements/Plagiarism';
-import Dropdown from 'react-bootstrap/Dropdown';
 import MoreInfo from '../mini-elements/MoreInfo';
 
 const Connection = () => {
-    // в личном кабе долджны быть данные из файлика имя, id проекта, человекочитаемое имя, apikey для реда.
-    // итерации будут грузится из реда 
-    // кнопку начать проверку побольше
-
     // выпадающие списки руководитель, проект и итерация
     const [listVOfProjects, setListVOfProjects] = useState('');
     const [listVOfIterations, setListVOfIterations] = useState('');
