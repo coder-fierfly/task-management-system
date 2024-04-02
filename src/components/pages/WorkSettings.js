@@ -3,14 +3,16 @@ import DropdownList from "../mini-elements/DropdownList";
 
 const WorkSettings = () => {
 
-  // State для отслеживания выбранной радиокнопки
+  // радиокнопки
   const [selectedOptionSuccess, setSelectedOptionSuccess] = useState("");
   const [selectedOptionTranslate, setSelectedOptionTranslate] = useState("teacher");
+  // чекбоксы
   const [checkboxValues, setCheckboxValues] = useState({
     checkboxLint: false,
     checkboxSuccess: false
   });
 
+  // список со способами оповещения об ошибках
   const listOptionsErrLint = ["Option 11", "Option 22", "Option 33"];
   const [listValueErrLint, setListValueErrLint] = useState("");
 

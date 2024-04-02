@@ -857,6 +857,12 @@ input[type="radio"]:focus {
   max-width: 80%;
 }
 
+.mess-per-wrap {
+  justify-content: center !important;
+}
+.bold-span {
+  font-weight: bold;
+}
 .center-label {
   align-items: center;
   text-align: center;
