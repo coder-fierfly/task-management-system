@@ -28,7 +28,6 @@ const WorkSettings = () => {
   const handleCheckboxChange = (checkboxName) => {
     if (checkboxName === "checkboxSuccess" && checkboxValues.checkboxSuccess) {
       // Сбросить выбранный вариант, если флажок снимается
-      console.log("за")
       setSelectedOptionSuccess("");
     }
     setCheckboxValues((prevValues) => ({

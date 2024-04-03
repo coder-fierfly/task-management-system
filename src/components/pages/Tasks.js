@@ -7,13 +7,12 @@ import ConfirmationWindow from '../mini-elements/ConfirmationWindow';
 import ErrorWindow from '../mini-elements/ErrorWindow';
 
 // TODO: сделать чтобы тесты показывались после выбора задачи
-// TODO: тесты разобраться
+// TODO: тесты разобратьсяfffffffffffffffff
 function Tasks() {
   const [themeList, setThemeList] = useState([]);
   const [selectedTheme, setSelectedTheme] = useState('');
   const [listTask, setListTask] = useState([]); // список заданий
-  const [listOfTest, setListTest] = useState([]); // список тестов
-  const [currentIndex, setCurrentIndex] = useState(1); // индекс текущего элемента
+  const [listTest, setListTest] = useState([]); // список тестов
   const [inputData, setData] = useState(); // входные данные
   const [inputExpRes, setExpRes] = useState(); // ожидаемый результат
   const [chosenTask, setChosenTask] = useState(''); // задача выбранная
@@ -58,9 +57,6 @@ function Tasks() {
   const [nameConf, setConf] = useState('');
   const [descOfTask, setDeskOfTask] = useState('');
 
-
-
-
   const themeNamesArray = themeList.map((theme) => theme.themeName);
   if (selectedTheme.length === 0) {
     setSelectedTheme(themeNamesArray);
@@ -72,7 +68,7 @@ function Tasks() {
 
   // TODO:
   // сортировка списков и добавление варианта в начало
-  // listOfTestName.sort();
+  // listTestName.sort();
 
   // реагирует на изменение в поле ввода с входными данными
   const handleInputData = (event) => {
@@ -98,12 +94,34 @@ function Tasks() {
 
   // кнопки лево и право
   const handleLeft = () => {
-    const newIndex = currentIndex === 0 ? inputData.length - 1 : currentIndex - 1;
-    setCurrentIndex(newIndex);
+    console.log("handleLeft")
+    const testIdAsNumber = +chosenTest;
+    const currentIndex = listTest.findIndex(test => test.id === testIdAsNumber);
+    if (currentIndex > 0) {
+      handleTestChange(listTest[currentIndex - 1].id);
+      // setChosenTest(listTest[currentIndex - 1].id);
+      // setData(listTest[currentIndex - 1].inputData);
+      // setExpRes(listTest[currentIndex - 1].outPutData);
+      // setChosenTask(listTest[currentIndex - 1].id);
+    }
+
   }
   const handleRight = () => {
-    const newIndex = currentIndex === inputData.length - 1 ? 0 : currentIndex + 1;
-    setCurrentIndex(newIndex);
+
+    console.log("handleRight")
+    console.log(chosenTest)
+    const testIdAsNumber = +chosenTest;
+    const currentIndex = listTest.findIndex(test => test.id === testIdAsNumber);
+    console.log(currentIndex)
+    console.log(listTest.length - 1)
+    console.log(currentIndex < listTest.length - 1)
+    if (currentIndex < listTest.length - 1) {
+      handleTestChange(listTest[currentIndex + 1].id);
+      // setChosenTest(listTest[currentIndex + 1].id);
+      // setData(listTest[currentIndex + 1].inputData);
+      // setExpRes(listTest[currentIndex + 1].outPutData)
+      // setChosenTask(listTest[currentIndex + 1].id);
+    }
   }
 
   // кнопки к задачам, плюс, корзина и информация
@@ -122,7 +140,6 @@ function Tasks() {
   };
 
   const handleThemeChange = (value) => {
-
     var theme = "/api/v1/tasks/getTasks/" + value;
     fetch(theme, {
       method: 'get',
@@ -141,6 +158,7 @@ function Tasks() {
           themeId: task.themeId,
           name: task.folderName
         }));
+        setListTask('');
         setListTask(taskArray);
         setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
       }).catch(error => {
@@ -152,7 +170,6 @@ function Tasks() {
 
   const handleTaskChange = (value) => {
     var test = "/api/v1/tasks/getTests/" + value;
-    console.log("test " + test)
     fetch(test, {
       method: 'get',
       headers: {
@@ -168,6 +185,7 @@ function Tasks() {
           inputData: task.inputData,
           outPutData: task.outPutData
         }));
+        setListTest("")
         setListTest(testArray);
         setChosenTask(value);
         setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
@@ -185,6 +203,20 @@ function Tasks() {
     console.log("кнопка задачки в мусор")
   }
 
+  const handleTestChange = (testId) => {
+    console.log("handleTestChange");
+    setChosenTest(testId);
+    const testIdAsNumber = +testId;
+    const test = listTest.find(test => test.id === testIdAsNumber);
+    if (test) {
+      const { inputData, outPutData } = test;
+      setData(inputData)
+      setExpRes(outPutData)
+    } else {
+      console.error("Test with ID", testIdAsNumber, "not found.");
+    }
+  }
+
   const handleTrashTest = () => {
     setConf('тест');
     setConfOpen(true);
@@ -193,6 +225,7 @@ function Tasks() {
 
   const handleInfoTask = () => {
     const foundTask = listTask.find(task => task.id === chosenTask);
+    setData();
     setNameOfTask(foundTask.taskSubject);
     setDeskOfTask(foundTask.taskDescription);
     setCreateNewTaskOpen(true);
@@ -210,15 +243,6 @@ function Tasks() {
   const handleSaveNew = () => {
     console.log("сохранить")
   }
-
-  useEffect(() => {
-    console.log("sss " + listOfTest.length)
-    if (listOfTest.length > 0) {
-      console.log("asdasd")
-      setData(inputData[currentIndex]);
-      setExpRes(inputExpRes[currentIndex]);
-    }
-  }, [currentIndex, inputData, inputExpRes]);
 
   return (
     <>
@@ -266,9 +290,10 @@ function Tasks() {
 
               </div>
               <DropdownList
-                options={listOfTest}
+                key={chosenTest}
+                options={listTest}
                 selectedValue={chosenTest}
-                onSelectedValueChange={setChosenTest}
+                onSelectedValueChange={handleTestChange}
                 outputLabel="Выберите тест"
                 disabled={!chosenTask} // тесты будут недоступны, если задача не выбрана
               />

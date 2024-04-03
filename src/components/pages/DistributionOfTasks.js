@@ -133,10 +133,6 @@ const DistributionOfTasks = () => {
     console.log("загрузить")
   };
 
-  const handleClickCopy = () => {
-    console.log("раскопировать")
-  }
-
   const handleClickAppoint = () => {
     console.log("назначить выделенное")
   }
