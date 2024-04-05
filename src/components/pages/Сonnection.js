@@ -4,6 +4,10 @@ import DropdownList from '../mini-elements/DropdownList';
 import Plagiarism from '../mini-elements/Plagiarism';
 import MoreInfo from '../mini-elements/MoreInfo';
 import ErrorWindow from '../mini-elements/ErrorWindow';
+import { fetchConRobotSettings } from '../requestsToTheBack/ReqConWorkSettings';
+import { fetchPlagiarism } from '../requestsToTheBack/ReqPlagiarismSt';
+
+
 
 const Connection = () => {
     // выпадающие списки руководитель, проект и итерация
@@ -18,6 +22,21 @@ const Connection = () => {
     const [message, setMessage] = useState('Loading...')
 
     const [listOfProjects, setListOfProjects] = useState([]);
+
+    // значения checkbox
+    const [checkboxValues, setMCheckboxValues] = useState({
+        checkboxShowAns: false,
+        checkboxAllIterations: false,
+    });
+
+    const [listOfStudents, setListOfStudents] = useState('');
+
+
+
+    useEffect(() => {
+        setMessage('Loading...');
+        fetchConRobotSettings(setMCheckboxValues, setLoading, setMessage);
+    }, []);
 
     useEffect(() => {
         fetch('/api/v1/settings/42', {
@@ -35,7 +54,6 @@ const Connection = () => {
                 return response.json();
             })
             .then(data => {
-                console.log(data)
                 setInputUrl(data.url);
                 const transformedData = data.projectsList.map(project => ({
                     name: project.projectName,
@@ -99,19 +117,12 @@ const Connection = () => {
 
     // TODO: список сделать правильные опции чтобы они были в списках
     // варианты в выпадающем списке
-    const listOfStudents = ['A', 'B', 'C'];
 
-
-    // значения checkbox
-    const [checkboxValues, setCheckboxValues] = useState({
-        checkboxShowAns: false,
-        checkboxAllIterations: false,
-    });
 
     // сменяет значение в checkbox
     const handleCheckboxChange = (checkboxName) => {
         console.log("handleCheckboxChange");
-        setCheckboxValues((prevValues) => ({
+        setMCheckboxValues((prevValues) => ({
             ...prevValues,
             [checkboxName]: !prevValues[checkboxName],
         }));
@@ -125,13 +136,14 @@ const Connection = () => {
     // изменение в поле ввода номера задачи
     const handleInputNumber = (event) => {
         const value = event.target.value;
-        setInputNumber(value);
         // Проверка на правильность ввода числа
         if (!/^\d+$/.test(value)) {
             setError('Пожалуйста, введите корректное число');
         } else {
+            setInputNumber(value);
             setError('');
         }
+
     }
 
     //текст ошибки
@@ -144,7 +156,11 @@ const Connection = () => {
 
     // открытие окошка плагиата
     const openPlagiarism = () => {
+        fetchPlagiarism({ inputNumber, setListOfStudents, setLoading, setMessage })
+        // if (loading) {
+        setTimeout(10)
         setPlagiarismOpen(true);
+        // }
     };
 
     //закрытие окошка плагиата

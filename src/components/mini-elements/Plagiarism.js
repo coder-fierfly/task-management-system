@@ -3,6 +3,8 @@ import '../../App.css';
 
 const Plagiarism = ({ isOpen, onClose, listOfStudents }) => {
     if (!isOpen) return null;
+    console.log("listOfStudents", JSON.stringify(listOfStudents));
+    const arrayOfStudents = Object.entries(listOfStudents).map(([student, values]) => ({ student, values }));
 
     return (
         <div className="popup-overlay">
@@ -18,26 +20,26 @@ const Plagiarism = ({ isOpen, onClose, listOfStudents }) => {
                             <thead>
                                 <tr>
                                     <th>Задание</th>
-                                    {listOfStudents.map((student, index) => (
-                                        <th key={index}>{student}</th>
+                                    {arrayOfStudents.map(studentData => (
+                                        <th key={studentData.student}>{studentData.student}</th>
                                     ))}
                                 </tr>
                             </thead>
                             <tbody>
-                                {listOfStudents.map((student, rowIndex) => (
-                                    <tr key={rowIndex}>
-                                        <td>{student}</td>
-                                        {listOfStudents.map((_, colIndex) => (
-                                            <td key={colIndex + rowIndex}>{rowIndex * listOfStudents.length + colIndex} , ключ {colIndex + rowIndex}</td>
+                                {arrayOfStudents.map(studentData => (
+                                    <tr key={studentData.student}>
+                                        <td>{studentData.student}</td>
+                                        {arrayOfStudents.map(otherStudentData => (
+                                            <td key={otherStudentData.student}>
+                                                {studentData.values.find(({ userName }) => userName === otherStudentData.student)?.percent || '-'}
+                                            </td>
                                         ))}
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
-
                     </div>
                 </div>
-
             </div>
         </div>
     );

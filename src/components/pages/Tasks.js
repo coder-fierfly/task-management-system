@@ -224,6 +224,7 @@ function Tasks() {
   }
 
   const handleInfoTask = () => {
+    console.log("chosenTask " + chosenTask)
     const foundTask = listTask.find(task => task.id === chosenTask);
     setData();
     setNameOfTask(foundTask.taskSubject);
