@@ -16,9 +16,10 @@ export const fetchRobotSettings = (setCheckboxValues, setSelectedOptionTranslate
       return response.json();
     })
     .then(data => {
-      const { needLint, assignTasksToStudent } = data;
+      const { needLint, assignTasksToStudent, lintInformation } = data;
       setCheckboxValues({
         checkboxLint: needLint,
+        lintInformation: lintInformation,
         checkboxSuccess: false // Уточните, откуда берется значение для этого чекбокса
       });
 
