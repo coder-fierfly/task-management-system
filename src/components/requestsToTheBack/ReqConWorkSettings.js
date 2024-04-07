@@ -20,7 +20,7 @@ export const fetchConRobotSettings = (setMCheckboxVal, setSelectedOptionTranslat
                 checkboxShowAns: showErrorResponse,
                 checkboxAllIterations: checkAllIterations
             })
-            setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
+            // Устанавливаем состояние загрузки в false после получения данных
         })
         .catch(error => {
             if (error.name === 'AbortError') {

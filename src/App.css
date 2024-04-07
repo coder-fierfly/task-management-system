@@ -844,6 +844,10 @@ input[type="radio"]:focus {
   border-radius: 6px;
 }
 
+.red-cell {
+  color: red;
+}
+
 .margin-btn {
   margin-bottom: 2rem;
   height: 2rem;

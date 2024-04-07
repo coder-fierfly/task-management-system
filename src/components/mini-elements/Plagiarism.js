@@ -2,6 +2,7 @@ import React from 'react';
 import '../../App.css';
 
 const Plagiarism = ({ isOpen, onClose, listOfStudents }) => {
+    //TODO: сделать красным если меньше 0.2
     if (!isOpen) return null;
     console.log("listOfStudents", JSON.stringify(listOfStudents));
     const arrayOfStudents = Object.entries(listOfStudents).map(([student, values]) => ({ student, values }));
@@ -30,7 +31,12 @@ const Plagiarism = ({ isOpen, onClose, listOfStudents }) => {
                                     <tr key={studentData.student}>
                                         <td>{studentData.student}</td>
                                         {arrayOfStudents.map(otherStudentData => (
-                                            <td key={otherStudentData.student}>
+                                            <td
+                                                key={otherStudentData.student}
+                                                style={{
+                                                    backgroundColor: studentData.values.find(({ userName }) => userName === otherStudentData.student)?.percent <= 0.2 ? '#F4CCCC' : 'inherit'
+                                                }}
+                                            >
                                                 {studentData.values.find(({ userName }) => userName === otherStudentData.student)?.percent || '-'}
                                             </td>
                                         ))}

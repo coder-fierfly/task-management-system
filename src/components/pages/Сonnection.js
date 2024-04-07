@@ -6,7 +6,7 @@ import MoreInfo from '../mini-elements/MoreInfo';
 import ErrorWindow from '../mini-elements/ErrorWindow';
 import { fetchConRobotSettings } from '../requestsToTheBack/ReqConWorkSettings';
 import { fetchPlagiarism } from '../requestsToTheBack/ReqPlagiarismSt';
-
+import { fetchPersonalData } from '../requestsToTheBack/ReqPersonalData';
 
 
 const Connection = () => {
@@ -16,7 +16,6 @@ const Connection = () => {
     const [listOfIterations, setListOfIterations] = useState('');
     // здесь хранится введенный url
     const [inputUrl, setInputUrl] = useState('');
-
 
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('Loading...')
@@ -31,28 +30,10 @@ const Connection = () => {
 
     const [listOfStudents, setListOfStudents] = useState('');
 
-
-
     useEffect(() => {
         setMessage('Loading...');
         fetchConRobotSettings(setMCheckboxValues, setLoading, setMessage);
-    }, []);
-
-    useEffect(() => {
-        fetch('/api/v1/settings/42', {
-            method: 'get',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                if (!response.ok) {
-                    setMessage('Ошибка сервера: ' + response.status);
-                    throw new Error('Ошибка сервера: ' + response.status);
-                }
-                return response.json();
-            })
+        fetchPersonalData()
             .then(data => {
                 setInputUrl(data.url);
                 const transformedData = data.projectsList.map(project => ({
@@ -60,17 +41,15 @@ const Connection = () => {
                     id: project.projectId
                 }));
                 setListOfProjects(transformedData);
-                setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
+                setLoading(false);
             })
             .catch(error => {
-                if (error.name === 'AbortError') {
-                    setMessage('Время ожидания запроса истекло');
-                } else {
-                    setMessage(error.message);
-                    console.error('Ошибка в запросе к серверу:', error.message);
-                }
+                setMessage(error.message);
+                console.error('Ошибка в запросе к серверу:', error.message);
             });
+        setLoading(false);
     }, []);
+
 
     const handleProjectChange = (value) => {
         setLoading(true);
@@ -115,10 +94,6 @@ const Connection = () => {
         setIsOpen(!isOpen);
     };
 
-    // TODO: список сделать правильные опции чтобы они были в списках
-    // варианты в выпадающем списке
-
-
     // сменяет значение в checkbox
     const handleCheckboxChange = (checkboxName) => {
         console.log("handleCheckboxChange");
@@ -158,8 +133,13 @@ const Connection = () => {
     const openPlagiarism = () => {
         fetchPlagiarism({ inputNumber, setListOfStudents, setLoading, setMessage })
         // if (loading) {
-        setTimeout(10)
-        setPlagiarismOpen(true);
+        // setTimeout(10)
+        console.log("!!! " + !listOfStudents)
+        if (listOfStudents) {
+            setPlagiarismOpen(true);
+        } else {
+            setError("Нет такого задания")
+        }
         // }
     };
 
@@ -190,7 +170,6 @@ const Connection = () => {
                                 options={listOfProjects}
                                 selectedValue={chosenProject}
                                 onSelectedValueChange={handleProjectChange}
-                            // id="listOfProjectsId"
                             />
 
                             <div className="label-container">  <p className="label">Выберите итерацию:</p>
