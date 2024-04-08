@@ -1,5 +1,5 @@
 
-export const fetchConRobotSettings = (setMCheckboxVal, setSelectedOptionTranslate, setLoading, setMessage) => {
+export const fetchConRobotSettings = (setMCheckboxVal, setSelectedOptionTranslate, setMessage) => {
     fetch('/api/v1/robotSettings', {
         method: 'get',
         headers: {
@@ -15,10 +15,12 @@ export const fetchConRobotSettings = (setMCheckboxVal, setSelectedOptionTranslat
             return response.json();
         })
         .then(data => {
-            const { showErrorResponse, checkAllIterations } = data;
+            const { showErrorResponse, checkAllIterations, needLint, assignTasksToStudent } = data;
             setMCheckboxVal({
                 checkboxShowAns: showErrorResponse,
-                checkboxAllIterations: checkAllIterations
+                checkboxAllIterations: checkAllIterations,
+                needLint: needLint,
+                assignTasksToStudent: assignTasksToStudent
             })
             // Устанавливаем состояние загрузки в false после получения данных
         })

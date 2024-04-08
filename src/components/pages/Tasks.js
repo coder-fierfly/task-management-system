@@ -5,6 +5,7 @@ import DropdownList from '../mini-elements/DropdownList';
 import CreateNewTask from '../mini-elements/CreateNewTask';
 import ConfirmationWindow from '../mini-elements/ConfirmationWindow';
 import ErrorWindow from '../mini-elements/ErrorWindow';
+import { getAllTopics, getTasks, getTests, handleIter } from '../requestsToTheBack/ReqTasks';
 
 // TODO: сделать чтобы тесты показывались после выбора задачи
 // TODO: тесты разобратьсяfffffffffffffffff
@@ -17,40 +18,12 @@ function Tasks() {
   const [inputExpRes, setExpRes] = useState(); // ожидаемый результат
   const [chosenTask, setChosenTask] = useState(''); // задача выбранная
   const [chosenTest, setChosenTest] = useState(''); // тест выбранный
-  const [chosenTheme, setChosenTheme] = useState(''); // тема выбранная  console.log(chosenTheme + " темка имяя")
+  const [chosenTheme, setChosenTheme] = useState(''); // тема выбранная 
   const [message, setMessage] = useState('Loading...')
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    fetch('/api/v1/tasks/getAllTopics', {
-      method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => {
-        if (!response.ok) {
-          setMessage('Ошибка сервера: ' + response.status);
-          throw new Error('Ошибка сервера: ' + response.status);
-        }
-        return response.json();
-      })
-      .then(data => {
-        const transformedData = data.themeListList.map(theme => ({
-          name: theme.themeName,
-          id: theme.themeId
-        }));
-        setThemeList(transformedData);
-        setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
-      })
-      .catch(error => {
-        if (error.name === 'AbortError') {
-          setMessage('Время ожидания запроса истекло');
-        } else {
-          setMessage(error.message);
-          console.error('Ошибка в запросе к серверу:', error.message);
-        }
-      });
+    getAllTopics(setThemeList, setLoading, setMessage);
+    setLoading(false);
   }, []);
 
   const [nameOfTask, setNameOfTask] = useState('');
@@ -99,10 +72,6 @@ function Tasks() {
     const currentIndex = listTest.findIndex(test => test.id === testIdAsNumber);
     if (currentIndex > 0) {
       handleTestChange(listTest[currentIndex - 1].id);
-      // setChosenTest(listTest[currentIndex - 1].id);
-      // setData(listTest[currentIndex - 1].inputData);
-      // setExpRes(listTest[currentIndex - 1].outPutData);
-      // setChosenTask(listTest[currentIndex - 1].id);
     }
 
   }
@@ -117,10 +86,6 @@ function Tasks() {
     console.log(currentIndex < listTest.length - 1)
     if (currentIndex < listTest.length - 1) {
       handleTestChange(listTest[currentIndex + 1].id);
-      // setChosenTest(listTest[currentIndex + 1].id);
-      // setData(listTest[currentIndex + 1].inputData);
-      // setExpRes(listTest[currentIndex + 1].outPutData)
-      // setChosenTask(listTest[currentIndex + 1].id);
     }
   }
 
@@ -140,60 +105,14 @@ function Tasks() {
   };
 
   const handleThemeChange = (value) => {
-    var theme = "/api/v1/tasks/getTasks/" + value;
-    fetch(theme, {
-      method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        setChosenTheme(value);
-        const taskArray = data.tasksInTheme.map(task => ({
-          id: task.taskId,
-          taskSubject: task.taskSubject,
-          taskDescription: task.taskDescription,
-          themeId: task.themeId,
-          name: task.folderName
-        }));
-        setListTask('');
-        setListTask(taskArray);
-        setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
-      }).catch(error => {
-        setListTask('');
-        console.error('Нет таких данных:', error);
-      });;
+    getTasks(value, setChosenTheme, setListTask, setMessage);
     setChosenTask(''); // сброс выбранной задачи при изменении темы
+    setLoading(false);
   }
 
   const handleTaskChange = (value) => {
-    var test = "/api/v1/tasks/getTests/" + value;
-    fetch(test, {
-      method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        const testArray = data.taskTests.map(task => ({
-          id: task.testId,
-          name: task.testId,
-          inputData: task.inputData,
-          outPutData: task.outPutData
-        }));
-        setListTest("")
-        setListTest(testArray);
-        setChosenTask(value);
-        setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
-      }).catch(error => {
-        setListTest("")
-        console.error('Error fetching data:', error);
-      });;
-
+    getTests(value, setListTest, setChosenTask, setMessage);
+    setLoading(false);
     setChosenTest(''); // сброс выбранного теста при изменении задачи
   }
 
@@ -240,8 +159,68 @@ function Tasks() {
 
   const handleYourIter = () => {
     console.log("добавить задачу себе в итерацию")
+    fetch('/api/v1/tasks/addIssue', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "taskId": chosenTask,
+        // TODO: IterationId найти
+        "iterationId": "IterationId"
+      })
+    })
+      .then(response => {
+        console.log("response.status ", response.status);
+        if (!response.ok) {
+          throw new Error('Ошибка сети: ' + response.status);
+        }
+      })
+      .catch(error => {
+        setMessage('Ошибка при выполнении запроса:', error);
+      });
+    handleIter(chosenTask, setMessage);
   }
   const handleSaveNew = () => {
+    console.log("!!!");
+    console.log(themeList.find(item => item.id === chosenTheme).name)
+    console.log(chosenTask)
+    console.log(descOfTask)
+
+    console.log(chosenTheme)
+
+    console.log("tg", themeList)
+    fetch('/api/v1/tasks/addOrUpdateTask', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        taskSubject: themeList.find(item => item.id === chosenTheme).name,
+        taskId: chosenTask,
+        taskDescription: descOfTask,
+        themeId: chosenTheme,
+        // TODO:  folderName: "string", config: "string"
+        folderName: "string",
+        config: "string"
+      })
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Ошибка сервера: ' + response.status);
+        }
+        return response.json();
+      })
+      .then(responseData => {
+        // обработка ответа от сервера при необходимости
+      })
+      .catch(error => {
+        console.error('Произошла ошибка:', error);
+      });
+
+
     console.log("сохранить")
   }
 

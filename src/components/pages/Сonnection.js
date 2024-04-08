@@ -10,25 +10,30 @@ import { fetchPersonalData } from '../requestsToTheBack/ReqPersonalData';
 
 
 const Connection = () => {
-    // выпадающие списки руководитель, проект и итерация
-    const [chosenProject, setChosenProject] = useState('');
-    const [chosenIterations, setChosenIterations] = useState('');
-    const [listOfIterations, setListOfIterations] = useState('');
+    // TODO: отчет сделать 
+    const [chosenProject, setChosenProject] = useState(''); // выбранный проект
+    const [chosenIteration, setChosenIteration] = useState(''); // выбранная итерация
+    // выпадающие списки проект и итерация
+    const [listOfIterations, setListOfIterations] = useState([]);
+    const [listOfProjects, setListOfProjects] = useState([]);
     // здесь хранится введенный url
     const [inputUrl, setInputUrl] = useState('');
-
-    const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState('Loading...')
-
-    const [listOfProjects, setListOfProjects] = useState([]);
+    const [loading, setLoading] = useState(true);  // загрузка
+    const [message, setMessage] = useState('Loading...'); // сообщение в окне загрузки
 
     // значения checkbox
     const [checkboxValues, setMCheckboxValues] = useState({
         checkboxShowAns: false,
         checkboxAllIterations: false,
+        needLint: false,
+        assignTasksToStudent: false
     });
 
-    const [listOfStudents, setListOfStudents] = useState('');
+
+    const [listOfStudents, setListOfStudents] = useState('');     // список студентов
+    const [inputNumber, setInputNumber] = useState('');    // номер задачи
+    const [isPlagiarismOpen, setPlagiarismOpen] = useState(false);    // открытие окна плагиата
+    const [isOpen, setIsOpen] = useState(false);    // кнопка закрытия окошек
 
     useEffect(() => {
         setMessage('Loading...');
@@ -74,21 +79,12 @@ const Connection = () => {
                 setListOfIterations('');
                 console.error('Нет таких данных:', error);
             });;
-        setChosenIterations(''); // сброс выбранной задачи при изменении темы
+        setChosenIteration(''); // сброс выбранной задачи при изменении темы
     }
 
     const handleIterationsChange = (id) => {
-        setChosenIterations(id)
+        setChosenIteration(id)
     }
-
-
-
-
-    const [inputNumber, setInputNumber] = useState('');
-
-    const [isPlagiarismOpen, setPlagiarismOpen] = useState(false);
-
-    const [isOpen, setIsOpen] = useState(false);
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
@@ -127,6 +123,35 @@ const Connection = () => {
     // нажатие на кнопку начать проверку
     const handleStartChecking = () => {
         console.log('Кнопка проверки была нажата');
+        fetch('/api/v1/issueChecker/startFullCheck', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                projectId: chosenProject,
+                iteration: chosenIteration,
+                settings: {
+                    checkAllIterations: checkboxValues.checkboxAllIterations,
+                    showErrorResponse: checkboxValues.checkboxShowAns,
+                    needLint: checkboxValues.needLint,
+                    assignTasksToStudent: checkboxValues.assignTasksToStudent // Обратите внимание на правильное написание свойства
+                }
+            })
+        })
+            .then(response => {
+                console.log("response.status ", response.status);
+                if (!response.ok) {
+                    // Обработка ошибок, если необходимо
+                    throw new Error('Ошибка сети: ' + response.status);
+                }
+                // Обрабатывайте ответ, если необходимо
+            })
+            .catch(error => {
+                // Обработка ошибок
+                console.error('Ошибка при выполнении запроса:', error);
+            });
     };
 
     // открытие окошка плагиата
@@ -151,6 +176,36 @@ const Connection = () => {
     // нажата проверить задачу
     const handleCheckTask = () => {
         console.log('Кнопка проверить задачу нажата')
+        fetch('/api/v1/issueChecker/startCheckSingleIssue', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "taskId": inputNumber,
+                "projectId": chosenProject,
+                "settings":
+                {
+                    "checkAllIterations": checkboxValues.checkboxAllIterations,
+                    "showErrorResponse": checkboxValues.checkboxShowAns,
+                    "needLint": checkboxValues.needLint,
+                    "assingTasksToStudent": checkboxValues.assignTasksToStudent
+                }
+            })
+        })
+            .then(response => {
+                console.log("response.status ", response.status);
+                if (!response.ok) {
+                    // Обработка ошибок, если необходимо
+                    throw new Error('Ошибка сети: ' + response.status);
+                }
+                // Обрабатывайте ответ, если необходимо
+            })
+            .catch(error => {
+                // Обработка ошибок
+                console.error('Ошибка при выполнении запроса:', error);
+            });
     }
 
     return (
@@ -176,7 +231,7 @@ const Connection = () => {
                             </div>
                             <DropdownList
                                 options={listOfIterations}
-                                selectedValue={chosenIterations}
+                                selectedValue={chosenIteration}
                                 onSelectedValueChange={handleIterationsChange}
                                 id="listOfIterId"
                                 disabled={!chosenProject}

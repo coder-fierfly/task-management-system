@@ -20,11 +20,10 @@ export const fetchRobotSettings = (setCheckboxValues, setSelectedOptionTranslate
       setCheckboxValues({
         checkboxLint: needLint,
         lintInformation: lintInformation,
-        checkboxSuccess: false // Уточните, откуда берется значение для этого чекбокса
+        checkboxSuccess: false
       });
-
       setSelectedOptionTranslate(assignTasksToStudent ? "student" : "teacher");
-      setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
+      setLoading(false);
     })
     .catch(error => {
       if (error.name === 'AbortError') {

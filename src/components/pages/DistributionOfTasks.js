@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import '../../App.css';
 import ErrorWindow from '../mini-elements/ErrorWindow';
 import { fetchStudentsList, fetchTasksList } from '../requestsToTheBack/ReqDistTask';
+// import fetch from 'node-fetch';
 
 const DistributionOfTasks = () => {
 
   const [studentList, setStudentList] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [message, setMessage] = useState('Loading...')
   const [loading, setLoading] = useState(true);
-  const [tasks, setTasks] = useState([]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,9 +68,67 @@ const DistributionOfTasks = () => {
     console.log("загрузить")
   };
 
-  const handleClickAppoint = () => {
+  const dataToSend = {
+    tasksList: [
+      { taskId: '12345', taskSubject: 'Шашки' }
+    ],
+    studentList: [
+      { studentId: '123457', studentName: 'Пупкин Василий' }
+    ]
+  };
+
+  const handleClickAppoint = async () => {
     console.log("назначить выделенное")
-  }
+    // fetch(`/api/v1/issueChecker/assignTasksToStudents/1`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     "tasksList": [{ "taskId": "12345", "taskSubject": "Шашки" }],
+    //     "studentList": [{ "studentId": "123457", "studentName": "Пупкин Василий" }]
+    //   })
+    // })
+    //   .then(response => {
+    //     if (!response.ok) {
+    //       setMessage('Ошибка сервера: ' + response.status);
+    //       throw new Error('Ошибка сервера: ' + response.status);
+    //     }
+    //     // Обрабатывайте ответ, если необходимо
+    //   })
+    //   .catch(error => {
+    //     if (error.name === 'AbortError') {
+    //       setMessage('Время ожидания запроса истекло');
+    //     } else {
+    //       setMessage(error.message);
+    //       console.error('Ошибка в запросе к серверу:', error.message);
+    //     }
+    //   });
+
+    fetch(`/api/v1/issueChecker/assignTasksToStudents/1`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataToSend)
+    })
+      .then(response => {
+        console.log(response)
+        if (!response.ok) {
+          throw new Error(`Ошибка сервера: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Обработайте полученные данные
+        console.log('Ответ от сервера:', data);
+      })
+      .catch(error => {
+        console.error('Ошибка при выполнении запроса:', error.message);
+      });
+  };
 
   return (
     <div className='main-conn-wrap distr-wrap'>
@@ -148,6 +208,7 @@ const DistributionOfTasks = () => {
           <button className="b-button margin-btn" onClick={handleClickDownloadList}>Обновить списки</button>
           <button className="b-button margin-btn" onClick={handleClickAppoint}>Назначить выделенное</button>
         </div>
+        {/* {response && <p>Ответ от сервера: {JSON.stringify(response)}</p>} */}
       </>}
 
     </div >

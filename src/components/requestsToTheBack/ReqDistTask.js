@@ -1,11 +1,11 @@
 export const fetchStudentsList = (setMessage, setStudentList) => {
-    fetch('/api/v1/issueChecker/getStudentsList/42', {
-      method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
+  fetch('/api/v1/issueChecker/getStudentsList/42', {
+    method: 'get',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
     .then(response => {
       if (!response.ok) {
         setMessage('Ошибка сервера: ' + response.status);
@@ -29,16 +29,16 @@ export const fetchStudentsList = (setMessage, setStudentList) => {
         console.error('Ошибка в запросе к серверу:', error.message);
       }
     });
-  };
-  
-  export const fetchTasksList = (setTasks) => {
-    fetch('/api/v1/issueChecker/getTasksList/42/42', {
-      method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
+};
+
+export const fetchTasksList = (setTasks) => {
+  fetch('/api/v1/issueChecker/getTasksList/42/42', {
+    method: 'get',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
     .then(response => {
       if (!response.ok) {
         throw new Error('Ошибка сервера: ' + response.status);
@@ -56,5 +56,4 @@ export const fetchStudentsList = (setMessage, setStudentList) => {
     .catch(error => {
       console.error('Ошибка в запросе к серверу:', error.message);
     });
-  };
-  
+};
