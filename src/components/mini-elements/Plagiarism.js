@@ -2,7 +2,6 @@ import React from 'react';
 import '../../App.css';
 
 const Plagiarism = ({ isOpen, onClose, listOfStudents }) => {
-    //TODO: сделать красным если меньше 0.2
     if (!isOpen) return null;
     console.log("listOfStudents", JSON.stringify(listOfStudents));
     const arrayOfStudents = Object.entries(listOfStudents).map(([student, values]) => ({ student, values }));

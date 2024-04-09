@@ -1,5 +1,5 @@
 
-export const fetchRobotSettings = (setCheckboxValues, setSelectedOptionTranslate, setLoading, setMessage) => {
+export const fetchRobotSettings = (setCheckboxValues, listOptionsErrLint, setErrLint, setSelectedOptionSuccess, setSelectedOptionTranslate, setLoading, setMessage) => {
   setMessage("Loading...");
   fetch('/api/v1/robotSettings', {
     method: 'get',
@@ -16,12 +16,12 @@ export const fetchRobotSettings = (setCheckboxValues, setSelectedOptionTranslate
       return response.json();
     })
     .then(data => {
-      const { needLint, assignTasksToStudent, lintInformation } = data;
-      setCheckboxValues({
-        checkboxLint: needLint,
-        lintInformation: lintInformation,
-        checkboxSuccess: false
-      });
+      const { needLint, assignTasksToStudent, needCloseTasks, lintInformation } = data;
+      setCheckboxValues(needLint);
+      setSelectedOptionSuccess(needCloseTasks);
+      console.log("!! ", lintInformation)
+      console.log(listOptionsErrLint.find(option => option.id === lintInformation).name)
+      setErrLint(listOptionsErrLint.find(option => option.id === lintInformation).name);
       setSelectedOptionTranslate(assignTasksToStudent ? "student" : "teacher");
       setLoading(false);
     })

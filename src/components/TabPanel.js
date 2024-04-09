@@ -11,18 +11,21 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 export default function TabPanel() {
   const [activeButton, setActiveButton] = useState(() => {
+    console.log("activeButton")
     // Проверка состояния активной кнопки при первом рендеринге компонента
     const storedActiveButton = localStorage.getItem('activeButton');
     return storedActiveButton ? parseInt(storedActiveButton) : 0;
   });
 
   const [isLogged, setLogged] = useState(() => {
+    console.log(" isLogged")
     // Проверка состояния авторизации при первом рендеринге компонента
     const storedIsLogged = localStorage.getItem('isLogged');
     return storedIsLogged === 'true';
   }); //вошел пользователь в аккаунт или нет
 
   useEffect(() => {
+    console.log("activeButton ", activeButton)
     // Сохраняем состояние активной кнопки в локальное хранилище при изменении
     localStorage.setItem('activeButton', activeButton);
   }, [activeButton]);
@@ -49,7 +52,7 @@ export default function TabPanel() {
             <div className="per-acc-group" id="224:641">
               <Link
                 to={isLogged ? '/personal-acc' : '/authorization'}>
-                <button className={window.location.pathname === '/personal-acc' || window.location.pathname === '/authorization' ? 'per-acc-btn-active' : 'per-acc-btn'} onClick={() => handleClick(5)}>
+                <button className={(activeButton === 5 || window.location.pathname === '/personal-acc' || window.location.pathname === '/authorization') ? 'per-acc-btn-active' : 'per-acc-btn'} onClick={() => handleClick(5)}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="25" height="23" viewBox="0 0 25 23" fill="none">
                     <ellipse cx="12.4997" cy="5.65968" rx="4.16667" ry="3.77297" fill="#1C274C" />
                     <ellipse cx="12.4997" cy="16.0352" rx="7.29167" ry="3.77297" fill="#1C274C" />

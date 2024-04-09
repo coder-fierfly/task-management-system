@@ -683,10 +683,10 @@ option {
   size: 1;
 }
 
-option:checked,
+/* option:checked,
 option:hover {
   background-color: lime;
-}
+} */
 
 option:hover {
   box-shadow: 0 0 10px 100px orange inset;
@@ -863,6 +863,10 @@ input[type="radio"]:focus {
 
 .mess-per-wrap {
   justify-content: center !important;
+}
+
+.class-err {
+  display: flex;
 }
 .bold-span {
   font-weight: bold;

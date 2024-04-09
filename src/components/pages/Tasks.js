@@ -7,9 +7,9 @@ import ConfirmationWindow from '../mini-elements/ConfirmationWindow';
 import ErrorWindow from '../mini-elements/ErrorWindow';
 import { getAllTopics, getTasks, getTests, handleIter } from '../requestsToTheBack/ReqTasks';
 
-// TODO: сделать чтобы тесты показывались после выбора задачи
-// TODO: тесты разобратьсяfffffffffffffffff
+// TODO: тесты разобраться
 function Tasks() {
+  const [taskChange, setTaskChange] = useState(true);
   const [themeList, setThemeList] = useState([]);
   const [selectedTheme, setSelectedTheme] = useState('');
   const [listTask, setListTask] = useState([]); // список заданий
@@ -49,6 +49,7 @@ function Tasks() {
   };
 
   const setDel = () => {
+    // TODO: удаление???
     console.log("удаляяяем")
   }
 
@@ -56,8 +57,8 @@ function Tasks() {
   const [isConfOpen, setConfOpen] = useState(false);
 
   // просмотр тестов
-  const handleViewTests = () => {
-    console.log("Кнопка просмотр текстов нажата");
+  const handleSaveTests = () => {
+    console.log("Кнопка сохранить тест");
   }
 
   // реагирует на изменение в поле ввода с ожидаемым результатом
@@ -91,6 +92,7 @@ function Tasks() {
 
   // кнопки к задачам, плюс, корзина и информация
   const handlePlusTask = () => {
+    setTaskChange(true);
     setNameOfTask('');
     setDeskOfTask('');
     setCreateNewTaskOpen(true);
@@ -143,6 +145,7 @@ function Tasks() {
   }
 
   const handleInfoTask = () => {
+    setTaskChange(true);
     console.log("chosenTask " + chosenTask)
     const foundTask = listTask.find(task => task.id === chosenTask);
     setData();
@@ -154,7 +157,10 @@ function Tasks() {
 
   // кнопки к тесту плюс, корзина
   const handlePlusTest = () => {
-    console.log("кнопка плюс тест")
+    setTaskChange(false);
+    // TODO: очистка входных и выходных
+    console.log("кнопка плюс тест");
+
   }
 
   const handleYourIter = () => {
@@ -191,36 +197,41 @@ function Tasks() {
     console.log(chosenTheme)
 
     console.log("tg", themeList)
-    fetch('/api/v1/tasks/addOrUpdateTask', {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        taskSubject: themeList.find(item => item.id === chosenTheme).name,
-        taskId: chosenTask,
-        taskDescription: descOfTask,
-        themeId: chosenTheme,
-        // TODO:  folderName: "string", config: "string"
-        folderName: "string",
-        config: "string"
+    if (setTaskChange) {
+      console.log("сохранить задачу")
+      fetch('/api/v1/tasks/addOrUpdateTask', {
+        method: 'PUT',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          taskSubject: themeList.find(item => item.id === chosenTheme).name,
+          taskId: chosenTask,
+          taskDescription: descOfTask,
+          themeId: chosenTheme,
+          // TODO:  folderName: "string", config: "string"
+          folderName: "string",
+          config: "string"
+        })
       })
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Ошибка сервера: ' + response.status);
-        }
-        return response.json();
-      })
-      .then(responseData => {
-        // обработка ответа от сервера при необходимости
-      })
-      .catch(error => {
-        console.error('Произошла ошибка:', error);
-      });
+        .then(response => {
+          console.log(response)
+          if (!response.ok) {
+            throw new Error('Ошибка сервера: ' + response.status);
+          }
+          return response.json();
+        })
+        .then(responseData => {
+          // обработка ответа от сервера при необходимости
+        })
+        .catch(error => {
+          console.error('Произошла ошибка:', error);
+        });
 
-
+    } else {
+      console.log("сохранить тест")
+    }
     console.log("сохранить")
   }
 
@@ -307,7 +318,7 @@ function Tasks() {
                 <button onClick={handleRight} className="b-button little-btn" disabled={!chosenTask}>{'>'}</button>
               </div>
             </div>
-            <button onClick={handleViewTests} className="b-button b-width">Сохранить</button>
+            <button onClick={handleSaveTests} className="b-button b-width">Сохранить</button>
             <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} passedName={nameOfTask} passedDesc={descOfTask} saveBtn={handleSaveNew} />
             <ConfirmationWindow isOpen={isConfOpen} onClose={closeConf} delBtn={setDel} whatDel={nameConf} />
           </>}

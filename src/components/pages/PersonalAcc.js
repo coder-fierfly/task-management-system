@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ErrorWindow from '../mini-elements/ErrorWindow'; 
+import ErrorWindow from '../mini-elements/ErrorWindow';
 import { fetchPersonalData } from '../requestsToTheBack/ReqPersonalData';
 
 
@@ -12,6 +12,7 @@ const PersonalAcc = ({ handleLogout }) => {
     useEffect(() => {
         fetchPersonalData()
             .then(data => {
+                console.log(data)
                 setPersonalData(data);
                 setLoading(false);
             })
@@ -29,7 +30,6 @@ const PersonalAcc = ({ handleLogout }) => {
             {loading ? <><div className='main-conn-wrap mess-per-wrap' >         <ErrorWindow isOpen={loading} error={message} />
             </div> </> : <>
                 <div className='main-conn-wrap per-acc-wrap'>
-
                     <h1>Личный кабинет</h1>
                     <div className='little-per-wrap'>
                         <p><span className='bold-span'>Имя: </span>{PersonalData.userDisplayName}</p>

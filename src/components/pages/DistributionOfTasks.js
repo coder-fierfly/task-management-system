@@ -13,14 +13,14 @@ const DistributionOfTasks = () => {
 
 
   useEffect(() => {
-    const fetchData = async () => {
-      await Promise.all([
-        fetchStudentsList(setMessage, setStudentList),
-        fetchTasksList(setTasks)
-      ]);
-      setLoading(false);
-    };
-    fetchData();
+    setLoading(true);
+    Promise.all([fetchStudentsList(setMessage, setStudentList), fetchTasksList(setTasks)])
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(error => {
+        setMessage(error)
+      });
   }, []);
 
 
@@ -65,69 +65,69 @@ const DistributionOfTasks = () => {
   };
 
   const handleClickDownloadList = () => {
-    console.log("загрузить")
-  };
-
-  const dataToSend = {
-    tasksList: [
-      { taskId: '12345', taskSubject: 'Шашки' }
-    ],
-    studentList: [
-      { studentId: '123457', studentName: 'Пупкин Василий' }
-    ]
+    // TODO: обновление списков
+    console.log("обновление списков")
   };
 
   const handleClickAppoint = async () => {
     console.log("назначить выделенное")
-    // fetch(`/api/v1/issueChecker/assignTasksToStudents/1`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     "tasksList": [{ "taskId": "12345", "taskSubject": "Шашки" }],
-    //     "studentList": [{ "studentId": "123457", "studentName": "Пупкин Василий" }]
-    //   })
-    // })
-    //   .then(response => {
-    //     if (!response.ok) {
-    //       setMessage('Ошибка сервера: ' + response.status);
-    //       throw new Error('Ошибка сервера: ' + response.status);
-    //     }
-    //     // Обрабатывайте ответ, если необходимо
-    //   })
-    //   .catch(error => {
-    //     if (error.name === 'AbortError') {
-    //       setMessage('Время ожидания запроса истекло');
-    //     } else {
-    //       setMessage(error.message);
-    //       console.error('Ошибка в запросе к серверу:', error.message);
-    //     }
-    //   });
 
-    fetch(`/api/v1/issueChecker/assignTasksToStudents/1`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(dataToSend)
-    })
-      .then(response => {
-        console.log(response)
-        if (!response.ok) {
-          throw new Error(`Ошибка сервера: ${response.status}`);
-        }
-        return response.json();
+    const selectedStudents = studentList.filter(student => student.isChecked && student.studentId !== "0"); // Фильтрация исключает элемент "Выбрать всех"
+    const selectedTasks = tasks.filter(task => task.isChecked && task.issueId !== "0");
+
+    console.log(selectedStudents)
+    console.log(selectedTasks)
+    console.log(selectedStudents && selectedTasks)
+    if (selectedStudents.length !== 0 && selectedTasks.length !== 0) {
+      console.log("(((((назначить выделенное)))))")
+      const dataToPass = {
+        tasksList: selectedTasks.map(({ isChecked, ...rest }) => rest), // Исключаем isChecked из объектов
+        studentList: selectedStudents.map(({ isChecked, ...rest }) => rest)
+      };
+      const jsonData = JSON.stringify(dataToPass);
+
+      // function downloadJSON(jsonData, filename) {
+      //   const blob = new Blob([jsonData], { type: 'application/json' });
+      //   const url = URL.createObjectURL(blob);
+
+      //   const a = document.createElement('a');
+      //   a.href = url;
+      //   a.download = filename;
+
+      //   document.body.appendChild(a);
+      //   a.click();
+      //   document.body.removeChild(a);
+      //   URL.revokeObjectURL(url);
+      // }
+
+      console.log(jsonData);
+
+      // const filename = 'data.json';
+      // downloadJSON(jsonData, filename);
+      // TODO: ошибка с dataToPass Ошибка при выполнении запроса: Unexpected non-whitespace character after JSON at position 4 (line 1 column 5)
+      fetch(`/api/v1/issueChecker/assignTasksToStudents`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToPass)
       })
-      .then(data => {
-        // Обработайте полученные данные
-        console.log('Ответ от сервера:', data);
-      })
-      .catch(error => {
-        console.error('Ошибка при выполнении запроса:', error.message);
-      });
+        .then(response => {
+          console.log(response.ok)
+          if (!response.ok) {
+            throw new Error(`Ошибка сервера: ${response.status}`);
+          }
+          console.log("response", response)
+          return response.text();
+        })
+        .then(data => {
+          console.log('Ответ от сервера:', data);
+        })
+        .catch(error => {
+          console.error('Ошибка при выполнении запроса:', error.message);
+        });
+    }
   };
 
   return (

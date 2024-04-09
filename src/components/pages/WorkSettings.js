@@ -4,45 +4,45 @@ import ErrorWindow from '../mini-elements/ErrorWindow';
 import { fetchRobotSettings } from '../requestsToTheBack/ReqWorkSettings';
 
 const WorkSettings = () => {
-
   // радиокнопки
   const [selectedOptionSuccess, setSelectedOptionSuccess] = useState("");
   const [selectedOptionTranslate, setSelectedOptionTranslate] = useState("teacher");
   // чекбоксы
-  const [checkboxValues, setCheckboxValues] = useState({
-    checkboxLint: false,
-    checkboxSuccess: false
-  });
+  // TODO: статус задачи при успешной проверке
+  const [checkboxValues, setCheckboxValues] = useState(false);
   const [message, setMessage] = useState('Loading...')
   const [loading, setLoading] = useState(true);
 
   // список со способами оповещения об ошибках
-  const listOptionsErrLint = ["Option 11", "Option 22", "Option 33"];
-  const [listValueErrLint, setListValueErrLint] = useState("");
+  // TODO: список со способами оповещения об ошибках
+  const listOptionsErrLint = [{ name: "По умолчанию", id: "FULL_INFO" }, { name: "Только количество ошибок", id: "COUNT_ONLY" }, { name: "Только наличие ошибок", id: "ARE_ERRORS_ONLY" }];
+  const [errLint, setErrLint] = useState("");
 
   useEffect(() => {
     setMessage('Loading...');
-    fetchRobotSettings(setCheckboxValues, setSelectedOptionTranslate, setLoading, setMessage);
+    // "needCloseTasks":true значит Close, false — approve.
+    fetchRobotSettings(setCheckboxValues, listOptionsErrLint, setErrLint, setSelectedOptionSuccess, setSelectedOptionTranslate, setLoading, setMessage);
   }, []);
 
   // Функция для обработки изменений в radio button
   const handleRadioChangeSuccess = (event) => {
-    setSelectedOptionSuccess(event.target.value);
+    // TODO: обработчик
+    setSelectedOptionSuccess(event.target.value === "true");
   };
   const handleRadioChangeTranslate = (event) => {
+    // TODO: обработчик
     setSelectedOptionTranslate(event.target.value);
   };
 
+  const handleErrChange = (event) => {
+    setErrLint(event);
+  }
+
   // смена значений в checkbox
-  const handleCheckboxChange = (checkboxName) => {
-    if (checkboxName === "checkboxSuccess" && checkboxValues.checkboxSuccess) {
-      // Сбросить выбранный вариант, если флажок снимается
-      setSelectedOptionSuccess("");
-    }
-    setCheckboxValues((prevValues) => ({
-      ...prevValues,
-      [checkboxName]: !prevValues[checkboxName],
-    }));
+  const handleCheckboxChange = (event) => {
+    // TODO: обработчик
+    console.log("handleCheckboxChange   ", errLint)
+    setCheckboxValues(event.target.checked)
   };
 
   return (
@@ -56,8 +56,8 @@ const WorkSettings = () => {
             <input className="checkbox"
               type="checkbox"
               id="lintCheckId"
-              checked={checkboxValues.checkboxLint}
-              onChange={() => handleCheckboxChange("checkboxLint")}
+              checked={checkboxValues}
+              onChange={handleCheckboxChange}
             />
             <label className="label" htmlFor="lintCheckId">
               Использование статического анализатора кода
@@ -66,18 +66,13 @@ const WorkSettings = () => {
           <p className="label">Способ оповещения об ошибках: </p>
           <DropdownList
             options={listOptionsErrLint}
-            selectedValue={listValueErrLint}
-            onSelectedValueChange={setListValueErrLint}
+            selectedValue={errLint}
+            onSelectedValueChange={handleErrChange}
             id="listOptionsErrId"
+            outputLabel={errLint}
           />
           <div>
             <div className="label-center">
-              <input className="checkbox"
-                type="checkbox"
-                id="checkboxSuccessId"
-                checked={checkboxValues.checkboxSuccess}
-                onChange={() => handleCheckboxChange("checkboxSuccess")}
-              />
               <label htmlFor="checkboxSuccessId">
                 Статус задачи при успешной проверке
               </label>
@@ -88,10 +83,9 @@ const WorkSettings = () => {
                 type="radio"
                 id="radioClose"
                 name="successfully"
-                value="close"
-                checked={selectedOptionSuccess === "close"}
+                value="true"
+                checked={selectedOptionSuccess === true}
                 onChange={handleRadioChangeSuccess}
-                disabled={!checkboxValues.checkboxSuccess}
               />
                 <label className="label" htmlFor="radioClose">
                   Закрыто</label></div>
@@ -100,10 +94,9 @@ const WorkSettings = () => {
                 type="radio"
                 name="successfully"
                 id="radioApprove"
-                value="approve"
-                checked={selectedOptionSuccess === "approve"}
+                value="false"
+                checked={selectedOptionSuccess === false}
                 onChange={handleRadioChangeSuccess}
-                disabled={!checkboxValues.checkboxSuccess}
               />
                 <label className="label" htmlFor="radioApprove">
                   Принято

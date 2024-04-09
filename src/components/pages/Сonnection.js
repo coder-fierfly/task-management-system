@@ -31,7 +31,7 @@ const Connection = () => {
 
 
     const [listOfStudents, setListOfStudents] = useState('');     // список студентов
-    const [inputNumber, setInputNumber] = useState('');    // номер задачи
+    const [inputNumber, setInputNumber] = useState();    // номер задачи
     const [isPlagiarismOpen, setPlagiarismOpen] = useState(false);    // открытие окна плагиата
     const [isOpen, setIsOpen] = useState(false);    // кнопка закрытия окошек
 
@@ -73,6 +73,7 @@ const Connection = () => {
                     id: index + 1,
                     name: projectIteration
                 }));
+                console.log(transformedData)
                 setListOfIterations(transformedData);
                 setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
             }).catch(error => {
@@ -119,53 +120,68 @@ const Connection = () => {
 
     //текст ошибки
     const [error, setError] = useState('');
+    const [errorCheck, setErrorCheck] = useState('');
+
 
     // нажатие на кнопку начать проверку
     const handleStartChecking = () => {
         console.log('Кнопка проверки была нажата');
-        fetch('/api/v1/issueChecker/startFullCheck', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                projectId: chosenProject,
-                iteration: chosenIteration,
-                settings: {
-                    checkAllIterations: checkboxValues.checkboxAllIterations,
-                    showErrorResponse: checkboxValues.checkboxShowAns,
-                    needLint: checkboxValues.needLint,
-                    assignTasksToStudent: checkboxValues.assignTasksToStudent // Обратите внимание на правильное написание свойства
-                }
+        console.log(chosenProject && chosenIteration)
+        if (chosenProject && chosenIteration) {
+            fetch('/api/v1/issueChecker/startFullCheck', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    projectId: chosenProject,
+                    iteration: chosenIteration,
+                    settings: {
+                        checkAllIterations: checkboxValues.checkboxAllIterations,
+                        showErrorResponse: checkboxValues.checkboxShowAns,
+                        needLint: checkboxValues.needLint,
+                        assignTasksToStudent: checkboxValues.assignTasksToStudent // Обратите внимание на правильное написание свойства
+                    }
+                })
             })
-        })
-            .then(response => {
-                console.log("response.status ", response.status);
-                if (!response.ok) {
-                    // Обработка ошибок, если необходимо
-                    throw new Error('Ошибка сети: ' + response.status);
-                }
-                // Обрабатывайте ответ, если необходимо
-            })
-            .catch(error => {
-                // Обработка ошибок
-                console.error('Ошибка при выполнении запроса:', error);
-            });
+                .then(response => {
+                    console.log("response.status ", response.status);
+                    if (!response.ok) {
+                        // Обработка ошибок, если необходимо
+                        throw new Error('Ошибка сети: ' + response.status);
+                    }
+                    // Обрабатывайте ответ, если необходимо
+                })
+                .catch(error => {
+                    // Обработка ошибок
+                    console.error('Ошибка при выполнении запроса:', error);
+                });
+        } else {
+            setErrorCheck("Вы не выбрали проект или итерацию");
+        }
     };
 
     // открытие окошка плагиата
     const openPlagiarism = () => {
+        console.log(inputNumber);
+        setLoading(true);
+
         fetchPlagiarism({ inputNumber, setListOfStudents, setLoading, setMessage })
-        // if (loading) {
-        // setTimeout(10)
-        console.log("!!! " + !listOfStudents)
-        if (listOfStudents) {
-            setPlagiarismOpen(true);
-        } else {
-            setError("Нет такого задания")
-        }
-        // }
+            .then((listOfStudents) => {
+                if (listOfStudents) {
+                    setPlagiarismOpen(true);
+                } else {
+                    setError('Задание с таким номером не найдено');
+                }
+            })
+            .catch((error) => {
+                console.error('Error occurred: ', error);
+                setError('Произошла ошибка при загрузке данных');
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
 
     //закрытие окошка плагиата
@@ -176,36 +192,40 @@ const Connection = () => {
     // нажата проверить задачу
     const handleCheckTask = () => {
         console.log('Кнопка проверить задачу нажата')
-        fetch('/api/v1/issueChecker/startCheckSingleIssue', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "taskId": inputNumber,
-                "projectId": chosenProject,
-                "settings":
-                {
-                    "checkAllIterations": checkboxValues.checkboxAllIterations,
-                    "showErrorResponse": checkboxValues.checkboxShowAns,
-                    "needLint": checkboxValues.needLint,
-                    "assingTasksToStudent": checkboxValues.assignTasksToStudent
-                }
+        console.log("inputNumber ", inputNumber)
+        if (inputNumber) {
+            console.log("inputNumber")
+            fetch('/api/v1/issueChecker/startCheckSingleIssue', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "taskId": inputNumber,
+                    "projectId": chosenProject,
+                    "settings":
+                    {
+                        "checkAllIterations": checkboxValues.checkboxAllIterations,
+                        "showErrorResponse": checkboxValues.checkboxShowAns,
+                        "needLint": checkboxValues.needLint,
+                        "assingTasksToStudent": checkboxValues.assignTasksToStudent
+                    }
+                })
             })
-        })
-            .then(response => {
-                console.log("response.status ", response.status);
-                if (!response.ok) {
-                    // Обработка ошибок, если необходимо
-                    throw new Error('Ошибка сети: ' + response.status);
-                }
-                // Обрабатывайте ответ, если необходимо
-            })
-            .catch(error => {
-                // Обработка ошибок
-                console.error('Ошибка при выполнении запроса:', error);
-            });
+                .then(response => {
+                    console.log("response.status ", response.status);
+                    if (!response.ok) {
+                        // Обработка ошибок, если необходимо
+                        throw new Error('Ошибка сети: ' + response.status);
+                    }
+                    // Обрабатывайте ответ, если необходимо
+                })
+                .catch(error => {
+                    // Обработка ошибок
+                    console.error('Ошибка при выполнении запроса:', error);
+                });
+        }
     }
 
     return (
@@ -258,6 +278,7 @@ const Connection = () => {
                             />
                                 <label htmlFor="checkboxAllIterId" className="label">Проверять все итерации проекта</label></div>
                         </div>
+                        <div className='mess-per-wrap class-err'> {errorCheck && <div className="error-message">{errorCheck}</div>}</div>
 
                         <div className="b-wrapper">
                             <button onClick={handleStartChecking} className="b-button start-check">Начать проверку</button>
