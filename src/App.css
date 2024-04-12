@@ -223,6 +223,7 @@
 .desk-wrap {
   grid-gap: 0.7rem;
   display: grid;
+  height: 50%;
 }
 
 .modal-wrapper {
@@ -292,8 +293,33 @@
 
 .new-task-wrapper {
   width: 30rem;
+  height: 100%;
 }
 
+.css-1c35hjw-MuiPaper-root-MuiAccordion-root.Mui-expanded:first-of-type {
+  height: 70%;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.css-pwcg7p-MuiCollapse-root {
+  flex-grow: 1;
+}
+.pop-h {
+  height: 100%;
+}
+.css-smkl36-MuiCollapse-wrapper {
+  height: 100%;
+}
+
+.div#panel1bh-content {
+  height: 100%;
+}
+
+.desk-wrap {
+  height: 100%;
+}
 .del-wind {
   width: 20rem;
   margin-top: 1rem;
@@ -307,12 +333,24 @@
 
 .popup-content {
   text-align: center;
+  height: 90%;
+}
+
+.popup-height {
+  height: 70%;
 }
 
 .b-height {
   height: 1.9rem;
 }
 
+element.style {
+  height: 100%;
+}
+
+.MuiAccordion-region {
+  height: 100%;
+}
 table {
   width: 100%;
   border-collapse: collapse;
@@ -467,6 +505,9 @@ th {
   width: calc(100% - 0.4rem);
 }
 
+.input-height {
+  height: 100%;
+}
 .input-field:focus-visible {
   border: none;
   outline: none;

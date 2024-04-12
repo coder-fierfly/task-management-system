@@ -49,10 +49,25 @@ export const getTasks = (value, setChosenTheme, setListTask, setMessage) => {
                 taskSubject: task.taskSubject,
                 taskDescription: task.taskDescription,
                 themeId: task.themeId,
-                name: task.folderName
+                name: task.folderName,
+                config: task.config
             }));
+
+            const sortedTasks = [...taskArray].sort((a, b) => {
+                // Приведение значений к нижнему регистру для регистронезависимой сортировки
+                const taskSubjectA = a.taskSubject.toLowerCase();
+                const taskSubjectB = b.taskSubject.toLowerCase();
+                if (taskSubjectA < taskSubjectB) {
+                    return -1;
+                }
+                if (taskSubjectA > taskSubjectB) {
+                    return 1;
+                }
+                return 0;
+            });
+
             setListTask('');
-            setListTask(taskArray);
+            setListTask(sortedTasks);
         }).catch(error => {
             setListTask('');
             setMessage('Нет таких данных:', error);
@@ -90,22 +105,72 @@ export const handleIter = (chosenTask, setMessage) => {
     fetch('/api/v1/tasks/addIssue', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          "taskId": chosenTask,
-          // TODO: IterationId найти
-          "iterationId": "IterationId"
+            "taskId": chosenTask,
+            // TODO: IterationId найти
+            "iterationId": "IterationId"
         })
-      })
+    })
         .then(response => {
-          console.log("response.status ", response.status);
-          if (!response.ok) {
-            throw new Error('Ошибка сети: ' + response.status);
-          }
+            if (!response.ok) {
+                throw new Error('Ошибка сети: ' + response.status);
+            }
+            console.log(response.text());
         })
         .catch(error => {
-          setMessage('Ошибка при выполнении запроса:', error);
+            setMessage('Ошибка при выполнении запроса:', error);
+        });
+}
+
+export const putTest = (chosenTask, inputData, inputExpRes, setLoading) => {
+    fetch('/api/v1/tasks/addOrUpdateTest', {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            testId: 0,
+            taskId: chosenTask,
+            inputData: inputData,
+            outPutData: inputExpRes
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка сервера: ' + response.status);
+            }
+            console.log(response.text());
+        })
+        .then(setLoading(false))
+        .catch(error => {
+            console.error('Произошла ошибка:', error);
+        });
+}
+
+export const postIssue = (chosenTask, setMessage) => {
+    fetch('/api/v1/tasks/addIssue', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "taskId": chosenTask,
+            // TODO: IterationId найти
+            "iterationId": "IterationId"
+        })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Ошибка сети: ' + response.status);
+            }
+            console.log(response.text());
+        })
+        .catch(error => {
+            setMessage('Ошибка при выполнении запроса:', error);
         });
 }

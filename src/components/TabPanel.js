@@ -8,6 +8,7 @@ import Authorization from './pages/Authorization';
 import { Navigate } from 'react-router-dom';
 import "../App.css";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import IterationContext from './IterationContext';
 
 export default function TabPanel() {
   const [activeButton, setActiveButton] = useState(() => {
@@ -44,8 +45,23 @@ export default function TabPanel() {
     localStorage.removeItem('isLogged');
   };
 
+  const [chosenIteration, setChosenIteration] = useState('')
+  // const [chosenProject, setChosenProject] = useState('');
+  console.log("!!AAAA ", chosenIteration)
+  // console.log('chosenProject )) ', chosenProject)
+
+  // Сохранение значения в localStorage
+  localStorage.setItem('chosenIteration', JSON.stringify(chosenIteration));
+  // localStorage.setItem('chosenProject', JSON.stringify(chosenProject));
+
+  // Получение значения из localStorage
+  const storedChosenIteration = JSON.parse(localStorage.getItem('chosenIteration'));
+  // const storedChosenProject = JSON.parse(localStorage.getItem('chosenProject'));
+
   return (
-    <>
+    <IterationContext.Provider value={{ storedChosenIteration, setChosenIteration }}>
+      {/*     <IterationContext.Provider value={{ storedChosenIteration, setChosenIteration, storedChosenProject, setChosenProject }}>
+ */}
       <Router>
         <div className='all-header'>
           <div className="my-header">
@@ -109,7 +125,7 @@ export default function TabPanel() {
           />
         </Routes>
       </Router>
-    </>
+    </IterationContext.Provider>
   );
 }
 

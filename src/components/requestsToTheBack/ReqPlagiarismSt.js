@@ -1,4 +1,4 @@
-export const fetchPlagiarism = ({ inputNumber, setListOfStudents, setLoading, setMessage }) => {
+export const getPlagiarism = ({ inputNumber, setListOfStudents, setLoading, setMessage }) => {
     setMessage("Loading...");
     return new Promise((resolve, reject) => {
         fetch(`api/v1/plagiat/getPlagiat/${inputNumber}`, {

@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../../App.css';
 import DropdownList from '../mini-elements/DropdownList';
 import Plagiarism from '../mini-elements/Plagiarism';
 import MoreInfo from '../mini-elements/MoreInfo';
 import ErrorWindow from '../mini-elements/ErrorWindow';
-import { fetchConRobotSettings } from '../requestsToTheBack/ReqConWorkSettings';
-import { fetchPlagiarism } from '../requestsToTheBack/ReqPlagiarismSt';
-import { fetchPersonalData } from '../requestsToTheBack/ReqPersonalData';
+import { getConRobotSettings, putConRobotSettings, postStartChecking, getIterations, postCheckTask } from '../requestsToTheBack/ReqConWorkSettings';
+import { getPlagiarism } from '../requestsToTheBack/ReqPlagiarismSt';
+import { getPersonalData } from '../requestsToTheBack/ReqPersonalData';
+import IterationContext from '../IterationContext';
 
 
 const Connection = () => {
     // TODO: отчет сделать 
     const [chosenProject, setChosenProject] = useState(''); // выбранный проект
-    const [chosenIteration, setChosenIteration] = useState(''); // выбранная итерация
+    const { chosenIteration, setChosenIteration } = useContext(IterationContext);
+    // const [chosenIteration, setChosenIteration] = useState(IterationContext); // выбранная итерация
     // выпадающие списки проект и итерация
     const [listOfIterations, setListOfIterations] = useState([]);
     const [listOfProjects, setListOfProjects] = useState([]);
@@ -37,8 +39,8 @@ const Connection = () => {
 
     useEffect(() => {
         setMessage('Loading...');
-        fetchConRobotSettings(setMCheckboxValues, setLoading, setMessage);
-        fetchPersonalData()
+        getConRobotSettings(setMCheckboxValues, setLoading, setMessage);
+        getPersonalData()
             .then(data => {
                 setInputUrl(data.url);
                 const transformedData = data.projectsList.map(project => ({
@@ -58,32 +60,15 @@ const Connection = () => {
 
     const handleProjectChange = (value) => {
         setLoading(true);
-        var iterations = "/api/v1/project/iterations/" + value;
-        fetch(iterations, {
-            method: 'get',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                setChosenProject(value)
-                const transformedData = data.projectIterations.map((projectIteration, index) => ({
-                    id: index + 1,
-                    name: projectIteration
-                }));
-                console.log(transformedData)
-                setListOfIterations(transformedData);
-                setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
-            }).catch(error => {
-                setListOfIterations('');
-                console.error('Нет таких данных:', error);
-            });;
+        getIterations(value, setListOfIterations, setLoading).then(() => {
+            console.log(value + ' !');
+            setChosenProject(value);
+        });
         setChosenIteration(''); // сброс выбранной задачи при изменении темы
     }
 
     const handleIterationsChange = (id) => {
+        console.log("handleIterationsChange ", id)
         setChosenIteration(id)
     }
 
@@ -93,11 +78,15 @@ const Connection = () => {
 
     // сменяет значение в checkbox
     const handleCheckboxChange = (checkboxName) => {
-        console.log("handleCheckboxChange");
-        setMCheckboxValues((prevValues) => ({
-            ...prevValues,
-            [checkboxName]: !prevValues[checkboxName],
-        }));
+        setMCheckboxValues((prevValues) => {
+            const updatedValues = {
+                ...prevValues,
+                [checkboxName]: !prevValues[checkboxName],
+            };
+            // Сохраняем настройки при каждом изменении чекбокса
+            putConRobotSettings(updatedValues, setMessage, setLoading);
+            return updatedValues;
+        });
     };
 
     // реагирует на изменение в поле ввода с url
@@ -115,7 +104,6 @@ const Connection = () => {
             setInputNumber(value);
             setError('');
         }
-
     }
 
     //текст ошибки
@@ -126,37 +114,10 @@ const Connection = () => {
     // нажатие на кнопку начать проверку
     const handleStartChecking = () => {
         console.log('Кнопка проверки была нажата');
+        console.log(chosenProject + ' mmm schosenProject')
         console.log(chosenProject && chosenIteration)
         if (chosenProject && chosenIteration) {
-            fetch('/api/v1/issueChecker/startFullCheck', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    projectId: chosenProject,
-                    iteration: chosenIteration,
-                    settings: {
-                        checkAllIterations: checkboxValues.checkboxAllIterations,
-                        showErrorResponse: checkboxValues.checkboxShowAns,
-                        needLint: checkboxValues.needLint,
-                        assignTasksToStudent: checkboxValues.assignTasksToStudent // Обратите внимание на правильное написание свойства
-                    }
-                })
-            })
-                .then(response => {
-                    console.log("response.status ", response.status);
-                    if (!response.ok) {
-                        // Обработка ошибок, если необходимо
-                        throw new Error('Ошибка сети: ' + response.status);
-                    }
-                    // Обрабатывайте ответ, если необходимо
-                })
-                .catch(error => {
-                    // Обработка ошибок
-                    console.error('Ошибка при выполнении запроса:', error);
-                });
+            postStartChecking(chosenProject, chosenIteration, checkboxValues);
         } else {
             setErrorCheck("Вы не выбрали проект или итерацию");
         }
@@ -167,7 +128,7 @@ const Connection = () => {
         console.log(inputNumber);
         setLoading(true);
 
-        fetchPlagiarism({ inputNumber, setListOfStudents, setLoading, setMessage })
+        getPlagiarism({ inputNumber, setListOfStudents, setLoading, setMessage })
             .then((listOfStudents) => {
                 if (listOfStudents) {
                     setPlagiarismOpen(true);
@@ -194,112 +155,88 @@ const Connection = () => {
         console.log('Кнопка проверить задачу нажата')
         console.log("inputNumber ", inputNumber)
         if (inputNumber) {
-            console.log("inputNumber")
-            fetch('/api/v1/issueChecker/startCheckSingleIssue', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "taskId": inputNumber,
-                    "projectId": chosenProject,
-                    "settings":
-                    {
-                        "checkAllIterations": checkboxValues.checkboxAllIterations,
-                        "showErrorResponse": checkboxValues.checkboxShowAns,
-                        "needLint": checkboxValues.needLint,
-                        "assingTasksToStudent": checkboxValues.assignTasksToStudent
-                    }
-                })
-            })
-                .then(response => {
-                    console.log("response.status ", response.status);
-                    if (!response.ok) {
-                        // Обработка ошибок, если необходимо
-                        throw new Error('Ошибка сети: ' + response.status);
-                    }
-                    // Обрабатывайте ответ, если необходимо
-                })
-                .catch(error => {
-                    // Обработка ошибок
-                    console.error('Ошибка при выполнении запроса:', error);
-                });
+            postCheckTask(inputNumber, chosenProject, checkboxValues);
+        } else {
+            setError("Вы не ввели не верное значение")
         }
     }
 
     return (
         <>
-            {loading ? <div> <ErrorWindow isOpen={loading} error={message} /></div> : <>
-                <Plagiarism isOpen={isPlagiarismOpen} onClose={closePlagiarism} listOfStudents={listOfStudents} />
-                <div className='main-conn-wrap connection-wrap'>
-                    <div className='mini-conn-wrap'>
-                        <div className="form-container">
-                            <div className='label-container'><label htmlFor="urlInputId" className="label">Введите url ресурса:</label></div>
+            <IterationContext.Provider value={{ chosenIteration, setChosenIteration }}>
+                {/* <IterationContext.Provider value={{ chosenIteration, setChosenIteration, chosenProject, setChosenProject }}> */}
 
-                            <input id="urlInputId" className="input-field" type="text" value={inputUrl}
-                                onChange={handleInputChange} />
+                {loading ? <div> <ErrorWindow isOpen={loading} error={message} /></div> : <>
+                    <Plagiarism isOpen={isPlagiarismOpen} onClose={closePlagiarism} listOfStudents={listOfStudents} />
+                    <div className='main-conn-wrap connection-wrap'>
+                        <div className='mini-conn-wrap'>
+                            <div className="form-container">
+                                <div className='label-container'><label htmlFor="urlInputId" className="label">Введите url ресурса:</label></div>
 
-                            <div className="label-container">  <p className="label">Выберите проект:</p></div>
-                            <DropdownList
-                                options={listOfProjects}
-                                selectedValue={chosenProject}
-                                onSelectedValueChange={handleProjectChange}
-                            />
+                                <input id="urlInputId" className="input-field" type="text" value={inputUrl}
+                                    onChange={handleInputChange} />
 
-                            <div className="label-container">  <p className="label">Выберите итерацию:</p>
-                            </div>
-                            <DropdownList
-                                options={listOfIterations}
-                                selectedValue={chosenIteration}
-                                onSelectedValueChange={handleIterationsChange}
-                                id="listOfIterId"
-                                disabled={!chosenProject}
-                            />
-
-                        </div>
-                        <div className='check-container'>
-                            <div className='label-center'>
-                                <input className='checkbox'
-                                    type="checkbox"
-                                    id="checkboxShowAnsId"
-                                    checked={checkboxValues.checkboxShowAns}
-                                    onChange={() => handleCheckboxChange('checkboxShowAns')}
+                                <div className="label-container">  <p className="label">Выберите проект:</p></div>
+                                <DropdownList
+                                    options={listOfProjects}
+                                    selectedValue={chosenProject}
+                                    onSelectedValueChange={handleProjectChange}
                                 />
-                                <label htmlFor="checkboxShowAnsId" className="label">
-                                    Показывать ответ в случае ошибки
-                                </label>
-                            </div>
-                            <div className='label-center'> <input className='checkbox'
-                                type="checkbox"
-                                id="checkboxAllIterId"
-                                checked={checkboxValues.checkboxAllIterations}
-                                onChange={() => handleCheckboxChange('checkboxAllIterations')}
-                            />
-                                <label htmlFor="checkboxAllIterId" className="label">Проверять все итерации проекта</label></div>
-                        </div>
-                        <div className='mess-per-wrap class-err'> {errorCheck && <div className="error-message">{errorCheck}</div>}</div>
 
-                        <div className="b-wrapper">
-                            <button onClick={handleStartChecking} className="b-button start-check">Начать проверку</button>
-                            <div onClick={toggleModal} >
-                                <p className="more-info-xKP">
-                                    Отчет
-                                </p>
+                                <div className="label-container">  <p className="label">Выберите итерацию:</p>
+                                </div>
+                                <DropdownList
+                                    options={listOfIterations}
+                                    selectedValue={chosenIteration}
+                                    onSelectedValueChange={handleIterationsChange}
+                                    id="listOfIterId"
+                                    disabled={!chosenProject}
+                                />
+
+                            </div>
+                            <div className='check-container'>
+                                <div className='label-center'>
+                                    <input className='checkbox'
+                                        type="checkbox"
+                                        id="checkboxShowAnsId"
+                                        checked={checkboxValues.checkboxShowAns}
+                                        onChange={() => handleCheckboxChange('checkboxShowAns')}
+                                    />
+                                    <label htmlFor="checkboxShowAnsId" className="label">
+                                        Показывать ответ в случае ошибки
+                                    </label>
+                                </div>
+                                <div className='label-center'> <input className='checkbox'
+                                    type="checkbox"
+                                    id="checkboxAllIterId"
+                                    checked={checkboxValues.checkboxAllIterations}
+                                    onChange={() => handleCheckboxChange('checkboxAllIterations')}
+                                />
+                                    <label htmlFor="checkboxAllIterId" className="label">Проверять все итерации проекта</label></div>
+                            </div>
+                            <div className='mess-per-wrap class-err'> {errorCheck && <div className="error-message">{errorCheck}</div>}</div>
+
+                            <div className="b-wrapper">
+                                <button onClick={handleStartChecking} className="b-button start-check">Начать проверку</button>
+                                <div onClick={toggleModal} >
+                                    <p className="more-info-xKP">
+                                        Отчет
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="form-container">
+                                <div>
+                                    <input className="input-field" id="inputNumId" type="textarea" defaultValue={inputNumber}
+                                        onChange={handleInputNumber} placeholder="Введите номер задачи" />
+                                    {error && <div className="error-message">{error}</div>}</div>
+                                <div className='flex-class'>  <button onClick={handleCheckTask} className="b-button b-height">Проверить задачу</button>
+                                    <button onClick={openPlagiarism} className="b-button b-height">Плагиат</button></div>
                             </div>
                         </div>
-                        <div className="form-container">
-                            <div>
-                                <input className="input-field" id="inputNumId" type="textarea" defaultValue={inputNumber}
-                                    onChange={handleInputNumber} placeholder="Введите номер задачи" />
-                                {error && <div className="error-message">{error}</div>}</div>
-                            <div className='flex-class'>  <button onClick={handleCheckTask} className="b-button b-height">Проверить задачу</button>
-                                <button onClick={openPlagiarism} className="b-button b-height">Плагиат</button></div>
-                        </div>
-                    </div>
-                </div >
-                <MoreInfo isOpen={isOpen} toggleModal={toggleModal} />
-            </>}
+                    </div >
+                    <MoreInfo isOpen={isOpen} toggleModal={toggleModal} />
+                </>}
+            </IterationContext.Provider>
         </>
     );
 }

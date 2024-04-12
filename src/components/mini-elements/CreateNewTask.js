@@ -5,22 +5,31 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { putCreateNewTask } from '../requestsToTheBack/reqCreateNew';
 
-const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, saveBtn }) => {
-
+const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, taskChange, chosenTheme, chosenTask, setLoading }) => {
     const [inputName, setInputName] = useState('');
     const [inputDesc, setInputDesc] = useState('');
+    const [inputConf, setInputConf] = useState('');
     const [expanded, setExpanded] = useState('panel1');
 
-    const handleChange = (panel) => (event, isExpanded) => {
+    const handleChange = (panel) => (isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
 
     // применение переданной информации к полям
     useEffect(() => {
-        setInputName(passedName);
-        setInputDesc(passedDesc);
-    }, [passedName, passedDesc]);
+        // меняем задание
+        console.log("taskChange ", taskChange)
+        if (taskChange) {
+            console.log("меняем берем значения переданные")
+            setInputName(passedName);
+            setInputDesc(passedDesc);
+            setInputConf(passedConf)
+        } else {
+            console.log("пусти")
+        }
+    }, [passedName, passedConf, passedDesc]);
 
     // изменение в поле названия задачи
     const handleInputName = (event) => {
@@ -32,9 +41,30 @@ const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, saveBtn }) => 
         setInputDesc(event.target.value);
     }
 
+    const handleInputConf = (event) => {
+        setInputConf(event.target.value)
+    }
+
     const onCloseBtn = () => {
+        setInputName('');
+        setInputDesc('');
+        setInputConf('');
         setExpanded('panel1');
         onClose();
+    }
+
+    const saveBtn = () => {
+        // меняем задание
+        if (taskChange) {
+            console.log('меняем')
+            putCreateNewTask(chosenTheme, chosenTask, inputName, inputDesc, inputConf, setLoading);
+        }
+        //новое задание
+        else {
+            console.log('новое')
+            putCreateNewTask(chosenTheme, 0, '', '', '', setLoading);
+        }
+        console.log("сохранить")
     }
 
     // если закрыто, то не отображается
@@ -43,7 +73,7 @@ const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, saveBtn }) => 
     }
     return (
         <div className="popup-overlay">
-            <div className="popup">
+            <div className="popup popup-height">
                 <div className="close-btn-container">
                     <button className="clear-btn" onClick={onCloseBtn}>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg>
@@ -51,8 +81,8 @@ const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, saveBtn }) => 
                 </div>
                 <div className="popup-content">
                     <div className="new-task-wrapper">
-                        <div>
-                            <div>
+                        <div className='pop-h'>
+                            <div className='pop-h'>
                                 <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMoreIcon />}
@@ -64,12 +94,13 @@ const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, saveBtn }) => 
                                         </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails className='desk-wrap'>
-                                        <input className="input-field" id="inputNumId" type="text" value={inputName}
+                                        <textarea className="input-field input-height" id="inputNumId" type="text" value={inputName}
                                             onChange={handleInputName} placeholder="Название" />
-                                        <input className="input-field" type="text" value={inputDesc}
+                                        <textarea className="input-field input-height" type="text" value={inputDesc}
                                             onChange={handleInputDesc} placeholder="Описание" />
+                                        <textarea className="input-field input-height" type="text" value={inputConf}
+                                            onChange={handleInputConf} placeholder="Конфигурация" />
                                         <button onClick={saveBtn} className="b-button right-btn save-btn">Сохранить</button>
-
                                     </AccordionDetails>
                                 </Accordion>
                                 <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>

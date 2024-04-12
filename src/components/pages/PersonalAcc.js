@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import ErrorWindow from '../mini-elements/ErrorWindow';
-import { fetchPersonalData } from '../requestsToTheBack/ReqPersonalData';
+import { getPersonalData } from '../requestsToTheBack/ReqPersonalData';
 
 
 const PersonalAcc = ({ handleLogout }) => {
-
     const [PersonalData, setPersonalData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('Loading...')
 
     useEffect(() => {
-        fetchPersonalData()
+        setLoading(true);
+        getPersonalData()
             .then(data => {
                 console.log(data)
                 setPersonalData(data);

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import '../../App.css';
 import ErrorWindow from '../mini-elements/ErrorWindow';
-import { fetchStudentsList, fetchTasksList } from '../requestsToTheBack/ReqDistTask';
-// import fetch from 'node-fetch';
+import { getStudentsList, getTasksList, postAssign } from '../requestsToTheBack/ReqDistTask';
+import IterationContext from '../IterationContext';
 
 const DistributionOfTasks = () => {
 
@@ -10,18 +10,23 @@ const DistributionOfTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [message, setMessage] = useState('Loading...')
   const [loading, setLoading] = useState(true);
+  const { chosenIteration } = useContext(IterationContext);
+  console.log("chosenIteration@!@!", chosenIteration);
 
 
   useEffect(() => {
-    setLoading(true);
-    Promise.all([fetchStudentsList(setMessage, setStudentList), fetchTasksList(setTasks)])
-      .then(() => {
-        setLoading(false);
-      })
-      .catch(error => {
-        setMessage(error)
-      });
-  }, []);
+    console.log("!!chosenIteration ", chosenIteration)
+    setLoading(false);
+    if (chosenIteration) {
+      Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration), getTasksList(setTasks)])
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(error => {
+          setMessage(error.toString()); // Преобразуем объект Error в строку
+        });
+    }
+  }, [chosenIteration]);
 
 
 
@@ -65,8 +70,15 @@ const DistributionOfTasks = () => {
   };
 
   const handleClickDownloadList = () => {
-    // TODO: обновление списков
     console.log("обновление списков")
+    setLoading(true);
+    Promise.all([getStudentsList(setMessage, setStudentList), getTasksList(setTasks)])
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(error => {
+        setMessage(error)
+      });
   };
 
   const handleClickAppoint = async () => {
@@ -84,134 +96,97 @@ const DistributionOfTasks = () => {
         tasksList: selectedTasks.map(({ isChecked, ...rest }) => rest), // Исключаем isChecked из объектов
         studentList: selectedStudents.map(({ isChecked, ...rest }) => rest)
       };
-      const jsonData = JSON.stringify(dataToPass);
 
-      // function downloadJSON(jsonData, filename) {
-      //   const blob = new Blob([jsonData], { type: 'application/json' });
-      //   const url = URL.createObjectURL(blob);
-
-      //   const a = document.createElement('a');
-      //   a.href = url;
-      //   a.download = filename;
-
-      //   document.body.appendChild(a);
-      //   a.click();
-      //   document.body.removeChild(a);
-      //   URL.revokeObjectURL(url);
-      // }
-
-      console.log(jsonData);
-
-      // const filename = 'data.json';
-      // downloadJSON(jsonData, filename);
-      // TODO: ошибка с dataToPass Ошибка при выполнении запроса: Unexpected non-whitespace character after JSON at position 4 (line 1 column 5)
-      fetch(`/api/v1/issueChecker/assignTasksToStudents`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataToPass)
-      })
-        .then(response => {
-          console.log(response.ok)
-          if (!response.ok) {
-            throw new Error(`Ошибка сервера: ${response.status}`);
-          }
-          console.log("response", response)
-          return response.text();
-        })
-        .then(data => {
-          console.log('Ответ от сервера:', data);
-        })
-        .catch(error => {
-          console.error('Ошибка при выполнении запроса:', error.message);
-        });
+      postAssign(dataToPass);
     }
   };
 
   return (
-    <div className='main-conn-wrap distr-wrap'>
+    <>
 
-      {loading ? <><br /><div>
-        <ErrorWindow isOpen={loading} error={message} />
+      <div className='main-conn-wrap distr-wrap'>
 
-      </div><br /> </> : <>
-        <div className='checkbox-wrap'>
-          <label className='label-class' >Студенты</label>
-          {studentList.length > 0 && (
-            <div key={studentList[0].studentId} className='padding-wrap'>
-              <input
-                className='checkbox'
-                type="checkbox"
-                checked={studentList[0].isChecked}
-                onChange={() => handleStudentsChange(studentList[0].studentId)}
-              />
-              <label>
-                {studentList[0].studentName}
-              </label>
-            </div>
-          )}
-          <div className="checkbox-list">
-            <div className='scroll-checkbox'>
-              {studentList.slice(1).map((checkbox) => (
-                <div key={checkbox.studentId}>
-                  <input
-                    className='checkbox'
-                    type="checkbox"
-                    checked={checkbox.isChecked}
-                    onChange={() => handleStudentsChange(checkbox.studentId)}
-                  />
-                  <label>
-                    {checkbox.studentName}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        {loading ? <><br /><div>
+          <ErrorWindow isOpen={loading} error={message} />
 
-        <div className='checkbox-wrap'>
-          <label className='label-class'>Задачи</label>
-          {tasks.length > 0 && (
-            <div key={tasks[0].issueId} className='padding-wrap'>
-              <input
-                className='checkbox'
-                type="checkbox"
-                checked={tasks[0].isChecked}
-                onChange={() => handleTasksChange(tasks[0].issueId)}
-              />
-              <label>
-                {tasks[0].issueSubject}
-              </label>
-            </div>
-          )}
-          <div className="checkbox-list">
-            <div className='scroll-checkbox'>
-              {tasks.slice(1).map((checkbox) => (
-                <div key={checkbox.issueId}>
-                  <input
-                    className='checkbox'
-                    type="checkbox"
-                    checked={checkbox.isChecked}
-                    onChange={() => handleTasksChange(checkbox.issueId)}
-                  />
-                  <label>
-                    {checkbox.issueSubject}
-                  </label>
-                </div>
-              ))}
+        </div><br /> </> : <>
+          <div className='checkbox-wrap'>
+            <label className='label-class' >Студенты</label>
+            {studentList.length > 0 && (
+              <div key={studentList[0].studentId} className='padding-wrap'>
+                <input
+                  className='checkbox'
+                  type="checkbox"
+                  checked={studentList[0].isChecked}
+                  onChange={() => handleStudentsChange(studentList[0].studentId)}
+                />
+                <label>
+                  {studentList[0].studentName}
+                </label>
+              </div>
+            )}
+            <div className="checkbox-list">
+              <div className='scroll-checkbox'>
+                {studentList.slice(1).map((checkbox) => (
+                  <div key={checkbox.studentId}>
+                    <input
+                      className='checkbox'
+                      type="checkbox"
+                      checked={checkbox.isChecked}
+                      onChange={() => handleStudentsChange(checkbox.studentId)}
+                    />
+                    <label>
+                      {checkbox.studentName}
+                    </label>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-        <div className='btn-row-cont'>
-          <button className="b-button margin-btn" onClick={handleClickDownloadList}>Обновить списки</button>
-          <button className="b-button margin-btn" onClick={handleClickAppoint}>Назначить выделенное</button>
-        </div>
-        {/* {response && <p>Ответ от сервера: {JSON.stringify(response)}</p>} */}
-      </>}
 
-    </div >
+          <div className='checkbox-wrap'>
+            <label className='label-class'>Задачи</label>
+            {tasks.length > 0 && (
+              <div key={tasks[0].issueId} className='padding-wrap'>
+                <input
+                  className='checkbox'
+                  type="checkbox"
+                  checked={tasks[0].isChecked}
+                  onChange={() => handleTasksChange(tasks[0].issueId)}
+                />
+                <label>
+                  {tasks[0].issueSubject}
+                </label>
+              </div>
+            )}
+            <div className="checkbox-list">
+              <div className='scroll-checkbox'>
+                {tasks.slice(1).map((checkbox) => (
+                  <div key={checkbox.issueId}>
+                    <input
+                      className='checkbox'
+                      type="checkbox"
+                      checked={checkbox.isChecked}
+                      onChange={() => handleTasksChange(checkbox.issueId)}
+                    />
+                    <label>
+                      {checkbox.issueSubject}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className='btn-row-cont'>
+            <button className="b-button margin-btn" onClick={handleClickDownloadList}>Обновить списки</button>
+            <button className="b-button margin-btn" onClick={handleClickAppoint}>Назначить выделенное</button>
+          </div>
+          {/* {response && <p>Ответ от сервера: {JSON.stringify(response)}</p>} */}
+        </>}
+
+      </div >
+    </>
+
   );
 }
 

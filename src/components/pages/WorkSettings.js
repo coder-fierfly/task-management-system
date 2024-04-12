@@ -1,48 +1,59 @@
 import React, { useState, useEffect } from "react";
 import DropdownList from "../mini-elements/DropdownList";
 import ErrorWindow from '../mini-elements/ErrorWindow';
-import { fetchRobotSettings } from '../requestsToTheBack/ReqWorkSettings';
+import { getRobotSettings, putRobotSettings } from '../requestsToTheBack/ReqWorkSettings';
 
 const WorkSettings = () => {
   // радиокнопки
   const [selectedOptionSuccess, setSelectedOptionSuccess] = useState("");
   const [selectedOptionTranslate, setSelectedOptionTranslate] = useState("teacher");
   // чекбоксы
-  // TODO: статус задачи при успешной проверке
   const [checkboxValues, setCheckboxValues] = useState(false);
-  const [message, setMessage] = useState('Loading...')
+  const [message, setMessage] = useState('Loading...');
   const [loading, setLoading] = useState(true);
 
   // список со способами оповещения об ошибках
-  // TODO: список со способами оповещения об ошибках
   const listOptionsErrLint = [{ name: "По умолчанию", id: "FULL_INFO" }, { name: "Только количество ошибок", id: "COUNT_ONLY" }, { name: "Только наличие ошибок", id: "ARE_ERRORS_ONLY" }];
-  const [errLint, setErrLint] = useState("");
+  const [errLint, setErrLint] = useState("FULL_INFO");
 
   useEffect(() => {
+    setLoading(true);
     setMessage('Loading...');
-    // "needCloseTasks":true значит Close, false — approve.
-    fetchRobotSettings(setCheckboxValues, listOptionsErrLint, setErrLint, setSelectedOptionSuccess, setSelectedOptionTranslate, setLoading, setMessage);
+    getRobotSettings(
+      setCheckboxValues,
+      setErrLint,
+      setSelectedOptionSuccess,
+      setSelectedOptionTranslate,
+      setLoading, // Передаем resolve вместо setLoading
+      setMessage
+    );
+    setLoading(false);
   }, []);
 
   // Функция для обработки изменений в radio button
   const handleRadioChangeSuccess = (event) => {
-    // TODO: обработчик
-    setSelectedOptionSuccess(event.target.value === "true");
+    var selOption = event.target.value === "true";
+    setSelectedOptionSuccess(selOption);
+    setMessage('Loading...');
+    setLoading(true);
+    putRobotSettings(checkboxValues, errLint, selOption, selectedOptionTranslate, setMessage, setLoading)
   };
   const handleRadioChangeTranslate = (event) => {
-    // TODO: обработчик
     setSelectedOptionTranslate(event.target.value);
+    setMessage('Loading...');
+    setLoading(true);
+    putRobotSettings(checkboxValues, errLint, selectedOptionSuccess, event.target.value, setMessage, setLoading)
   };
 
   const handleErrChange = (event) => {
     setErrLint(event);
+    putRobotSettings(checkboxValues, event, selectedOptionSuccess, selectedOptionTranslate, setMessage, setLoading)
   }
 
   // смена значений в checkbox
   const handleCheckboxChange = (event) => {
-    // TODO: обработчик
-    console.log("handleCheckboxChange   ", errLint)
     setCheckboxValues(event.target.checked)
+    putRobotSettings(event.target.checked, errLint, selectedOptionSuccess, selectedOptionTranslate, setMessage, setLoading)
   };
 
   return (
@@ -66,10 +77,10 @@ const WorkSettings = () => {
           <p className="label">Способ оповещения об ошибках: </p>
           <DropdownList
             options={listOptionsErrLint}
-            selectedValue={errLint}
+            selectedValue={listOptionsErrLint.find(option => option.id === errLint).name}
             onSelectedValueChange={handleErrChange}
             id="listOptionsErrId"
-            outputLabel={errLint}
+            outputLabel={listOptionsErrLint.find(option => option.id === errLint).name}
           />
           <div>
             <div className="label-center">

@@ -1,7 +1,11 @@
-export const fetchStudentsList = (setMessage, setStudentList) => {
+import React, { useContext } from 'react';
+
+export const getStudentsList = (setMessage, setStudentList, chosenIteration) => {
   return new Promise((resolve, reject) => {
-    // TODO: 42 заменить
-    fetch('/api/v1/issueChecker/getStudentsList/42', {
+    console.log("chosenIteration!!! ", chosenIteration)
+    var buff = `/api/v1/issueChecker/getStudentsList/${chosenIteration}`;
+    console.log("buff", buff)
+    fetch(buff, {
       method: 'get',
       headers: {
         'Accept': 'application/json',
@@ -36,10 +40,11 @@ export const fetchStudentsList = (setMessage, setStudentList) => {
   });
 };
 
-export const fetchTasksList = (setTasks) => {
-  // TODO: 42/42 - заменить
+export const getTasksList = (setTasks, chosenIteration) => {
+  // TODO: 42 - заменить iterationId
   return new Promise((resolve, reject) => {
-    fetch('/api/v1/issueChecker/getTasksList/42/42', {
+    // `/api/v1/issueChecker/getTasksList/42/${chosenIteration}`
+    fetch(`/api/v1/issueChecker/getTasksList/42/${chosenIteration}`, {
       method: 'get',
       headers: {
         'Accept': 'application/json',
@@ -67,3 +72,26 @@ export const fetchTasksList = (setTasks) => {
       });
   });
 };
+
+export const postAssign = (dataToPass) => {
+  fetch(`/api/v1/issueChecker/assignTasksToStudents`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(dataToPass)
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Ошибка сервера: ${response.status}`);
+      }
+      console.log(response.text());
+    })
+    .then(data => {
+      console.log('Ответ от сервера:', data);
+    })
+    .catch(error => {
+      console.error('Ошибка при выполнении запроса:', error.message);
+    });
+}

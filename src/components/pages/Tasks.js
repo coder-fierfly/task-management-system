@@ -5,9 +5,8 @@ import DropdownList from '../mini-elements/DropdownList';
 import CreateNewTask from '../mini-elements/CreateNewTask';
 import ConfirmationWindow from '../mini-elements/ConfirmationWindow';
 import ErrorWindow from '../mini-elements/ErrorWindow';
-import { getAllTopics, getTasks, getTests, handleIter } from '../requestsToTheBack/ReqTasks';
+import { getAllTopics, getTasks, getTests, handleIter, putTest, postIssue } from '../requestsToTheBack/ReqTasks';
 
-// TODO: тесты разобраться
 function Tasks() {
   const [taskChange, setTaskChange] = useState(true);
   const [themeList, setThemeList] = useState([]);
@@ -18,18 +17,21 @@ function Tasks() {
   const [inputExpRes, setExpRes] = useState(); // ожидаемый результат
   const [chosenTask, setChosenTask] = useState(''); // задача выбранная
   const [chosenTest, setChosenTest] = useState(''); // тест выбранный
+  const [config, setConfig] = useState(''); // текст конфигурации задачи
   const [chosenTheme, setChosenTheme] = useState(''); // тема выбранная 
   const [message, setMessage] = useState('Loading...')
   const [loading, setLoading] = useState(true);
+  const [nameOfTask, setNameOfTask] = useState('');
+  const [nameConf, setConf] = useState('');
+  const [descOfTask, setDeskOfTask] = useState('');
+  const [isCreateNewTaskOpen, setCreateNewTaskOpen] = useState(false);
+  const [isConfOpen, setConfOpen] = useState(false);
+
+
   useEffect(() => {
     getAllTopics(setThemeList, setLoading, setMessage);
     setLoading(false);
   }, []);
-
-  const [nameOfTask, setNameOfTask] = useState('');
-  const [nameConf, setConf] = useState('');
-  const [descOfTask, setDeskOfTask] = useState('');
-
   const themeNamesArray = themeList.map((theme) => theme.themeName);
   if (selectedTheme.length === 0) {
     setSelectedTheme(themeNamesArray);
@@ -37,11 +39,6 @@ function Tasks() {
 
   themeNamesArray.sort();
   themeNamesArray.unshift('Все темы');
-
-
-  // TODO:
-  // сортировка списков и добавление варианта в начало
-  // listTestName.sort();
 
   // реагирует на изменение в поле ввода с входными данными
   const handleInputData = (event) => {
@@ -53,12 +50,10 @@ function Tasks() {
     console.log("удаляяяем")
   }
 
-  const [isCreateNewTaskOpen, setCreateNewTaskOpen] = useState(false);
-  const [isConfOpen, setConfOpen] = useState(false);
-
   // просмотр тестов
   const handleSaveTests = () => {
-    console.log("Кнопка сохранить тест");
+    console.log("handleSaveTests");
+    putTest(chosenTask, inputData, inputExpRes, setLoading);
   }
 
   // реагирует на изменение в поле ввода с ожидаемым результатом
@@ -74,17 +69,10 @@ function Tasks() {
     if (currentIndex > 0) {
       handleTestChange(listTest[currentIndex - 1].id);
     }
-
   }
   const handleRight = () => {
-
-    console.log("handleRight")
-    console.log(chosenTest)
     const testIdAsNumber = +chosenTest;
     const currentIndex = listTest.findIndex(test => test.id === testIdAsNumber);
-    console.log(currentIndex)
-    console.log(listTest.length - 1)
-    console.log(currentIndex < listTest.length - 1)
     if (currentIndex < listTest.length - 1) {
       handleTestChange(listTest[currentIndex + 1].id);
     }
@@ -92,15 +80,40 @@ function Tasks() {
 
   // кнопки к задачам, плюс, корзина и информация
   const handlePlusTask = () => {
-    setTaskChange(true);
-    setNameOfTask('');
-    setDeskOfTask('');
-    setCreateNewTaskOpen(true);
     console.log("кнопка плюс задача");
+    setTaskChange(false);
+    setChosenTask('');
+    setCreateNewTaskOpen(true);
+    // handleTaskChange('');
   }
+
+  const [key, setKey] = useState(0);
+
+  // Обновляем ключ каждый раз, когда изменяется selectedValue
+  useEffect(() => {
+    setKey(prevKey => prevKey + 1);
+  }, [chosenTask]);
+
+  const handleInfoTask = () => {
+    setTaskChange(true);
+    const foundTask = listTask.find(task => task.id === chosenTask);
+    setNameOfTask(foundTask.taskSubject);
+    setDeskOfTask(foundTask.taskDescription);
+    setConfig(foundTask.config)
+    setCreateNewTaskOpen(true);
+    console.log("кнопка информации о задачке")
+  }
+
   const closeCreateNewTask = () => {
     setCreateNewTaskOpen(false);
   };
+
+  const handleTaskChange = (value) => {
+    getTests(value, setListTest, setChosenTask, setMessage);
+    setLoading(false);
+    setChosenTask(value)
+    setChosenTest(''); // сброс выбранного теста при изменении задачи
+  }
 
   const closeConf = () => {
     setConfOpen(false);
@@ -110,12 +123,6 @@ function Tasks() {
     getTasks(value, setChosenTheme, setListTask, setMessage);
     setChosenTask(''); // сброс выбранной задачи при изменении темы
     setLoading(false);
-  }
-
-  const handleTaskChange = (value) => {
-    getTests(value, setListTest, setChosenTask, setMessage);
-    setLoading(false);
-    setChosenTest(''); // сброс выбранного теста при изменении задачи
   }
 
   const handleTrashTask = () => {
@@ -144,97 +151,18 @@ function Tasks() {
     console.log("кнопка теста в мусор")
   }
 
-  const handleInfoTask = () => {
-    setTaskChange(true);
-    console.log("chosenTask " + chosenTask)
-    const foundTask = listTask.find(task => task.id === chosenTask);
-    setData();
-    setNameOfTask(foundTask.taskSubject);
-    setDeskOfTask(foundTask.taskDescription);
-    setCreateNewTaskOpen(true);
-    console.log("кнопка информации о задачке")
-  }
-
   // кнопки к тесту плюс, корзина
   const handlePlusTest = () => {
-    setTaskChange(false);
-    // TODO: очистка входных и выходных
+    setData('');
+    setExpRes('');
     console.log("кнопка плюс тест");
-
   }
 
   const handleYourIter = () => {
     console.log("добавить задачу себе в итерацию")
-    fetch('/api/v1/tasks/addIssue', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        "taskId": chosenTask,
-        // TODO: IterationId найти
-        "iterationId": "IterationId"
-      })
-    })
-      .then(response => {
-        console.log("response.status ", response.status);
-        if (!response.ok) {
-          throw new Error('Ошибка сети: ' + response.status);
-        }
-      })
-      .catch(error => {
-        setMessage('Ошибка при выполнении запроса:', error);
-      });
+    postIssue(chosenTask, setMessage);
     handleIter(chosenTask, setMessage);
   }
-  const handleSaveNew = () => {
-    console.log("!!!");
-    console.log(themeList.find(item => item.id === chosenTheme).name)
-    console.log(chosenTask)
-    console.log(descOfTask)
-
-    console.log(chosenTheme)
-
-    console.log("tg", themeList)
-    if (setTaskChange) {
-      console.log("сохранить задачу")
-      fetch('/api/v1/tasks/addOrUpdateTask', {
-        method: 'PUT',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          taskSubject: themeList.find(item => item.id === chosenTheme).name,
-          taskId: chosenTask,
-          taskDescription: descOfTask,
-          themeId: chosenTheme,
-          // TODO:  folderName: "string", config: "string"
-          folderName: "string",
-          config: "string"
-        })
-      })
-        .then(response => {
-          console.log(response)
-          if (!response.ok) {
-            throw new Error('Ошибка сервера: ' + response.status);
-          }
-          return response.json();
-        })
-        .then(responseData => {
-          // обработка ответа от сервера при необходимости
-        })
-        .catch(error => {
-          console.error('Произошла ошибка:', error);
-        });
-
-    } else {
-      console.log("сохранить тест")
-    }
-    console.log("сохранить")
-  }
-
   return (
     <>
       <div className='main-conn-wrap t-w'>
@@ -247,13 +175,18 @@ function Tasks() {
                 onSelectedValueChange={handleThemeChange}
                 outputLabel="Выберите тему"
               />
-              <DropdownList
-                options={listTask}
-                selectedValue={chosenTask}
-                onSelectedValueChange={handleTaskChange}
-                outputLabel="Выберите задачу"
-                disabled={!chosenTheme} // задачи будут недоступны, если тема не выбрана
-              />
+              <div key={key}>
+                <DropdownList
+                  options={listTask}
+                  selectedValue={chosenTask}
+                  onSelectedValueChange={(value) => {
+                    handleTaskChange(value);
+                    setChosenTask(value);
+                  }}
+                  outputLabel="Выберите задачу"
+                  disabled={!chosenTheme} // задачи будут недоступны, если тема не выбрана
+                />
+              </div>
               <div className="flex-line-tasks">
                 <button onClick={handleYourIter} className="b-button left-btn" disabled={!chosenTask}>Добавить задачу себе в итерацию</button>
                 <div>
@@ -278,7 +211,6 @@ function Tasks() {
                     }
                   </div>
                 </button>
-
               </div>
               <DropdownList
                 key={chosenTest}
@@ -289,7 +221,7 @@ function Tasks() {
                 disabled={!chosenTask} // тесты будут недоступны, если задача не выбрана
               />
               <div className="flex-line-right">
-                <button onClick={handlePlusTest} className="b-button little-btn" disabled={!chosenTest}>+</button>
+                <button onClick={handlePlusTest} className="b-button little-btn" disabled={!chosenTask}>+</button>
                 <button onClick={handleTrashTest} className="b-button trash-btn help" disabled={!chosenTest}>
                   <div className='flex'>
                     <div className='flex'>
@@ -307,19 +239,19 @@ function Tasks() {
               <div className='label-cont'>
                 <label className="label center-label">Входные данные</label>
                 <textarea className="input-field input-height" type="textarea" value={inputData}
-                  onChange={handleInputData} />
+                  onChange={handleInputData} disabled={!chosenTask} />
                 <button onClick={handleLeft} className="b-button little-btn right-btn" disabled={!chosenTask}>{'<'}</button>
               </div>
 
               <div className='label-cont'>
                 <label className="label center-label">Ожидаемый результат</label>
                 <textarea className="input-field input-height" type="text" value={inputExpRes}
-                  onChange={handleInputExpRes} />
+                  onChange={handleInputExpRes} disabled={!chosenTask} />
                 <button onClick={handleRight} className="b-button little-btn" disabled={!chosenTask}>{'>'}</button>
               </div>
             </div>
-            <button onClick={handleSaveTests} className="b-button b-width">Сохранить</button>
-            <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} passedName={nameOfTask} passedDesc={descOfTask} saveBtn={handleSaveNew} />
+            <button onClick={handleSaveTests} className="b-button b-width" disabled={!chosenTask}>Сохранить</button>
+            <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} passedName={nameOfTask} passedDesc={descOfTask} passedConf={config} taskChange={taskChange} themeList={themeList} chosenTheme={chosenTheme} chosenTask={chosenTask} descOfTask={descOfTask} setLoading={setLoading} />
             <ConfirmationWindow isOpen={isConfOpen} onClose={closeConf} delBtn={setDel} whatDel={nameConf} />
           </>}
         </div>
