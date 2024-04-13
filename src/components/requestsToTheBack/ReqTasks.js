@@ -41,7 +41,7 @@ export const getTasks = (value, setChosenTheme, setListTask, setMessage) => {
             'Content-Type': 'application/json'
         }
     })
-        .then(response => response.json())
+        .then(response => { return response.json(); })
         .then(data => {
             setChosenTheme(value);
             const taskArray = data.tasksInTheme.map(task => ({
@@ -65,7 +65,6 @@ export const getTasks = (value, setChosenTheme, setListTask, setMessage) => {
                 }
                 return 0;
             });
-
             setListTask('');
             setListTask(sortedTasks);
         }).catch(error => {
@@ -83,7 +82,7 @@ export const getTests = (value, setListTest, setChosenTask, setMessage) => {
             'Content-Type': 'application/json'
         }
     })
-        .then(response => response.json())
+        .then(response => { return response.json(); })
         .then(data => {
             const testArray = data.taskTests.map(task => ({
                 id: task.testId,
@@ -101,7 +100,7 @@ export const getTests = (value, setListTest, setChosenTask, setMessage) => {
 
 };
 
-export const handleIter = (chosenTask, setMessage) => {
+export const handleIter = (chosenTask, setMessage, chosenIteration) => {
     fetch('/api/v1/tasks/addIssue', {
         method: 'POST',
         headers: {
@@ -110,15 +109,17 @@ export const handleIter = (chosenTask, setMessage) => {
         },
         body: JSON.stringify({
             "taskId": chosenTask,
-            // TODO: IterationId найти
-            "iterationId": "IterationId"
+            "iterationId": chosenIteration
         })
     })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Ошибка сети: ' + response.status);
             }
-            console.log(response.text());
+            return response.text();
+        })
+        .then(result => {
+            console.log('Результат:', result);
         })
         .catch(error => {
             setMessage('Ошибка при выполнении запроса:', error);
@@ -126,6 +127,9 @@ export const handleIter = (chosenTask, setMessage) => {
 }
 
 export const putTest = (chosenTask, inputData, inputExpRes, setLoading) => {
+    console.log("chosenTask", chosenTask)
+    console.log("inputData", inputData)
+    console.log("inputExpRes", inputExpRes)
     fetch('/api/v1/tasks/addOrUpdateTest', {
         method: 'PUT',
         headers: {
@@ -143,15 +147,18 @@ export const putTest = (chosenTask, inputData, inputExpRes, setLoading) => {
             if (!response.ok) {
                 throw new Error('Ошибка сервера: ' + response.status);
             }
-            console.log(response.text());
+            return response.text();
         })
-        .then(setLoading(false))
+        .then(result => {
+            console.log('Результат:', result);
+            setLoading(false);
+        })
         .catch(error => {
             console.error('Произошла ошибка:', error);
         });
 }
 
-export const postIssue = (chosenTask, setMessage) => {
+export const postIssue = (chosenTask, setMessage, chosenIteration) => {
     fetch('/api/v1/tasks/addIssue', {
         method: 'POST',
         headers: {
@@ -161,14 +168,17 @@ export const postIssue = (chosenTask, setMessage) => {
         body: JSON.stringify({
             "taskId": chosenTask,
             // TODO: IterationId найти
-            "iterationId": "IterationId"
+            "iterationId": chosenIteration
         })
     })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Ошибка сети: ' + response.status);
             }
-            console.log(response.text());
+            return response.text();
+        })
+        .then(result => {
+            console.log('Результат:', result);
         })
         .catch(error => {
             setMessage('Ошибка при выполнении запроса:', error);

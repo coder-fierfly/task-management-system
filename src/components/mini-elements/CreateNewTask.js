@@ -94,11 +94,11 @@ const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, ta
                                         </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails className='desk-wrap'>
-                                        <textarea className="input-field input-height" id="inputNumId" type="text" value={inputName}
+                                        <textarea className="input-field input-height input-height-100" id="inputNumId" type="text" value={inputName}
                                             onChange={handleInputName} placeholder="Название" />
-                                        <textarea className="input-field input-height" type="text" value={inputDesc}
+                                        <textarea className="input-field input-height input-height-100" type="text" value={inputDesc}
                                             onChange={handleInputDesc} placeholder="Описание" />
-                                        <textarea className="input-field input-height" type="text" value={inputConf}
+                                        <textarea className="input-field input-height input-height-100" type="text" value={inputConf}
                                             onChange={handleInputConf} placeholder="Конфигурация" />
                                         <button onClick={saveBtn} className="b-button right-btn save-btn">Сохранить</button>
                                     </AccordionDetails>

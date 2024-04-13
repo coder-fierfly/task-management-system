@@ -1,7 +1,12 @@
 import React from 'react';
 import '../../App.css';
 
-const MoreInfo = ({ isOpen, toggleModal }) => {
+const MoreInfo = ({ isOpen, toggleModal, logs }) => {
+
+    function createMarkup(logs) {
+        return { __html: logs.map(log => log.log).join('<br>') };
+    }
+
     if (!isOpen) {
         return null; // Если isOpen равно false, возвращаем null
     }
@@ -14,10 +19,10 @@ const MoreInfo = ({ isOpen, toggleModal }) => {
                     </button>
                 </div>
                 <div className='more-info-container'>
-                    <div className='t-a-cont'>
-                        <textarea className='t-a-more' defaultValue={'букавы ввв букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы букавы '}></textarea>
+                        <div className='t-a-cont'>
+                            <div className='t-a-more' dangerouslySetInnerHTML={createMarkup(logs)} />
+                        </div>
                     </div>
-                </div>
             </div>
         </div>
     );

@@ -1,11 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../../App.css';
 import DropdownList from '../mini-elements/DropdownList';
 import CreateNewTask from '../mini-elements/CreateNewTask';
 import ConfirmationWindow from '../mini-elements/ConfirmationWindow';
 import ErrorWindow from '../mini-elements/ErrorWindow';
 import { getAllTopics, getTasks, getTests, handleIter, putTest, postIssue } from '../requestsToTheBack/ReqTasks';
+import IterationContext from '../IterationContext';
+
 
 function Tasks() {
   const [taskChange, setTaskChange] = useState(true);
@@ -26,6 +28,7 @@ function Tasks() {
   const [descOfTask, setDeskOfTask] = useState('');
   const [isCreateNewTaskOpen, setCreateNewTaskOpen] = useState(false);
   const [isConfOpen, setConfOpen] = useState(false);
+  const { chosenIteration, chosenProject } = useContext(IterationContext);
 
 
   useEffect(() => {
@@ -46,7 +49,6 @@ function Tasks() {
   };
 
   const setDel = () => {
-    // TODO: удаление???
     console.log("удаляяяем")
   }
 
@@ -160,8 +162,8 @@ function Tasks() {
 
   const handleYourIter = () => {
     console.log("добавить задачу себе в итерацию")
-    postIssue(chosenTask, setMessage);
-    handleIter(chosenTask, setMessage);
+    postIssue(chosenTask, setMessage, chosenIteration);
+    handleIter(chosenTask, setMessage, chosenIteration);
   }
   return (
     <>
@@ -202,13 +204,13 @@ function Tasks() {
                   {/* кнопка плюс */}
                   <button onClick={handlePlusTask} className="b-button little-btn" disabled={!chosenTheme}>+</button></div>
                 {/* кнопка мусорки */}
-                <button onClick={handleTrashTask} className="b-button trash-btn" disabled={!chosenTheme}>
+                <button onClick={handleTrashTask} className="b-button trash-btn" disabled={true}>
                   <div className='flex'>
-                    {chosenTask ?
+                    {/* {chosenTask ?
                       <svg xmlns="http://www.w3.org/2000/svg" height="19" viewBox="0 -960 960 960" width="19"><path d="M256.478-105.869q-33.49 0-56.637-22.981-23.147-22.98-23.147-56.237v-560.391h-50.609v-79.218h212.306v-40.175h282.653v40.175h212.871v79.218h-50.609v560.391q0 32.507-23.522 55.862-23.522 23.356-56.262 23.356H256.478Zm447.044-639.609H256.478v560.391h447.044v-560.391Zm-343.87 478.913h69.609v-399h-69.609v399Zm171.087 0h70.174v-399h-70.174v399ZM256.478-745.478v560.391-560.391Z" /></svg>
-                      :
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="#AAAAAA" height="19" viewBox="0 -960 960 960" width="19"><path d="M256.478-105.869q-33.49 0-56.637-22.981-23.147-22.98-23.147-56.237v-560.391h-50.609v-79.218h212.306v-40.175h282.653v40.175h212.871v79.218h-50.609v560.391q0 32.507-23.522 55.862-23.522 23.356-56.262 23.356H256.478Zm447.044-639.609H256.478v560.391h447.044v-560.391Zm-343.87 478.913h69.609v-399h-69.609v399Zm171.087 0h70.174v-399h-70.174v399ZM256.478-745.478v560.391-560.391Z" /></svg>
-                    }
+                      : */}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#AAAAAA" height="19" viewBox="0 -960 960 960" width="19"><path d="M256.478-105.869q-33.49 0-56.637-22.981-23.147-22.98-23.147-56.237v-560.391h-50.609v-79.218h212.306v-40.175h282.653v40.175h212.871v79.218h-50.609v560.391q0 32.507-23.522 55.862-23.522 23.356-56.262 23.356H256.478Zm447.044-639.609H256.478v560.391h447.044v-560.391Zm-343.87 478.913h69.609v-399h-69.609v399Zm171.087 0h70.174v-399h-70.174v399ZM256.478-745.478v560.391-560.391Z" /></svg>
+                    {/* } */}
                   </div>
                 </button>
               </div>
@@ -222,14 +224,14 @@ function Tasks() {
               />
               <div className="flex-line-right">
                 <button onClick={handlePlusTest} className="b-button little-btn" disabled={!chosenTask}>+</button>
-                <button onClick={handleTrashTest} className="b-button trash-btn help" disabled={!chosenTest}>
+                <button onClick={handleTrashTest} className="b-button trash-btn help" disabled={true}>
                   <div className='flex'>
                     <div className='flex'>
-                      {chosenTest ?
-                        <svg xmlns="http://www.w3.org/2000/svg" height="19" viewBox="0 -960 960 960" width="19"><path d="M256.478-105.869q-33.49 0-56.637-22.981-23.147-22.98-23.147-56.237v-560.391h-50.609v-79.218h212.306v-40.175h282.653v40.175h212.871v79.218h-50.609v560.391q0 32.507-23.522 55.862-23.522 23.356-56.262 23.356H256.478Zm447.044-639.609H256.478v560.391h447.044v-560.391Zm-343.87 478.913h69.609v-399h-69.609v399Zm171.087 0h70.174v-399h-70.174v399ZM256.478-745.478v560.391-560.391Z" /></svg>
-                        :
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="#AAAAAA" height="19" viewBox="0 -960 960 960" width="19"><path d="M256.478-105.869q-33.49 0-56.637-22.981-23.147-22.98-23.147-56.237v-560.391h-50.609v-79.218h212.306v-40.175h282.653v40.175h212.871v79.218h-50.609v560.391q0 32.507-23.522 55.862-23.522 23.356-56.262 23.356H256.478Zm447.044-639.609H256.478v560.391h447.044v-560.391Zm-343.87 478.913h69.609v-399h-69.609v399Zm171.087 0h70.174v-399h-70.174v399ZM256.478-745.478v560.391-560.391Z" /></svg>
-                      }
+                      {/* {chosenTest ? */}
+                      {/* <svg xmlns="http://www.w3.org/2000/svg" height="19" viewBox="0 -960 960 960" width="19"><path d="M256.478-105.869q-33.49 0-56.637-22.981-23.147-22.98-23.147-56.237v-560.391h-50.609v-79.218h212.306v-40.175h282.653v40.175h212.871v79.218h-50.609v560.391q0 32.507-23.522 55.862-23.522 23.356-56.262 23.356H256.478Zm447.044-639.609H256.478v560.391h447.044v-560.391Zm-343.87 478.913h69.609v-399h-69.609v399Zm171.087 0h70.174v-399h-70.174v399ZM256.478-745.478v560.391-560.391Z" /></svg>
+                         : */}
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="#AAAAAA" height="19" viewBox="0 -960 960 960" width="19"><path d="M256.478-105.869q-33.49 0-56.637-22.981-23.147-22.98-23.147-56.237v-560.391h-50.609v-79.218h212.306v-40.175h282.653v40.175h212.871v79.218h-50.609v560.391q0 32.507-23.522 55.862-23.522 23.356-56.262 23.356H256.478Zm447.044-639.609H256.478v560.391h447.044v-560.391Zm-343.87 478.913h69.609v-399h-69.609v399Zm171.087 0h70.174v-399h-70.174v399ZM256.478-745.478v560.391-560.391Z" /></svg>
+                      {/* } */}
                     </div>
                   </div>
                 </button>

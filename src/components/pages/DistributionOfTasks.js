@@ -10,15 +10,17 @@ const DistributionOfTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [message, setMessage] = useState('Loading...')
   const [loading, setLoading] = useState(true);
-  const { chosenIteration } = useContext(IterationContext);
+  const { chosenIteration, chosenProject } = useContext(IterationContext);
   console.log("chosenIteration@!@!", chosenIteration);
+  console.log("chosenProject! ", chosenProject)
 
 
   useEffect(() => {
     console.log("!!chosenIteration ", chosenIteration)
+    console.log("chosenProject! ", chosenProject)
     setLoading(false);
     if (chosenIteration) {
-      Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration), getTasksList(setTasks)])
+      Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration), getTasksList(setTasks,chosenProject,chosenIteration)])
         .then(() => {
           setLoading(false);
         })

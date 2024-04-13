@@ -56,9 +56,10 @@ export const putRobotSettings = (checkboxValues, errLint, selectedOptionSuccess,
         setMessage('Ошибка сервера: ' + response.status);
         throw new Error('Ошибка сервера: ' + response.status);
       }
-      console.log(response.text());
+      return response.text();
     })
-    .then(data => {
+    .then(result => {
+      console.log('Результат:', result);
       setLoading(false);
     })
     .catch(error => {

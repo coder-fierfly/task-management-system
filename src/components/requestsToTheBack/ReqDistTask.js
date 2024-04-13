@@ -1,5 +1,3 @@
-import React, { useContext } from 'react';
-
 export const getStudentsList = (setMessage, setStudentList, chosenIteration) => {
   return new Promise((resolve, reject) => {
     console.log("chosenIteration!!! ", chosenIteration)
@@ -40,11 +38,9 @@ export const getStudentsList = (setMessage, setStudentList, chosenIteration) => 
   });
 };
 
-export const getTasksList = (setTasks, chosenIteration) => {
-  // TODO: 42 - заменить iterationId
+export const getTasksList = (setTasks, chosenProject, chosenIteration) => {
   return new Promise((resolve, reject) => {
-    // `/api/v1/issueChecker/getTasksList/42/${chosenIteration}`
-    fetch(`/api/v1/issueChecker/getTasksList/42/${chosenIteration}`, {
+    fetch(`/api/v1/issueChecker/getTasksList/${chosenProject}/${chosenIteration}`, {
       method: 'get',
       headers: {
         'Accept': 'application/json',
@@ -86,7 +82,10 @@ export const postAssign = (dataToPass) => {
       if (!response.ok) {
         throw new Error(`Ошибка сервера: ${response.status}`);
       }
-      console.log(response.text());
+      return response.json();
+    })
+    .then(result => {
+      console.log('Результат:', result);
     })
     .then(data => {
       console.log('Ответ от сервера:', data);

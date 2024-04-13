@@ -45,23 +45,30 @@ export default function TabPanel() {
     localStorage.removeItem('isLogged');
   };
 
-  const [chosenIteration, setChosenIteration] = useState('')
-  // const [chosenProject, setChosenProject] = useState('');
-  console.log("!!AAAA ", chosenIteration)
-  // console.log('chosenProject )) ', chosenProject)
+  const [chosenIteration, setChosenIteration] = useState(() => {
+    const savedIteration = localStorage.getItem('chosenIteration');
+    return savedIteration ? JSON.parse(savedIteration) : '';
+  });
 
-  // Сохранение значения в localStorage
-  localStorage.setItem('chosenIteration', JSON.stringify(chosenIteration));
-  // localStorage.setItem('chosenProject', JSON.stringify(chosenProject));
+  const [chosenProject, setChosenProject] = useState(() => {
+    const savedProject = localStorage.getItem('chosenProject');
+    return savedProject ? JSON.parse(savedProject) : '';
+  });
 
-  // Получение значения из localStorage
-  const storedChosenIteration = JSON.parse(localStorage.getItem('chosenIteration'));
-  // const storedChosenProject = JSON.parse(localStorage.getItem('chosenProject'));
+  // Сохраняем значения в localStorage при изменении состояния
+  useEffect(() => {
+    localStorage.setItem('chosenIteration', JSON.stringify(chosenIteration));
+  }, [chosenIteration]);
+
+  useEffect(() => {
+    localStorage.setItem('chosenProject', JSON.stringify(chosenProject));
+  }, [chosenProject]);
+
 
   return (
-    <IterationContext.Provider value={{ storedChosenIteration, setChosenIteration }}>
-      {/*     <IterationContext.Provider value={{ storedChosenIteration, setChosenIteration, storedChosenProject, setChosenProject }}>
- */}
+    // <IterationContext.Provider value={{ storedChosenIteration, setChosenIteration }}>
+    <IterationContext.Provider value={{ chosenIteration, setChosenIteration, chosenProject, setChosenProject }}>
+
       <Router>
         <div className='all-header'>
           <div className="my-header">

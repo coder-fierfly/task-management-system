@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import ErrorWindow from '../mini-elements/ErrorWindow';
 import { getPersonalData } from '../requestsToTheBack/ReqPersonalData';
+import IterationContext from '../IterationContext';
+
 
 
 const PersonalAcc = ({ handleLogout }) => {
     const [PersonalData, setPersonalData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState('Loading...')
+    const [message, setMessage] = useState('Loading...');
+    const { chosenIteration, chosenProject } = useContext(IterationContext);
 
     useEffect(() => {
         setLoading(true);

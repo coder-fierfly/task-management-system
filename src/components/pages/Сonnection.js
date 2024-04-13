@@ -1,20 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import '../../App.css';
 import DropdownList from '../mini-elements/DropdownList';
 import Plagiarism from '../mini-elements/Plagiarism';
 import MoreInfo from '../mini-elements/MoreInfo';
 import ErrorWindow from '../mini-elements/ErrorWindow';
-import { getConRobotSettings, putConRobotSettings, postStartChecking, getIterations, postCheckTask } from '../requestsToTheBack/ReqConWorkSettings';
+import { getConRobotSettings, putConRobotSettings, postStartChecking, getIterations, postCheckTask, getStartChecking } from '../requestsToTheBack/ReqConWorkSettings';
 import { getPlagiarism } from '../requestsToTheBack/ReqPlagiarismSt';
 import { getPersonalData } from '../requestsToTheBack/ReqPersonalData';
 import IterationContext from '../IterationContext';
 
 
 const Connection = () => {
-    // TODO: отчет сделать 
-    const [chosenProject, setChosenProject] = useState(''); // выбранный проект
-    const { chosenIteration, setChosenIteration } = useContext(IterationContext);
-    // const [chosenIteration, setChosenIteration] = useState(IterationContext); // выбранная итерация
+    const { chosenIteration, setChosenIteration, chosenProject, setChosenProject } = useContext(IterationContext);
+
+    const [logs, setLogs] = useState([]);
+    const [stop, setStop] = useState(false);
+
     // выпадающие списки проект и итерация
     const [listOfIterations, setListOfIterations] = useState([]);
     const [listOfProjects, setListOfProjects] = useState([]);
@@ -61,7 +62,6 @@ const Connection = () => {
     const handleProjectChange = (value) => {
         setLoading(true);
         getIterations(value, setListOfIterations, setLoading).then(() => {
-            console.log(value + ' !');
             setChosenProject(value);
         });
         setChosenIteration(''); // сброс выбранной задачи при изменении темы
@@ -109,25 +109,40 @@ const Connection = () => {
     //текст ошибки
     const [error, setError] = useState('');
     const [errorCheck, setErrorCheck] = useState('');
-
+    const [idStart, setIdStart] = useState(0);
 
     // нажатие на кнопку начать проверку
     const handleStartChecking = () => {
         console.log('Кнопка проверки была нажата');
-        console.log(chosenProject + ' mmm schosenProject')
-        console.log(chosenProject && chosenIteration)
+        getLogs();
         if (chosenProject && chosenIteration) {
             postStartChecking(chosenProject, chosenIteration, checkboxValues);
+            setIsOpen(true);
         } else {
             setErrorCheck("Вы не выбрали проект или итерацию");
         }
     };
 
+    const getLogs = useCallback(() => {
+        getStartChecking(idStart, setLogs, setMessage, setStop).then((logs) => {
+            if (logs.length > 0) {
+                const lastLog = logs[logs.length - 1];
+                const lastRecordId = lastLog.recordId;
+                setIdStart(lastRecordId);
+            }
+        });
+    }, [idStart, setLogs, setMessage]);
+
+    useEffect(() => {
+        if (idStart !== 0 && isOpen && !stop) {
+            const intervalId = setInterval(getLogs, 5000);
+            return () => clearInterval(intervalId);
+        }
+    }, [getLogs, idStart, isOpen, stop]);
+
     // открытие окошка плагиата
     const openPlagiarism = () => {
-        console.log(inputNumber);
         setLoading(true);
-
         getPlagiarism({ inputNumber, setListOfStudents, setLoading, setMessage })
             .then((listOfStudents) => {
                 if (listOfStudents) {
@@ -153,7 +168,6 @@ const Connection = () => {
     // нажата проверить задачу
     const handleCheckTask = () => {
         console.log('Кнопка проверить задачу нажата')
-        console.log("inputNumber ", inputNumber)
         if (inputNumber) {
             postCheckTask(inputNumber, chosenProject, checkboxValues);
         } else {
@@ -161,9 +175,19 @@ const Connection = () => {
         }
     }
 
+
+    useEffect(() => {
+        // Проверка, что chosenIteration и chosenProject не пустые
+        if (chosenIteration && chosenProject) {
+            // Вызов функций handleProjectChange и handleIterationsChange
+            handleProjectChange(chosenProject);
+            handleIterationsChange(chosenIteration);
+        }
+    }, [chosenIteration, chosenProject]);
+
     return (
         <>
-            <IterationContext.Provider value={{ chosenIteration, setChosenIteration }}>
+            <IterationContext.Provider value={{ chosenIteration, setChosenIteration, chosenProject, setChosenProject }}>
                 {/* <IterationContext.Provider value={{ chosenIteration, setChosenIteration, chosenProject, setChosenProject }}> */}
 
                 {loading ? <div> <ErrorWindow isOpen={loading} error={message} /></div> : <>
@@ -234,7 +258,7 @@ const Connection = () => {
                             </div>
                         </div>
                     </div >
-                    <MoreInfo isOpen={isOpen} toggleModal={toggleModal} />
+                    <MoreInfo isOpen={isOpen} toggleModal={toggleModal} logs={logs} />
                 </>}
             </IterationContext.Provider>
         </>

@@ -20,7 +20,10 @@ export const putCreateNewTask = (chosenTheme, chosenTask, inputName, descOfTask,
             if (!response.ok) {
                 throw new Error('Ошибка сервера: ' + response.status);
             }
-            console.log(response.text());
+            return response.text();
+        })
+        .then(result => {
+            console.log('Результат:', result);
         })
         .then(setLoading(false))
         .catch(error => {
