@@ -11,10 +11,11 @@ import IterationContext from '../IterationContext';
 
 
 const Connection = () => {
+    
     const { chosenIteration, setChosenIteration, chosenProject, setChosenProject } = useContext(IterationContext);
 
-    const [logs, setLogs] = useState([]);
-    const [stop, setStop] = useState(false);
+    const [logs, setLogs] = useState([]); // логи
+    const [stop, setStop] = useState(false); // старт логов
 
     // выпадающие списки проект и итерация
     const [listOfIterations, setListOfIterations] = useState([]);
@@ -58,7 +59,7 @@ const Connection = () => {
         setLoading(false);
     }, []);
 
-
+    // изменение выбранного проекта
     const handleProjectChange = (value) => {
         setLoading(true);
         getIterations(value, setListOfIterations, setLoading).then(() => {
@@ -67,11 +68,13 @@ const Connection = () => {
         setChosenIteration(''); // сброс выбранной задачи при изменении темы
     }
 
+    // изменение итераций
     const handleIterationsChange = (id) => {
         console.log("handleIterationsChange ", id)
         setChosenIteration(id)
     }
 
+    // открытие отчета
     const toggleModal = () => {
         setIsOpen(!isOpen);
     };
@@ -123,6 +126,7 @@ const Connection = () => {
         }
     };
 
+    // получение логов
     const getLogs = useCallback(() => {
         getStartChecking(idStart, setLogs, setMessage, setStop).then((logs) => {
             if (logs.length > 0) {
@@ -188,25 +192,20 @@ const Connection = () => {
     return (
         <>
             <IterationContext.Provider value={{ chosenIteration, setChosenIteration, chosenProject, setChosenProject }}>
-                {/* <IterationContext.Provider value={{ chosenIteration, setChosenIteration, chosenProject, setChosenProject }}> */}
-
                 {loading ? <div> <ErrorWindow isOpen={loading} error={message} /></div> : <>
                     <Plagiarism isOpen={isPlagiarismOpen} onClose={closePlagiarism} listOfStudents={listOfStudents} />
                     <div className='main-conn-wrap connection-wrap'>
                         <div className='mini-conn-wrap'>
                             <div className="form-container">
                                 <div className='label-container'><label htmlFor="urlInputId" className="label">Введите url ресурса:</label></div>
-
                                 <input id="urlInputId" className="input-field" type="text" value={inputUrl}
                                     onChange={handleInputChange} />
-
                                 <div className="label-container">  <p className="label">Выберите проект:</p></div>
                                 <DropdownList
                                     options={listOfProjects}
                                     selectedValue={chosenProject}
                                     onSelectedValueChange={handleProjectChange}
                                 />
-
                                 <div className="label-container">  <p className="label">Выберите итерацию:</p>
                                 </div>
                                 <DropdownList
@@ -216,7 +215,6 @@ const Connection = () => {
                                     id="listOfIterId"
                                     disabled={!chosenProject}
                                 />
-
                             </div>
                             <div className='check-container'>
                                 <div className='label-center'>
@@ -239,7 +237,6 @@ const Connection = () => {
                                     <label htmlFor="checkboxAllIterId" className="label">Проверять все итерации проекта</label></div>
                             </div>
                             <div className='mess-per-wrap class-err'> {errorCheck && <div className="error-message">{errorCheck}</div>}</div>
-
                             <div className="b-wrapper">
                                 <button onClick={handleStartChecking} className="b-button start-check">Начать проверку</button>
                                 <div onClick={toggleModal} >

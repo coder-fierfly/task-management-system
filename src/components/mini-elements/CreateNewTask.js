@@ -8,13 +8,15 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { putCreateNewTask } from '../requestsToTheBack/reqCreateNew';
 
 const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, taskChange, chosenTheme, chosenTask, setLoading }) => {
-    const [inputName, setInputName] = useState('');
-    const [inputDesc, setInputDesc] = useState('');
-    const [inputConf, setInputConf] = useState('');
-    const [expanded, setExpanded] = useState('panel1');
+    const [inputName, setInputName] = useState(''); // название
+    const [inputDesc, setInputDesc] = useState(''); // описание
+    const [inputConf, setInputConf] = useState(''); // конфигурация
+    const [expanded, setExpanded] = useState('panel1'); // раскрытая панель
 
     const handleChange = (panel) => (isExpanded) => {
+        // if (panel === 'panel1') {
         setExpanded(isExpanded ? panel : false);
+        // }
     };
 
     // применение переданной информации к полям
@@ -97,9 +99,9 @@ const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, ta
                                         <textarea className="input-field input-height input-height-100" id="inputNumId" type="text" value={inputName}
                                             onChange={handleInputName} placeholder="Название" />
                                         <textarea className="input-field input-height input-height-100" type="text" value={inputDesc}
-                                            onChange={handleInputDesc} placeholder="Описание" />
+                                            onChange={handleInputDesc} placeholder="Описание" disabled={true} />
                                         <textarea className="input-field input-height input-height-100" type="text" value={inputConf}
-                                            onChange={handleInputConf} placeholder="Конфигурация" />
+                                            onChange={handleInputConf} placeholder="Конфигурация" disabled={true} />
                                         <button onClick={saveBtn} className="b-button right-btn save-btn">Сохранить</button>
                                     </AccordionDetails>
                                 </Accordion>

@@ -10,9 +10,9 @@ import IterationContext from '../IterationContext';
 
 
 function Tasks() {
-  const [taskChange, setTaskChange] = useState(true);
-  const [themeList, setThemeList] = useState([]);
-  const [selectedTheme, setSelectedTheme] = useState('');
+  const [taskChange, setTaskChange] = useState(true); // смена задач
+  const [themeList, setThemeList] = useState([]); // лист тем
+  const [selectedTheme, setSelectedTheme] = useState(''); // выбранная тема
   const [listTask, setListTask] = useState([]); // список заданий
   const [listTest, setListTest] = useState([]); // список тестов
   const [inputData, setData] = useState(); // входные данные
@@ -21,16 +21,17 @@ function Tasks() {
   const [chosenTest, setChosenTest] = useState(''); // тест выбранный
   const [config, setConfig] = useState(''); // текст конфигурации задачи
   const [chosenTheme, setChosenTheme] = useState(''); // тема выбранная 
-  const [message, setMessage] = useState('Loading...')
-  const [loading, setLoading] = useState(true);
-  const [nameOfTask, setNameOfTask] = useState('');
-  const [nameConf, setConf] = useState('');
-  const [descOfTask, setDeskOfTask] = useState('');
-  const [isCreateNewTaskOpen, setCreateNewTaskOpen] = useState(false);
-  const [isConfOpen, setConfOpen] = useState(false);
-  const { chosenIteration, chosenProject } = useContext(IterationContext);
+  const [message, setMessage] = useState('Loading...'); // сообщение в окне загрузки
+  const [loading, setLoading] = useState(true); // статус загрузки
+  const [nameOfTask, setNameOfTask] = useState(''); // название задачи
+  const [nameConf, setConf] = useState(''); // конфигурация
+  const [descOfTask, setDeskOfTask] = useState(''); // описание задачи
+  const [isCreateNewTaskOpen, setCreateNewTaskOpen] = useState(false); // открыто ли окно создания задачи
+  const [isConfOpen, setConfOpen] = useState(false); // открыта ли конфигурация
+  const { chosenIteration, chosenProject } = useContext(IterationContext); // выбранные итерация и проект
+  const [key, setKey] = useState(0); // для обновления dropdown
 
-
+  // запрос тем
   useEffect(() => {
     getAllTopics(setThemeList, setLoading, setMessage);
     setLoading(false);
@@ -40,6 +41,7 @@ function Tasks() {
     setSelectedTheme(themeNamesArray);
   }
 
+  // сортировка
   themeNamesArray.sort();
   themeNamesArray.unshift('Все темы');
 
@@ -48,6 +50,7 @@ function Tasks() {
     setData(event.target.value);
   };
 
+  // кнопка для удаления
   const setDel = () => {
     console.log("удаляяяем")
   }
@@ -86,16 +89,14 @@ function Tasks() {
     setTaskChange(false);
     setChosenTask('');
     setCreateNewTaskOpen(true);
-    // handleTaskChange('');
   }
-
-  const [key, setKey] = useState(0);
 
   // Обновляем ключ каждый раз, когда изменяется selectedValue
   useEffect(() => {
     setKey(prevKey => prevKey + 1);
   }, [chosenTask]);
 
+  // информация о задаче
   const handleInfoTask = () => {
     setTaskChange(true);
     const foundTask = listTask.find(task => task.id === chosenTask);
@@ -106,10 +107,12 @@ function Tasks() {
     console.log("кнопка информации о задачке")
   }
 
+  // закрытие создания новой задачи
   const closeCreateNewTask = () => {
     setCreateNewTaskOpen(false);
   };
 
+  // сменя задачи
   const handleTaskChange = (value) => {
     getTests(value, setListTest, setChosenTask, setMessage);
     setLoading(false);
@@ -117,22 +120,26 @@ function Tasks() {
     setChosenTest(''); // сброс выбранного теста при изменении задачи
   }
 
+  // закрытие конфигурации
   const closeConf = () => {
     setConfOpen(false);
   };
 
+  // изменение темы
   const handleThemeChange = (value) => {
     getTasks(value, setChosenTheme, setListTask, setMessage);
     setChosenTask(''); // сброс выбранной задачи при изменении темы
     setLoading(false);
   }
 
+  // задача в мусор
   const handleTrashTask = () => {
     setConf('задачу');
     setConfOpen(true);
     console.log("кнопка задачки в мусор")
   }
 
+  // изменение теста
   const handleTestChange = (testId) => {
     console.log("handleTestChange");
     setChosenTest(testId);
@@ -147,6 +154,7 @@ function Tasks() {
     }
   }
 
+  // кнопка теста в мусор
   const handleTrashTest = () => {
     setConf('тест');
     setConfOpen(true);
@@ -160,11 +168,13 @@ function Tasks() {
     console.log("кнопка плюс тест");
   }
 
+  // добавить задачу себе в итерацию
   const handleYourIter = () => {
     console.log("добавить задачу себе в итерацию")
     postIssue(chosenTask, setMessage, chosenIteration);
     handleIter(chosenTask, setMessage, chosenIteration);
   }
+
   return (
     <>
       <div className='main-conn-wrap t-w'>

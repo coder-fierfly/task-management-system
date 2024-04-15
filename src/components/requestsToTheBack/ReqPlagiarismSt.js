@@ -16,10 +16,8 @@ export const getPlagiarism = ({ inputNumber, setListOfStudents, setLoading, setM
                 return response.json();
             })
             .then(data => {
-                console.log(data.studentPlagiatPercentage)
                 const listOfStudents = data.studentPlagiatPercentage;
                 setListOfStudents(listOfStudents);
-
                 setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
                 resolve(listOfStudents); // Резолвим обещание с данными
             })

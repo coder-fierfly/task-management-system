@@ -1,5 +1,4 @@
 export const putCreateNewTask = (chosenTheme, chosenTask, inputName, descOfTask, inputConf, setLoading) => {
-    console.log("chosenTask", chosenTask)
     setLoading(true)
     fetch('/api/v1/tasks/addOrUpdateTask', {
         method: 'PUT',

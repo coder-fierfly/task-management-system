@@ -16,7 +16,6 @@ export const getRobotSettings = (setCheckboxValues, setErrLint, setSelectedOptio
     })
     .then(data => {
       // Обработка полученных данных
-      console.log(data);
       const { needLint, assignTasksToStudent, needCloseTasks, lintInformation } = data;
       setCheckboxValues(needLint);
       setSelectedOptionTranslate(assignTasksToStudent ? "student" : "teacher");

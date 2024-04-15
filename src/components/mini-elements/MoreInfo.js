@@ -19,10 +19,10 @@ const MoreInfo = ({ isOpen, toggleModal, logs }) => {
                     </button>
                 </div>
                 <div className='more-info-container'>
-                        <div className='t-a-cont'>
-                            <div className='t-a-more' dangerouslySetInnerHTML={createMarkup(logs)} />
-                        </div>
+                    <div className='t-a-cont'>
+                        <div className='t-a-more' dangerouslySetInnerHTML={createMarkup(logs)} />
                     </div>
+                </div>
             </div>
         </div>
     );

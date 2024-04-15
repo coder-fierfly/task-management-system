@@ -6,21 +6,17 @@ import IterationContext from '../IterationContext';
 
 const DistributionOfTasks = () => {
 
-  const [studentList, setStudentList] = useState([]);
-  const [tasks, setTasks] = useState([]);
-  const [message, setMessage] = useState('Loading...')
-  const [loading, setLoading] = useState(true);
-  const { chosenIteration, chosenProject } = useContext(IterationContext);
-  console.log("chosenIteration@!@!", chosenIteration);
-  console.log("chosenProject! ", chosenProject)
+  const [studentList, setStudentList] = useState([]); // лист студентов
+  const [tasks, setTasks] = useState([]); // лист с задачами
+  const [message, setMessage] = useState('Loading...'); // сообщение
+  const [loading, setLoading] = useState(true); // статус загрузки
+  const { chosenIteration, chosenProject } = useContext(IterationContext); // выбранные задачи и проект
 
-
+  // делаем поиск студентов и задач
   useEffect(() => {
-    console.log("!!chosenIteration ", chosenIteration)
-    console.log("chosenProject! ", chosenProject)
     setLoading(false);
     if (chosenIteration) {
-      Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration), getTasksList(setTasks,chosenProject,chosenIteration)])
+      Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration), getTasksList(setTasks, chosenProject, chosenIteration)])
         .then(() => {
           setLoading(false);
         })
@@ -30,9 +26,7 @@ const DistributionOfTasks = () => {
     }
   }, [chosenIteration]);
 
-
-
-
+  // функция для выбора студентов
   const handleStudentsChange = (id) => {
     if (id === '0') {
       // Получаем информацию о том, был ли чекбокс "Выбрать всех" выбран
@@ -52,6 +46,7 @@ const DistributionOfTasks = () => {
     }
   };
 
+  // функция для выбора задач
   const handleTasksChange = (id) => {
     if (id === '0') {
       // Получаем информацию о том, был ли чекбокс "Выбрать все" выбран
@@ -71,6 +66,7 @@ const DistributionOfTasks = () => {
     }
   };
 
+  // обновление списков
   const handleClickDownloadList = () => {
     console.log("обновление списков")
     setLoading(true);
@@ -83,34 +79,25 @@ const DistributionOfTasks = () => {
       });
   };
 
+  // назначение выделенного
   const handleClickAppoint = async () => {
     console.log("назначить выделенное")
-
     const selectedStudents = studentList.filter(student => student.isChecked && student.studentId !== "0"); // Фильтрация исключает элемент "Выбрать всех"
     const selectedTasks = tasks.filter(task => task.isChecked && task.issueId !== "0");
-
-    console.log(selectedStudents)
-    console.log(selectedTasks)
-    console.log(selectedStudents && selectedTasks)
     if (selectedStudents.length !== 0 && selectedTasks.length !== 0) {
-      console.log("(((((назначить выделенное)))))")
       const dataToPass = {
         tasksList: selectedTasks.map(({ isChecked, ...rest }) => rest), // Исключаем isChecked из объектов
         studentList: selectedStudents.map(({ isChecked, ...rest }) => rest)
       };
-
       postAssign(dataToPass);
     }
   };
 
   return (
     <>
-
       <div className='main-conn-wrap distr-wrap'>
-
         {loading ? <><br /><div>
           <ErrorWindow isOpen={loading} error={message} />
-
         </div><br /> </> : <>
           <div className='checkbox-wrap'>
             <label className='label-class' >Студенты</label>
@@ -129,19 +116,23 @@ const DistributionOfTasks = () => {
             )}
             <div className="checkbox-list">
               <div className='scroll-checkbox'>
-                {studentList.slice(1).map((checkbox) => (
-                  <div key={checkbox.studentId}>
-                    <input
-                      className='checkbox'
-                      type="checkbox"
-                      checked={checkbox.isChecked}
-                      onChange={() => handleStudentsChange(checkbox.studentId)}
-                    />
-                    <label>
-                      {checkbox.studentName}
-                    </label>
-                  </div>
-                ))}
+                {studentList.length === 0 ? (
+                  <p>Выберите итерацию</p>
+                ) : (
+                  studentList.slice(1).map((checkbox) => (
+                    <div key={checkbox.studentId}>
+                      <input
+                        className='checkbox'
+                        type="checkbox"
+                        checked={checkbox.isChecked}
+                        onChange={() => handleStudentsChange(checkbox.studentId)}
+                      />
+                      <label>
+                        {checkbox.studentName}
+                      </label>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -163,19 +154,23 @@ const DistributionOfTasks = () => {
             )}
             <div className="checkbox-list">
               <div className='scroll-checkbox'>
-                {tasks.slice(1).map((checkbox) => (
-                  <div key={checkbox.issueId}>
-                    <input
-                      className='checkbox'
-                      type="checkbox"
-                      checked={checkbox.isChecked}
-                      onChange={() => handleTasksChange(checkbox.issueId)}
-                    />
-                    <label>
-                      {checkbox.issueSubject}
-                    </label>
-                  </div>
-                ))}
+                {tasks.length === 0 ? (
+                  <p>Выберите задачу</p>
+                ) : (
+                  tasks.slice(1).map((checkbox) => (
+                    <div key={checkbox.issueId}>
+                      <input
+                        className='checkbox'
+                        type="checkbox"
+                        checked={checkbox.isChecked}
+                        onChange={() => handleTasksChange(checkbox.issueId)}
+                      />
+                      <label>
+                        {checkbox.issueSubject}
+                      </label>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -183,12 +178,9 @@ const DistributionOfTasks = () => {
             <button className="b-button margin-btn" onClick={handleClickDownloadList}>Обновить списки</button>
             <button className="b-button margin-btn" onClick={handleClickAppoint}>Назначить выделенное</button>
           </div>
-          {/* {response && <p>Ответ от сервера: {JSON.stringify(response)}</p>} */}
         </>}
-
-      </div >
+      </div>
     </>
-
   );
 }
 

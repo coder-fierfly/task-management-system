@@ -52,9 +52,7 @@ export const getStartChecking = (idStart, setLogs, setMessage, setStop) => {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
                 if (data.length === 0) {
-                    console.log("мало")
                     setStop(true);
                 }
                 setLogs(prevLogs => [...prevLogs, ...data]);
@@ -158,7 +156,6 @@ export const getIterations = (value, setListOfIterations, setLoading) => {
                     id: index + 1,
                     name: projectIteration
                 }));
-                console.log(transformedData)
                 setListOfIterations(transformedData);
                 setLoading(false); // Устанавливаем состояние загрузки в false после получения данных
                 resolve(); // Разрешаем обещание после успешного выполнения всех операций
@@ -191,7 +188,6 @@ export const postCheckTask = (inputNumber, chosenProject, checkboxValues) => {
         })
     })
         .then(response => {
-            console.log("response.status ", response.status);
             if (!response.ok) {
                 throw new Error('Ошибка сети: ' + response.status);
             }

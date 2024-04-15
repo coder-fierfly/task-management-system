@@ -1,8 +1,6 @@
 export const getStudentsList = (setMessage, setStudentList, chosenIteration) => {
   return new Promise((resolve, reject) => {
-    console.log("chosenIteration!!! ", chosenIteration)
     var buff = `/api/v1/issueChecker/getStudentsList/${chosenIteration}`;
-    console.log("buff", buff)
     fetch(buff, {
       method: 'get',
       headers: {
@@ -86,9 +84,6 @@ export const postAssign = (dataToPass) => {
     })
     .then(result => {
       console.log('Результат:', result);
-    })
-    .then(data => {
-      console.log('Ответ от сервера:', data);
     })
     .catch(error => {
       console.error('Ошибка при выполнении запроса:', error.message);

@@ -12,25 +12,26 @@ import IterationContext from './IterationContext';
 
 export default function TabPanel() {
   const [activeButton, setActiveButton] = useState(() => {
-    console.log("activeButton")
     // Проверка состояния активной кнопки при первом рендеринге компонента
+    if (window.location.pathname === '/personal-acc' || window.location.pathname === '/authorization' || window.location.pathname === "/") {
+      return 5;
+    }
     const storedActiveButton = localStorage.getItem('activeButton');
-    return storedActiveButton ? parseInt(storedActiveButton) : 0;
+    return storedActiveButton ? parseInt(storedActiveButton) : 5;
   });
 
   const [isLogged, setLogged] = useState(() => {
-    console.log(" isLogged")
     // Проверка состояния авторизации при первом рендеринге компонента
     const storedIsLogged = localStorage.getItem('isLogged');
     return storedIsLogged === 'true';
   }); //вошел пользователь в аккаунт или нет
 
   useEffect(() => {
-    console.log("activeButton ", activeButton)
     // Сохраняем состояние активной кнопки в локальное хранилище при изменении
     localStorage.setItem('activeButton', activeButton);
   }, [activeButton]);
 
+  // переход по вкладкам, назначение активной
   const handleClick = (button) => {
     setActiveButton(button);
   };
@@ -45,6 +46,7 @@ export default function TabPanel() {
     localStorage.removeItem('isLogged');
   };
 
+  //взятие данных из localStorage или же имеющихся
   const [chosenIteration, setChosenIteration] = useState(() => {
     const savedIteration = localStorage.getItem('chosenIteration');
     return savedIteration ? JSON.parse(savedIteration) : '';
@@ -66,9 +68,7 @@ export default function TabPanel() {
 
 
   return (
-    // <IterationContext.Provider value={{ storedChosenIteration, setChosenIteration }}>
     <IterationContext.Provider value={{ chosenIteration, setChosenIteration, chosenProject, setChosenProject }}>
-
       <Router>
         <div className='all-header'>
           <div className="my-header">

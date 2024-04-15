@@ -3,7 +3,6 @@ import '../../App.css';
 
 const Plagiarism = ({ isOpen, onClose, listOfStudents }) => {
     if (!isOpen) return null;
-    console.log("listOfStudents", JSON.stringify(listOfStudents));
     const arrayOfStudents = Object.entries(listOfStudents).map(([student, values]) => ({ student, values }));
 
     return (

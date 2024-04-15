@@ -127,9 +127,6 @@ export const handleIter = (chosenTask, setMessage, chosenIteration) => {
 }
 
 export const putTest = (chosenTask, inputData, inputExpRes, setLoading) => {
-    console.log("chosenTask", chosenTask)
-    console.log("inputData", inputData)
-    console.log("inputExpRes", inputExpRes)
     fetch('/api/v1/tasks/addOrUpdateTest', {
         method: 'PUT',
         headers: {
@@ -167,7 +164,6 @@ export const postIssue = (chosenTask, setMessage, chosenIteration) => {
         },
         body: JSON.stringify({
             "taskId": chosenTask,
-            // TODO: IterationId найти
             "iterationId": chosenIteration
         })
     })

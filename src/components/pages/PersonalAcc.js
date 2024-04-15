@@ -6,9 +6,9 @@ import IterationContext from '../IterationContext';
 
 
 const PersonalAcc = ({ handleLogout }) => {
-    const [PersonalData, setPersonalData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState('Loading...');
+    const [PersonalData, setPersonalData] = useState(null); // личные данные
+    const [loading, setLoading] = useState(true); // статус загрузки
+    const [message, setMessage] = useState('Loading...'); // сообщение в окне загрузки
     const { chosenIteration, chosenProject } = useContext(IterationContext);
 
     useEffect(() => {
@@ -25,6 +25,7 @@ const PersonalAcc = ({ handleLogout }) => {
             });
     }, []);
 
+    // разлогирование
     const handleLogoutClick = () => {
         handleLogout();
     };
