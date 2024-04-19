@@ -128,7 +128,7 @@ export default function TabPanel() {
           <Route path="/tasks" element={<PrivateRoute isLogged={isLogged}><Tasks /></PrivateRoute>} />
           <Route path="/distribution" element={<PrivateRoute isLogged={isLogged}><DistributionOfTasks /></PrivateRoute>} />
           <Route path='/personal-acc' element={isLogged ? <PersonalAcc handleLogout={handleLogout} /> : <Navigate to="/authorization" />} />
-          <Route path='/authorization' element={!isLogged ? <Authorization handleLogin={handleLogin} /> : <Navigate to="/personal-acc" />}
+          <Route path='/authorization' element={isLogged ? <Authorization handleLogin={handleLogin} /> : <Navigate to="/personal-acc" />}
           />
         </Routes>
       </Router>

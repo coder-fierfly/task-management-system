@@ -52,6 +52,7 @@ export const getTasksList = (setTasks, chosenProject, chosenIteration) => {
         return response.json();
       })
       .then(data => {
+        console.log(data)
         var updatedIssueList = data.issueList.map(task => ({
           ...task,
           isChecked: false
@@ -61,7 +62,7 @@ export const getTasksList = (setTasks, chosenProject, chosenIteration) => {
         resolve();
       })
       .catch(error => {
-        console.error('Ошибка в запросе к серверу:', error.message);
+        console.error('Ошибка:', error.message);
         reject(error);
       });
   });
@@ -80,7 +81,7 @@ export const postAssign = (dataToPass) => {
       if (!response.ok) {
         throw new Error(`Ошибка сервера: ${response.status}`);
       }
-      return response.json();
+      return response.text();
     })
     .then(result => {
       console.log('Результат:', result);

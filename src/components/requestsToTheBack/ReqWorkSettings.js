@@ -1,36 +1,41 @@
-
-export const getRobotSettings = (setCheckboxValues, setErrLint, setSelectedOptionSuccess, setSelectedOptionTranslate, setMessage, setLoading) => {
-  fetch('/api/v1/robotSettings', {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(response => {
-      if (!response.ok) {
-        setMessage('Ошибка сервера: ' + response.status);
-        throw new Error('Network response was not ok');
+export const getRobotSettings = (setCheckboxValues, setErrLint, setSelectedOptionSuccess, setSelectedOptionTranslate, setMessage) => {
+  return new Promise((resolve, reject) => {
+    fetch('/api/v1/robotSettings', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       }
-      return response.json();
     })
-    .then(data => {
-      // Обработка полученных данных
-      const { needLint, assignTasksToStudent, needCloseTasks, lintInformation } = data;
-      setCheckboxValues(needLint);
-      setSelectedOptionTranslate(assignTasksToStudent ? "student" : "teacher");
-      setSelectedOptionSuccess(needCloseTasks);
-      setErrLint(lintInformation);
-    })
-    .then(setLoading(false))
-    .catch(error => {
-      if (error.name === 'AbortError') {
-        setMessage('Время ожидания запроса истекло');
-      } else {
-        setMessage(error.message);
-        console.error('Ошибка в запросе к серверу:', error.message);
-      }
-    });
+      .then(response => {
+        if (!response.ok) {
+          setMessage('Ошибка сервера: ' + response.status);
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const { needLint, assignTasksToStudent, needCloseTasks, lintInformation } = data;
+        setCheckboxValues(needLint);
+        setSelectedOptionTranslate(assignTasksToStudent ? "student" : "teacher");
+        setSelectedOptionSuccess(needCloseTasks);
+        if (!lintInformation) {
+          setErrLint("FULL_INFO");
+        } else {
+          setErrLint(lintInformation);
+        }
+        resolve(); // Разрешаем Promise
+      })
+      .catch(error => {
+        if (error.name === 'AbortError') {
+          setMessage('Время ожидания запроса истекло');
+        } else {
+          setMessage(error.message);
+          console.error('Ошибка в запросе к серверу:', error.message);
+        }
+        reject(error); // Отклоняем Promise
+      });
+  });
 };
 
 

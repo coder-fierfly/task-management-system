@@ -11,7 +11,7 @@ import IterationContext from '../IterationContext';
 
 
 const Connection = () => {
-    
+    // TODO: посмотреть ответ сервера при проверке одной задачи
     const { chosenIteration, setChosenIteration, chosenProject, setChosenProject } = useContext(IterationContext);
 
     const [logs, setLogs] = useState([]); // логи
@@ -70,7 +70,7 @@ const Connection = () => {
 
     // изменение итераций
     const handleIterationsChange = (id) => {
-        console.log("handleIterationsChange ", id)
+        console.log("handleIterationsChange")
         setChosenIteration(id)
     }
 
@@ -174,6 +174,8 @@ const Connection = () => {
         console.log('Кнопка проверить задачу нажата')
         if (inputNumber) {
             postCheckTask(inputNumber, chosenProject, checkboxValues);
+            getLogs();
+            setIsOpen(true);
         } else {
             setError("Вы не ввели не верное значение")
         }

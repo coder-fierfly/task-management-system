@@ -191,6 +191,7 @@ export const postCheckTask = (inputNumber, chosenProject, checkboxValues) => {
             if (!response.ok) {
                 throw new Error('Ошибка сети: ' + response.status);
             }
+            console.log(response)
             return response.text();
         })
         .then(result => {

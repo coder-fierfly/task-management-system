@@ -14,11 +14,13 @@ const DistributionOfTasks = () => {
 
   // делаем поиск студентов и задач
   useEffect(() => {
-    setLoading(false);
+    setLoading(true);
     if (chosenIteration) {
       Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration), getTasksList(setTasks, chosenProject, chosenIteration)])
         .then(() => {
-          setLoading(false);
+          if (studentList && tasks) {
+            setLoading(false);
+          }
         })
         .catch(error => {
           setMessage(error.toString()); // Преобразуем объект Error в строку

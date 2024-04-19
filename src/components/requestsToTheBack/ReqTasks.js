@@ -74,30 +74,32 @@ export const getTasks = (value, setChosenTheme, setListTask, setMessage) => {
 };
 
 export const getTests = (value, setListTest, setChosenTask, setMessage) => {
-    var test = "/api/v1/tasks/getTests/" + value;
-    fetch(test, {
-        method: 'get',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => { return response.json(); })
-        .then(data => {
-            const testArray = data.taskTests.map(task => ({
-                id: task.testId,
-                name: task.testId,
-                inputData: task.inputData,
-                outPutData: task.outPutData
-            }));
-            setListTest("")
-            setListTest(testArray);
-            setChosenTask(value);
-        }).catch(error => {
-            setListTest("")
-            setMessage('Error fetching data:', error);
-        });;
-
+    return new Promise((resolve, reject) => {
+        var test = "/api/v1/tasks/getTests/" + value;
+        fetch(test, {
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const testArray = data.taskTests.map(task => ({
+                    id: task.testId,
+                    name: task.testId,
+                    inputData: task.inputData,
+                    outPutData: task.outPutData
+                }));
+                setListTest(testArray);
+                setChosenTask(value);
+                resolve(); // Разрешаем Promise после успешного выполнения
+            })
+            .catch(error => {
+                setMessage('Error fetching data:', error);
+                reject(error); // Отклоняем Promise в случае ошибки
+            });
+    });
 };
 
 export const handleIter = (chosenTask, setMessage, chosenIteration) => {

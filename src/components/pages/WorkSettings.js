@@ -24,10 +24,14 @@ const WorkSettings = () => {
       setErrLint,
       setSelectedOptionSuccess,
       setSelectedOptionTranslate,
-      setLoading, // Передаем resolve вместо setLoading
       setMessage
-    );
-    setLoading(false);
+    )
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Ошибка при получении настроек:', error);
+      });
   }, []);
 
   // Функция для обработки изменений в radio button

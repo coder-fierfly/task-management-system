@@ -7,6 +7,7 @@ import ConfirmationWindow from '../mini-elements/ConfirmationWindow';
 import ErrorWindow from '../mini-elements/ErrorWindow';
 import { getAllTopics, getTasks, getTests, handleIter, putTest, postIssue } from '../requestsToTheBack/ReqTasks';
 import IterationContext from '../IterationContext';
+import { containerClasses } from '@mui/material';
 
 
 function Tasks() {
@@ -40,6 +41,11 @@ function Tasks() {
   if (selectedTheme.length === 0) {
     setSelectedTheme(themeNamesArray);
   }
+  useEffect(() => {
+    if (listTest.length > 0) {
+      handleTestChange(listTest[0].id);
+    }
+  }, [listTest]); // Мониторим изменения listTest
 
   // сортировка
   themeNamesArray.sort();
@@ -96,6 +102,7 @@ function Tasks() {
     setKey(prevKey => prevKey + 1);
   }, [chosenTask]);
 
+
   // информация о задаче
   const handleInfoTask = () => {
     setTaskChange(true);
@@ -114,11 +121,32 @@ function Tasks() {
 
   // сменя задачи
   const handleTaskChange = (value) => {
-    getTests(value, setListTest, setChosenTask, setMessage);
-    setLoading(false);
-    setChosenTask(value)
-    setChosenTest(''); // сброс выбранного теста при изменении задачи
+    setLoading(true);
+    getTests(value, setListTest, setChosenTask, setMessage)
+      .then(() => {
+        setChosenTest('');
+        console.log("listTest[0].id", listTest[0].id)
+        handleTestChange(listTest[0].id);
+      }).then(() => {
+        setLoading(false);
+      })
+      .catch(error => {
+        setMessage('Ошибка:', error);
+      });
   }
+
+  useEffect(() => {
+    if (chosenTask) {
+      setLoading(true);
+      handleTestChange(chosenTest)
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(error => {
+          setMessage('Ошибка:', error);
+        });
+    }
+  }, [chosenTest]);
 
   // закрытие конфигурации
   const closeConf = () => {
@@ -141,17 +169,20 @@ function Tasks() {
 
   // изменение теста
   const handleTestChange = (testId) => {
-    console.log("handleTestChange");
-    setChosenTest(testId);
-    const testIdAsNumber = +testId;
-    const test = listTest.find(test => test.id === testIdAsNumber);
-    if (test) {
-      const { inputData, outPutData } = test;
-      setData(inputData)
-      setExpRes(outPutData)
-    } else {
-      console.error("Test with ID", testIdAsNumber, "not found.");
-    }
+    return new Promise((resolve, reject) => {
+      console.log("handleTestChange");
+      setChosenTest(testId);
+      const testIdAsNumber = +testId;
+      const test = listTest.find(test => test.id === testIdAsNumber);
+      if (test) {
+        const { inputData, outPutData } = test;
+        setData(inputData)
+        setExpRes(outPutData)
+      } else {
+        console.error("Test with ID", testIdAsNumber, "not found.");
+      }
+      resolve(); // Разрешаем промис после завершения обработки
+    });
   }
 
   // кнопка теста в мусор
