@@ -9,25 +9,28 @@ const PersonalAcc = ({ handleLogout }) => {
     const [PersonalData, setPersonalData] = useState(null); // личные данные
     const [loading, setLoading] = useState(true); // статус загрузки
     const [message, setMessage] = useState('Loading...'); // сообщение в окне загрузки
-    const { chosenIteration, chosenProject } = useContext(IterationContext);
+    const { chosenIteration, chosenProject, token, setToken } = useContext(IterationContext);
 
     useEffect(() => {
         setLoading(true);
-        getPersonalData()
-            .then(data => {
-                console.log(data)
-                setPersonalData(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                setMessage(error.message);
-                console.error('Ошибка в запросе к серверу:', error.message);
-            });
-    }, []);
+        if (token !== '') {
+            getPersonalData(token)
+                .then(data => {
+                    console.log(data)
+                    setPersonalData(data);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    setMessage(error.message);
+                    console.error('Ошибка в запросе к серверу:', error.message);
+                });
+        }
+    }, [token]);
 
     // разлогирование
     const handleLogoutClick = () => {
         handleLogout();
+        setToken('');
     };
     return (
         <>
@@ -38,7 +41,7 @@ const PersonalAcc = ({ handleLogout }) => {
                     <div className='little-per-wrap'>
                         <p><span className='bold-span'>Имя: </span>{PersonalData.userDisplayName}</p>
                         <p><span className='bold-span'>Имя в редмайн: </span>{PersonalData.name} </p>
-                        <p><span className='bold-span'>API KEY: </span>{PersonalData.apikey} </p>
+                        <p><span className='bold-span'>API KEY: </span>{PersonalData.apiKey} </p>
                     </div>
                     <div>
                         <h2>Список проектов</h2>

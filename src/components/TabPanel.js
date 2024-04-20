@@ -57,6 +57,11 @@ export default function TabPanel() {
     return savedProject ? JSON.parse(savedProject) : '';
   });
 
+  const [token, setToken] = useState(() => {
+    const savedToken = localStorage.getItem('token');
+    return savedToken ? JSON.parse(savedToken) : '';
+  });
+
   // Сохраняем значения в localStorage при изменении состояния
   useEffect(() => {
     localStorage.setItem('chosenIteration', JSON.stringify(chosenIteration));
@@ -66,9 +71,13 @@ export default function TabPanel() {
     localStorage.setItem('chosenProject', JSON.stringify(chosenProject));
   }, [chosenProject]);
 
+  useEffect(() => {
+    localStorage.setItem('token', JSON.stringify(token));
+  }, [token]);
+
 
   return (
-    <IterationContext.Provider value={{ chosenIteration, setChosenIteration, chosenProject, setChosenProject }}>
+    <IterationContext.Provider value={{ chosenIteration, setChosenIteration, chosenProject, setChosenProject, token, setToken }}>
       <Router>
         <div className='all-header'>
           <div className="my-header">
@@ -128,7 +137,7 @@ export default function TabPanel() {
           <Route path="/tasks" element={<PrivateRoute isLogged={isLogged}><Tasks /></PrivateRoute>} />
           <Route path="/distribution" element={<PrivateRoute isLogged={isLogged}><DistributionOfTasks /></PrivateRoute>} />
           <Route path='/personal-acc' element={isLogged ? <PersonalAcc handleLogout={handleLogout} /> : <Navigate to="/authorization" />} />
-          <Route path='/authorization' element={isLogged ? <Authorization handleLogin={handleLogin} /> : <Navigate to="/personal-acc" />}
+          <Route path='/authorization' element={!isLogged ? <Authorization handleLogin={handleLogin} /> : <Navigate to="/personal-acc" />}
           />
         </Routes>
       </Router>
