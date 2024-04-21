@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import DropdownList from "../mini-elements/DropdownList";
 import ErrorWindow from '../mini-elements/ErrorWindow';
 import { getRobotSettings, putRobotSettings } from '../requestsToTheBack/ReqWorkSettings';
+import IterationContext from '../IterationContext';
+
 
 const WorkSettings = () => {
+  const { token, setToken } = useContext(IterationContext);
+
   // радиокнопки
   const [selectedOptionSuccess, setSelectedOptionSuccess] = useState("");
   const [selectedOptionTranslate, setSelectedOptionTranslate] = useState("teacher");
@@ -24,7 +28,9 @@ const WorkSettings = () => {
       setErrLint,
       setSelectedOptionSuccess,
       setSelectedOptionTranslate,
-      setMessage
+      setMessage,
+      token,
+      setToken
     )
       .then(() => {
         setLoading(false);
@@ -40,24 +46,24 @@ const WorkSettings = () => {
     setSelectedOptionSuccess(selOption);
     setMessage('Loading...');
     setLoading(true);
-    putRobotSettings(checkboxValues, errLint, selOption, selectedOptionTranslate, setMessage, setLoading)
+    putRobotSettings(checkboxValues, errLint, selOption, selectedOptionTranslate, setMessage, setLoading, token, setToken)
   };
   const handleRadioChangeTranslate = (event) => {
     setSelectedOptionTranslate(event.target.value);
     setMessage('Loading...');
     setLoading(true);
-    putRobotSettings(checkboxValues, errLint, selectedOptionSuccess, event.target.value, setMessage, setLoading)
+    putRobotSettings(checkboxValues, errLint, selectedOptionSuccess, event.target.value, setMessage, setLoading, token, setToken)
   };
 
   const handleErrChange = (event) => {
     setErrLint(event);
-    putRobotSettings(checkboxValues, event, selectedOptionSuccess, selectedOptionTranslate, setMessage, setLoading)
+    putRobotSettings(checkboxValues, event, selectedOptionSuccess, selectedOptionTranslate, setMessage, setLoading, token, setToken)
   }
 
   // смена значений в checkbox
   const handleCheckboxChange = (event) => {
     setCheckboxValues(event.target.checked)
-    putRobotSettings(event.target.checked, errLint, selectedOptionSuccess, selectedOptionTranslate, setMessage, setLoading)
+    putRobotSettings(event.target.checked, errLint, selectedOptionSuccess, selectedOptionTranslate, setMessage, setLoading, token, setToken)
   };
 
   return (

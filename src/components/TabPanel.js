@@ -72,7 +72,12 @@ export default function TabPanel() {
   }, [chosenProject]);
 
   useEffect(() => {
+    console.log("useEffect token chenge ", token)
+
     localStorage.setItem('token', JSON.stringify(token));
+    if (token === "") {
+      handleLogout();
+    }
   }, [token]);
 
 

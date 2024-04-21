@@ -1,13 +1,17 @@
-export const getRobotSettings = (setCheckboxValues, setErrLint, setSelectedOptionSuccess, setSelectedOptionTranslate, setMessage) => {
+export const getRobotSettings = (setCheckboxValues, setErrLint, setSelectedOptionSuccess, setSelectedOptionTranslate, setMessage, token, setToken) => {
   return new Promise((resolve, reject) => {
     fetch('/api/v1/robotSettings', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
       .then(response => {
+        if (response.status === 403) {
+          setToken('')
+        }
         if (!response.ok) {
           setMessage('Ошибка сервера: ' + response.status);
           throw new Error('Network response was not ok');
@@ -39,13 +43,15 @@ export const getRobotSettings = (setCheckboxValues, setErrLint, setSelectedOptio
 };
 
 
-export const putRobotSettings = (checkboxValues, errLint, selectedOptionSuccess, selectedOptionTranslate, setMessage, setLoading) => {
+export const putRobotSettings = (checkboxValues, errLint, selectedOptionSuccess, selectedOptionTranslate, setMessage, setLoading, token, setToken) => {
   const assignTasksToStudent = selectedOptionTranslate === "student";
   console.log('putRobotSettings')
   fetch('/api/v1/robotSettings', {
     method: 'put',
     headers: {
-      'Content-Type': 'application/json'
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify(
       {
@@ -56,6 +62,9 @@ export const putRobotSettings = (checkboxValues, errLint, selectedOptionSuccess,
       })
   })
     .then(response => {
+      if (response.status === 403) {
+        setToken('')
+      }
       if (!response.ok) {
         setMessage('Ошибка сервера: ' + response.status);
         throw new Error('Ошибка сервера: ' + response.status);

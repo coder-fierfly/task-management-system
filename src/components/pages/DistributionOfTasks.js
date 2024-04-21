@@ -10,13 +10,13 @@ const DistributionOfTasks = () => {
   const [tasks, setTasks] = useState([]); // лист с задачами
   const [message, setMessage] = useState('Loading...'); // сообщение
   const [loading, setLoading] = useState(true); // статус загрузки
-  const { chosenIteration, chosenProject } = useContext(IterationContext); // выбранные задачи и проект
+  const { chosenIteration, chosenProject, token, setToken } = useContext(IterationContext); // выбранные задачи и проект
 
   // делаем поиск студентов и задач
   useEffect(() => {
     setLoading(true);
     if (chosenIteration) {
-      Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration), getTasksList(setTasks, chosenProject, chosenIteration)])
+      Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration, token, setToken), getTasksList(setTasks, chosenProject, chosenIteration, token, setToken)])
         .then(() => {
           if (studentList && tasks) {
             setLoading(false);
@@ -72,7 +72,7 @@ const DistributionOfTasks = () => {
   const handleClickDownloadList = () => {
     console.log("обновление списков")
     setLoading(true);
-    Promise.all([getStudentsList(setMessage, setStudentList), getTasksList(setTasks)])
+    Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration, token, setToken), getTasksList(setTasks, chosenProject, chosenIteration, token, setToken)])
       .then(() => {
         setLoading(false);
       })
@@ -91,7 +91,7 @@ const DistributionOfTasks = () => {
         tasksList: selectedTasks.map(({ isChecked, ...rest }) => rest), // Исключаем isChecked из объектов
         studentList: selectedStudents.map(({ isChecked, ...rest }) => rest)
       };
-      postAssign(dataToPass);
+      postAssign(dataToPass, token, setToken);
     }
   };
 

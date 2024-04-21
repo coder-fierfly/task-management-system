@@ -1,14 +1,18 @@
-export const getPlagiarism = ({ inputNumber, setListOfStudents, setLoading, setMessage }) => {
+export const getPlagiarism = ({ inputNumber, setListOfStudents, setLoading, setMessage, token, setToken }) => {
     setMessage("Loading...");
     return new Promise((resolve, reject) => {
         fetch(`api/v1/plagiat/getPlagiat/${inputNumber}`, {
             method: 'get',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         })
             .then(response => {
+                if (response.status === 403) {
+                    setToken('')
+                }
                 if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
                     throw new Error('Ошибка сервера: ' + response.status);

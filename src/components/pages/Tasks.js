@@ -7,7 +7,6 @@ import ConfirmationWindow from '../mini-elements/ConfirmationWindow';
 import ErrorWindow from '../mini-elements/ErrorWindow';
 import { getAllTopics, getTasks, getTests, handleIter, putTest, postIssue } from '../requestsToTheBack/ReqTasks';
 import IterationContext from '../IterationContext';
-import { containerClasses } from '@mui/material';
 
 
 function Tasks() {
@@ -29,12 +28,12 @@ function Tasks() {
   const [descOfTask, setDeskOfTask] = useState(''); // описание задачи
   const [isCreateNewTaskOpen, setCreateNewTaskOpen] = useState(false); // открыто ли окно создания задачи
   const [isConfOpen, setConfOpen] = useState(false); // открыта ли конфигурация
-  const { chosenIteration, chosenProject } = useContext(IterationContext); // выбранные итерация и проект
+  const { chosenIteration, chosenProject, token, setToken } = useContext(IterationContext); // выбранные итерация и проект
   const [key, setKey] = useState(0); // для обновления dropdown
 
   // запрос тем
   useEffect(() => {
-    getAllTopics(setThemeList, setLoading, setMessage);
+    getAllTopics(setThemeList, setLoading, setMessage, token, setToken);
     setLoading(false);
   }, []);
   const themeNamesArray = themeList.map((theme) => theme.themeName);
@@ -64,7 +63,7 @@ function Tasks() {
   // просмотр тестов
   const handleSaveTests = () => {
     console.log("handleSaveTests");
-    putTest(chosenTask, inputData, inputExpRes, setLoading);
+    putTest(chosenTask, inputData, inputExpRes, setLoading, token, setToken);
   }
 
   // реагирует на изменение в поле ввода с ожидаемым результатом
@@ -119,13 +118,12 @@ function Tasks() {
     setCreateNewTaskOpen(false);
   };
 
-  // сменя задачи
+  // смена задачи
   const handleTaskChange = (value) => {
     setLoading(true);
-    getTests(value, setListTest, setChosenTask, setMessage)
+    getTests(value, setListTest, setChosenTask, setMessage, token, setToken)
       .then(() => {
         setChosenTest('');
-        console.log("listTest[0].id", listTest[0].id)
         handleTestChange(listTest[0].id);
       }).then(() => {
         setLoading(false);
@@ -155,7 +153,7 @@ function Tasks() {
 
   // изменение темы
   const handleThemeChange = (value) => {
-    getTasks(value, setChosenTheme, setListTask, setMessage);
+    getTasks(value, setChosenTheme, setListTask, setMessage, token, setToken);
     setChosenTask(''); // сброс выбранной задачи при изменении темы
     setLoading(false);
   }
@@ -202,8 +200,8 @@ function Tasks() {
   // добавить задачу себе в итерацию
   const handleYourIter = () => {
     console.log("добавить задачу себе в итерацию")
-    postIssue(chosenTask, setMessage, chosenIteration);
-    handleIter(chosenTask, setMessage, chosenIteration);
+    postIssue(chosenTask, setMessage, chosenIteration, token, setToken);
+    handleIter(chosenTask, setMessage, chosenIteration, token, setToken);
   }
 
   return (
@@ -294,7 +292,7 @@ function Tasks() {
               </div>
             </div>
             <button onClick={handleSaveTests} className="b-button b-width" disabled={!chosenTask}>Сохранить</button>
-            <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} passedName={nameOfTask} passedDesc={descOfTask} passedConf={config} taskChange={taskChange} themeList={themeList} chosenTheme={chosenTheme} chosenTask={chosenTask} descOfTask={descOfTask} setLoading={setLoading} />
+            <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} passedName={nameOfTask} passedDesc={descOfTask} passedConf={config} taskChange={taskChange} themeList={themeList} chosenTheme={chosenTheme} chosenTask={chosenTask} descOfTask={descOfTask} setLoading={setLoading} token={token} setToken={setToken} />
             <ConfirmationWindow isOpen={isConfOpen} onClose={closeConf} delBtn={setDel} whatDel={nameConf} />
           </>}
         </div>

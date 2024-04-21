@@ -12,7 +12,7 @@ import IterationContext from '../IterationContext';
 
 const Connection = () => {
     // TODO: посмотреть ответ сервера при проверке одной задачи
-    const { chosenIteration, setChosenIteration, chosenProject, setChosenProject } = useContext(IterationContext);
+    const { chosenIteration, setChosenIteration, chosenProject, setChosenProject, token, setToken } = useContext(IterationContext);
 
     const [logs, setLogs] = useState([]); // логи
     const [stop, setStop] = useState(false); // старт логов
@@ -41,8 +41,8 @@ const Connection = () => {
 
     useEffect(() => {
         setMessage('Loading...');
-        getConRobotSettings(setMCheckboxValues, setLoading, setMessage);
-        getPersonalData()
+        getConRobotSettings(setMCheckboxValues, setLoading, token, setToken);
+        getPersonalData(token, setToken)
             .then(data => {
                 setInputUrl(data.url);
                 const transformedData = data.projectsList.map(project => ({
@@ -62,7 +62,7 @@ const Connection = () => {
     // изменение выбранного проекта
     const handleProjectChange = (value) => {
         setLoading(true);
-        getIterations(value, setListOfIterations, setLoading).then(() => {
+        getIterations(value, setListOfIterations, setLoading, token, setToken).then(() => {
             setChosenProject(value);
         });
         setChosenIteration(''); // сброс выбранной задачи при изменении темы
@@ -87,7 +87,7 @@ const Connection = () => {
                 [checkboxName]: !prevValues[checkboxName],
             };
             // Сохраняем настройки при каждом изменении чекбокса
-            putConRobotSettings(updatedValues, setMessage, setLoading);
+            putConRobotSettings(updatedValues, setMessage, setLoading, token, setToken);
             return updatedValues;
         });
     };
@@ -119,7 +119,7 @@ const Connection = () => {
         console.log('Кнопка проверки была нажата');
         getLogs();
         if (chosenProject && chosenIteration) {
-            postStartChecking(chosenProject, chosenIteration, checkboxValues);
+            postStartChecking(chosenProject, chosenIteration, checkboxValues, token, setToken);
             setIsOpen(true);
         } else {
             setErrorCheck("Вы не выбрали проект или итерацию");
@@ -128,10 +128,12 @@ const Connection = () => {
 
     // получение логов
     const getLogs = useCallback(() => {
-        getStartChecking(idStart, setLogs, setMessage, setStop).then((logs) => {
+        console.log("idStart ", idStart)
+        getStartChecking(idStart, setLogs, setMessage, setStop, token, setToken).then((logs) => {
             if (logs.length > 0) {
                 const lastLog = logs[logs.length - 1];
                 const lastRecordId = lastLog.recordId;
+                console.log("lastRecordId ", lastRecordId)
                 setIdStart(lastRecordId);
             }
         });
@@ -147,7 +149,7 @@ const Connection = () => {
     // открытие окошка плагиата
     const openPlagiarism = () => {
         setLoading(true);
-        getPlagiarism({ inputNumber, setListOfStudents, setLoading, setMessage })
+        getPlagiarism({ inputNumber, setListOfStudents, setLoading, setMessage, token, setToken })
             .then((listOfStudents) => {
                 if (listOfStudents) {
                     setPlagiarismOpen(true);
@@ -173,7 +175,7 @@ const Connection = () => {
     const handleCheckTask = () => {
         console.log('Кнопка проверить задачу нажата')
         if (inputNumber) {
-            postCheckTask(inputNumber, chosenProject, checkboxValues);
+            postCheckTask(inputNumber, chosenProject, checkboxValues, token, setToken);
             getLogs();
             setIsOpen(true);
         } else {

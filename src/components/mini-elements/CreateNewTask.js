@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { putCreateNewTask } from '../requestsToTheBack/reqCreateNew';
 
-const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, taskChange, chosenTheme, chosenTask, setLoading }) => {
+const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, taskChange, chosenTheme, chosenTask, setLoading, token, setToken }) => {
     const [inputName, setInputName] = useState(''); // название
     const [inputDesc, setInputDesc] = useState(''); // описание
     const [inputConf, setInputConf] = useState(''); // конфигурация
@@ -22,14 +22,10 @@ const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, ta
     // применение переданной информации к полям
     useEffect(() => {
         // меняем задание
-        console.log("taskChange ", taskChange)
         if (taskChange) {
-            console.log("меняем берем значения переданные")
             setInputName(passedName);
             setInputDesc(passedDesc);
             setInputConf(passedConf)
-        } else {
-            console.log("пусти")
         }
     }, [passedName, passedConf, passedDesc]);
 
@@ -59,12 +55,12 @@ const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, ta
         // меняем задание
         if (taskChange) {
             console.log('меняем')
-            putCreateNewTask(chosenTheme, chosenTask, inputName, inputDesc, inputConf, setLoading);
+            putCreateNewTask(chosenTheme, chosenTask, inputName, inputDesc, inputConf, setLoading, token, setToken );
         }
         //новое задание
         else {
             console.log('новое')
-            putCreateNewTask(chosenTheme, 0, '', '', '', setLoading);
+            putCreateNewTask(chosenTheme, 0, '', '', '', setLoading, token, setToken );
         }
         console.log("сохранить")
     }

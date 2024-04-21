@@ -1,6 +1,5 @@
-export const getPersonalData = (token) => {
+export const getPersonalData = (token, setToken) => {
     return new Promise((resolve, reject) => {
-        // TODO: 42 поменять
         fetch('/api/v1/settings', {
             method: 'GET',
             headers: {
@@ -10,7 +9,9 @@ export const getPersonalData = (token) => {
             }
         })
             .then(response => {
-                console.log("response", response)
+                if (response.status === 403) {
+                    setToken('');
+                }
                 if (!response.ok) {
                     const errorMessage = `Ошибка сервера: ${response.status}`;
                     reject(new Error(errorMessage));

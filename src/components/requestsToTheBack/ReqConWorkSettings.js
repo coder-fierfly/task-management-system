@@ -1,13 +1,16 @@
 
-export const getConRobotSettings = (setMCheckboxVal, setMessage) => {
+export const getConRobotSettings = (setMCheckboxVal, setMessage, token, setToken) => {
     fetch('/api/v1/robotSettings', {
         method: 'get',
         headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         }
     })
         .then(response => {
+            if (response.status === 403) {
+                setToken('')
+            }
             if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
                 throw new Error('Ошибка сервера: ' + response.status);
@@ -34,17 +37,21 @@ export const getConRobotSettings = (setMCheckboxVal, setMessage) => {
         });
 };
 
-export const getStartChecking = (idStart, setLogs, setMessage, setStop) => {
+export const getStartChecking = (idStart, setLogs, setMessage, setStop, token, setToken) => {
     console.log("getStartChecking");
     return new Promise((resolve, reject) => {
         fetch(`/api/v1/issueChecker/getLogs/${idStart}`, {
             method: 'get',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         })
             .then(response => {
+                if (response.status === 403) {
+                    setToken('')
+                }
                 if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
                     throw new Error('Ошибка сервера: ' + response.status);
@@ -73,12 +80,14 @@ export const getStartChecking = (idStart, setLogs, setMessage, setStop) => {
 
 
 
-export const putConRobotSettings = (checkboxValues, setMessage, setLoading) => {
+export const putConRobotSettings = (checkboxValues, setMessage, setLoading, token, setToken) => {
     const { checkboxAllIterations, checkboxShowAns } = checkboxValues;
     fetch('/api/v1/robotSettings', {
         method: 'put',
         headers: {
-            'Content-Type': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(
             {
@@ -87,6 +96,9 @@ export const putConRobotSettings = (checkboxValues, setMessage, setLoading) => {
             })
     })
         .then(response => {
+            if (response.status === 403) {
+                setToken('')
+            }
             if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
                 throw new Error('Ошибка сервера: ' + response.status);
@@ -107,12 +119,13 @@ export const putConRobotSettings = (checkboxValues, setMessage, setLoading) => {
         });
 };
 
-export const postStartChecking = (chosenProject, chosenIteration, checkboxValues) => {
+export const postStartChecking = (chosenProject, chosenIteration, checkboxValues, token, setToken) => {
     fetch('/api/v1/issueChecker/startFullCheck', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
             projectId: chosenProject,
@@ -126,6 +139,9 @@ export const postStartChecking = (chosenProject, chosenIteration, checkboxValues
         })
     })
         .then(response => {
+            if (response.status === 403) {
+                setToken('')
+            }
             if (!response.ok) {
                 throw new Error('Ошибка сети: ' + response.status);
             }
@@ -139,17 +155,22 @@ export const postStartChecking = (chosenProject, chosenIteration, checkboxValues
         });
 };
 
-export const getIterations = (value, setListOfIterations, setLoading) => {
+export const getIterations = (value, setListOfIterations, setLoading, token, setToken) => {
     return new Promise((resolve, reject) => {
-        var iterations = "/api/v1/project/iterations/" + value;
-        fetch(iterations, {
+        fetch(`/api/v1/project/iterations/${value}`, {
             method: 'get',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         })
-            .then(response => { return response.json(); })
+            .then(response => {
+                if (response.status === 403) {
+                    setToken('')
+                }
+                return response.json();
+            })
 
             .then(data => {
                 const transformedData = data.projectIterations.map((projectIteration, index) => ({
@@ -168,12 +189,13 @@ export const getIterations = (value, setListOfIterations, setLoading) => {
     });
 }
 
-export const postCheckTask = (inputNumber, chosenProject, checkboxValues) => {
+export const postCheckTask = (inputNumber, chosenProject, checkboxValues, token, setToken) => {
     fetch('/api/v1/issueChecker/startCheckSingleIssue', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
             "taskId": inputNumber,
@@ -191,7 +213,6 @@ export const postCheckTask = (inputNumber, chosenProject, checkboxValues) => {
             if (!response.ok) {
                 throw new Error('Ошибка сети: ' + response.status);
             }
-            console.log(response)
             return response.text();
         })
         .then(result => {

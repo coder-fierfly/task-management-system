@@ -1,10 +1,11 @@
-export const putCreateNewTask = (chosenTheme, chosenTask, inputName, descOfTask, inputConf, setLoading) => {
+export const putCreateNewTask = (chosenTheme, chosenTask, inputName, descOfTask, inputConf, setLoading, token, setToken ) => {
     setLoading(true)
     fetch('/api/v1/tasks/addOrUpdateTask', {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
             taskSubject: inputName,
@@ -16,6 +17,9 @@ export const putCreateNewTask = (chosenTheme, chosenTask, inputName, descOfTask,
         })
     })
         .then(response => {
+            if (response.status === 403) {
+                setToken('')
+              }
             if (!response.ok) {
                 throw new Error('Ошибка сервера: ' + response.status);
             }

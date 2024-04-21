@@ -1,14 +1,17 @@
-export const getStudentsList = (setMessage, setStudentList, chosenIteration) => {
+export const getStudentsList = (setMessage, setStudentList, chosenIteration, token, setToken) => {
   return new Promise((resolve, reject) => {
-    var buff = `/api/v1/issueChecker/getStudentsList/${chosenIteration}`;
-    fetch(buff, {
+    fetch(`/api/v1/issueChecker/getStudentsList/${chosenIteration}`, {
       method: 'get',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
       .then(response => {
+        if (response.status === 403) {
+          setToken('')
+        }
         if (!response.ok) {
           setMessage('Ошибка сервера: ' + response.status);
           throw new Error('Ошибка сервера: ' + response.status);
@@ -36,23 +39,26 @@ export const getStudentsList = (setMessage, setStudentList, chosenIteration) => 
   });
 };
 
-export const getTasksList = (setTasks, chosenProject, chosenIteration) => {
+export const getTasksList = (setTasks, chosenProject, chosenIteration, token, setToken) => {
   return new Promise((resolve, reject) => {
     fetch(`/api/v1/issueChecker/getTasksList/${chosenProject}/${chosenIteration}`, {
       method: 'get',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     })
       .then(response => {
+        if (response.status === 403) {
+          setToken('')
+        }
         if (!response.ok) {
           throw new Error('Ошибка сервера: ' + response.status);
         }
         return response.json();
       })
       .then(data => {
-        console.log(data)
         var updatedIssueList = data.issueList.map(task => ({
           ...task,
           isChecked: false
@@ -68,16 +74,20 @@ export const getTasksList = (setTasks, chosenProject, chosenIteration) => {
   });
 };
 
-export const postAssign = (dataToPass) => {
+export const postAssign = (dataToPass, token, setToken) => {
   fetch(`/api/v1/issueChecker/assignTasksToStudents`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify(dataToPass)
   })
     .then(response => {
+      if (response.status === 403) {
+        setToken('')
+      }
       if (!response.ok) {
         throw new Error(`Ошибка сервера: ${response.status}`);
       }

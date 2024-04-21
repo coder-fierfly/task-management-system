@@ -1,13 +1,17 @@
 
-export const getAllTopics = (setThemeList, setLoading, setMessage) => {
+export const getAllTopics = (setThemeList, setLoading, setMessage, token, setToken) => {
     fetch('/api/v1/tasks/getAllTopics', {
         method: 'get',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         }
     })
         .then(response => {
+            if (response.status === 403) {
+                setToken('')
+            }
             if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
                 throw new Error('Ошибка сервера: ' + response.status);
@@ -32,16 +36,21 @@ export const getAllTopics = (setThemeList, setLoading, setMessage) => {
         });
 };
 
-export const getTasks = (value, setChosenTheme, setListTask, setMessage) => {
-    var theme = "/api/v1/tasks/getTasks/" + value;
-    fetch(theme, {
+export const getTasks = (value, setChosenTheme, setListTask, setMessage, token, setToken) => {
+    fetch(`/api/v1/tasks/getTasks/${value}`, {
         method: 'get',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         }
     })
-        .then(response => { return response.json(); })
+        .then(response => {
+            if (response.status === 403) {
+                setToken('')
+            }
+            return response.json();
+        })
         .then(data => {
             setChosenTheme(value);
             const taskArray = data.tasksInTheme.map(task => ({
@@ -73,17 +82,22 @@ export const getTasks = (value, setChosenTheme, setListTask, setMessage) => {
         });
 };
 
-export const getTests = (value, setListTest, setChosenTask, setMessage) => {
+export const getTests = (value, setListTest, setChosenTask, setMessage, token, setToken) => {
     return new Promise((resolve, reject) => {
-        var test = "/api/v1/tasks/getTests/" + value;
-        fetch(test, {
+        fetch(`/api/v1/tasks/getTests/${value}`, {
             method: 'get',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.status === 403) {
+                    setToken('');
+                }
+                return response.json();
+            })
             .then(data => {
                 const testArray = data.taskTests.map(task => ({
                     id: task.testId,
@@ -102,12 +116,13 @@ export const getTests = (value, setListTest, setChosenTask, setMessage) => {
     });
 };
 
-export const handleIter = (chosenTask, setMessage, chosenIteration) => {
+export const handleIter = (chosenTask, setMessage, chosenIteration, token, setToken) => {
     fetch('/api/v1/tasks/addIssue', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
             "taskId": chosenTask,
@@ -115,6 +130,9 @@ export const handleIter = (chosenTask, setMessage, chosenIteration) => {
         })
     })
         .then(response => {
+            if (response.status === 403) {
+                setToken('')
+            }
             if (!response.ok) {
                 throw new Error('Ошибка сети: ' + response.status);
             }
@@ -128,12 +146,13 @@ export const handleIter = (chosenTask, setMessage, chosenIteration) => {
         });
 }
 
-export const putTest = (chosenTask, inputData, inputExpRes, setLoading) => {
+export const putTest = (chosenTask, inputData, inputExpRes, setLoading, token, setToken) => {
     fetch('/api/v1/tasks/addOrUpdateTest', {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
             testId: 0,
@@ -143,6 +162,9 @@ export const putTest = (chosenTask, inputData, inputExpRes, setLoading) => {
         })
     })
         .then(response => {
+            if (response.status === 403) {
+                setToken('')
+            }
             if (!response.ok) {
                 throw new Error('Ошибка сервера: ' + response.status);
             }
@@ -157,12 +179,13 @@ export const putTest = (chosenTask, inputData, inputExpRes, setLoading) => {
         });
 }
 
-export const postIssue = (chosenTask, setMessage, chosenIteration) => {
+export const postIssue = (chosenTask, setMessage, chosenIteration, token, setToken) => {
     fetch('/api/v1/tasks/addIssue', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
             "taskId": chosenTask,
@@ -170,6 +193,9 @@ export const postIssue = (chosenTask, setMessage, chosenIteration) => {
         })
     })
         .then(response => {
+            if (response.status === 403) {
+                setToken('')
+            }
             if (!response.ok) {
                 throw new Error('Ошибка сети: ' + response.status);
             }
