@@ -25,6 +25,10 @@ const DistributionOfTasks = () => {
         .catch(error => {
           setMessage(error.toString()); // Преобразуем объект Error в строку
         });
+    } else {
+      setMessage(
+        "Выберите итерацию на странице 'Главная'"
+      );
     }
   }, [chosenIteration]);
 
