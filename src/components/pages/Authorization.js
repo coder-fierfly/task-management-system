@@ -19,8 +19,7 @@ const Authorization = ({ handleLogin }) => {
     };
     const handleLoginClick = () => {
         setLoading(true)
-        getIterations(logValue, passValue, setToken, setMessage)
-            .then(setLoading(false)).then(handleLogin());
+        getIterations(logValue, passValue, setToken, setMessage);
     };
     return (
         <div className='main-auth-group'>

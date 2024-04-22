@@ -7,8 +7,6 @@ const MoreInfo = ({ isOpen, toggleModal, logs }) => {
         return { __html: logs.map(log => log.log).join('<br>') };
     }
 
-    // TODO: https://hostedredmine.comissues/181 - не хватает слэша. должно быть https://hostedredmine.com/issues/181
-
     if (!isOpen) {
         return null; // Если isOpen равно false, возвращаем null
     }
