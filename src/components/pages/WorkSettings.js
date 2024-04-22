@@ -13,7 +13,7 @@ const WorkSettings = () => {
   const [selectedOptionTranslate, setSelectedOptionTranslate] = useState("teacher");
   // чекбоксы
   const [checkboxValues, setCheckboxValues] = useState(false);
-  const [message, setMessage] = useState('Loading...');
+  const [message, setMessage] = useState('Загрузка...');
   const [loading, setLoading] = useState(true);
 
   // список со способами оповещения об ошибках
@@ -22,7 +22,7 @@ const WorkSettings = () => {
 
   useEffect(() => {
     setLoading(true);
-    setMessage('Loading...');
+    setMessage('Загрузка...');
     getRobotSettings(
       setCheckboxValues,
       setErrLint,
@@ -44,13 +44,13 @@ const WorkSettings = () => {
   const handleRadioChangeSuccess = (event) => {
     var selOption = event.target.value === "true";
     setSelectedOptionSuccess(selOption);
-    setMessage('Loading...');
+    setMessage('Загрузка...');
     setLoading(true);
     putRobotSettings(checkboxValues, errLint, selOption, selectedOptionTranslate, setMessage, setLoading, token, setToken)
   };
   const handleRadioChangeTranslate = (event) => {
     setSelectedOptionTranslate(event.target.value);
-    setMessage('Loading...');
+    setMessage('Загрузка...');
     setLoading(true);
     putRobotSettings(checkboxValues, errLint, selectedOptionSuccess, event.target.value, setMessage, setLoading, token, setToken)
   };

@@ -13,7 +13,6 @@ export const getConRobotSettings = (setMCheckboxVal, setMessage, token, setToken
             }
             if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-                throw new Error('Ошибка сервера: ' + response.status);
             }
             return response.json();
         })
@@ -37,7 +36,7 @@ export const getConRobotSettings = (setMCheckboxVal, setMessage, token, setToken
         });
 };
 
-export const getStartChecking = (idStart, setLogs, setMessage, setStop, token, setToken) => {
+export const getStartChecking = (idStart, setLogs, setMessage, token, setToken) => {
     console.log("getStartChecking");
     return new Promise((resolve, reject) => {
         fetch(`/api/v1/issueChecker/getLogs/${idStart}`, {
@@ -54,14 +53,10 @@ export const getStartChecking = (idStart, setLogs, setMessage, setStop, token, s
                 }
                 if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
-                    throw new Error('Ошибка сервера: ' + response.status);
                 }
                 return response.json();
             })
             .then(data => {
-                if (data.length === 0) {
-                    setStop(true);
-                }
                 setLogs(prevLogs => [...prevLogs, ...data]);
                 resolve(data); // Резолвим данные после успешного получения
             })
@@ -101,7 +96,6 @@ export const putConRobotSettings = (checkboxValues, setMessage, setLoading, toke
             }
             if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-                throw new Error('Ошибка сервера: ' + response.status);
             }
             setLoading(false);
             return response.text();
@@ -119,7 +113,7 @@ export const putConRobotSettings = (checkboxValues, setMessage, setLoading, toke
         });
 };
 
-export const postStartChecking = (chosenProject, chosenIteration, checkboxValues, token, setToken) => {
+export const postStartChecking = (chosenProject, chosenIteration, checkboxValues, token, setToken, setMessage) => {
     fetch('/api/v1/issueChecker/startFullCheck', {
         method: 'POST',
         headers: {
@@ -143,7 +137,7 @@ export const postStartChecking = (chosenProject, chosenIteration, checkboxValues
                 setToken('')
             }
             if (!response.ok) {
-                throw new Error('Ошибка сети: ' + response.status);
+                setMessage('Ошибка сети: ' + response.status);
             }
             return response.text();
         })
@@ -189,7 +183,7 @@ export const getIterations = (value, setListOfIterations, setLoading, token, set
     });
 }
 
-export const postCheckTask = (inputNumber, chosenProject, checkboxValues, token, setToken) => {
+export const postCheckTask = (inputNumber, chosenProject, checkboxValues, token, setToken, setMessage) => {
     fetch('/api/v1/issueChecker/startCheckSingleIssue', {
         method: 'POST',
         headers: {
@@ -210,8 +204,11 @@ export const postCheckTask = (inputNumber, chosenProject, checkboxValues, token,
         })
     })
         .then(response => {
+            if (response.status === 403) {
+                setToken('');
+            }
             if (!response.ok) {
-                throw new Error('Ошибка сети: ' + response.status);
+                setMessage('Ошибка сети: ' + response.status);
             }
             return response.text();
         })

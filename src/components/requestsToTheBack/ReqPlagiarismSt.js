@@ -1,5 +1,5 @@
 export const getPlagiarism = ({ inputNumber, setListOfStudents, setLoading, setMessage, token, setToken }) => {
-    setMessage("Loading...");
+    setMessage("Загрузка...");
     return new Promise((resolve, reject) => {
         fetch(`api/v1/plagiat/getPlagiat/${inputNumber}`, {
             method: 'get',
@@ -15,7 +15,6 @@ export const getPlagiarism = ({ inputNumber, setListOfStudents, setLoading, setM
                 }
                 if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
-                    throw new Error('Ошибка сервера: ' + response.status);
                 }
                 return response.json();
             })

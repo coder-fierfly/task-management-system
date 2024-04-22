@@ -4,12 +4,12 @@ import ErrorWindow from '../mini-elements/ErrorWindow';
 import IterationContext from '../IterationContext';
 
 const Authorization = ({ handleLogin }) => {
-    const { token, setToken } = useContext(IterationContext);
+    const { setToken } = useContext(IterationContext);
 
     const [logValue, setLogValue] = useState('');
     const [passValue, setPassValue] = useState('');
     const [loading, setLoading] = useState(false);  // загрузка
-    const [message, setMessage] = useState('Loading...'); // сообщение в окне загрузки
+    const [message, setMessage] = useState('Загрузка...'); // сообщение в окне загрузки
 
     const handleLogChange = (e) => {
         setLogValue(e.target.value);

@@ -1,4 +1,4 @@
-export const putCreateNewTask = (chosenTheme, chosenTask, inputName, descOfTask, inputConf, setLoading, token, setToken ) => {
+export const putCreateNewTask = (chosenTheme, chosenTask, inputName, descOfTask, inputConf, setLoading, setMessage, token, setToken) => {
     setLoading(true)
     fetch('/api/v1/tasks/addOrUpdateTask', {
         method: 'PUT',
@@ -19,9 +19,9 @@ export const putCreateNewTask = (chosenTheme, chosenTask, inputName, descOfTask,
         .then(response => {
             if (response.status === 403) {
                 setToken('')
-              }
+            }
             if (!response.ok) {
-                throw new Error('Ошибка сервера: ' + response.status);
+                setMessage('Ошибка сервера: ' + response.status);
             }
             return response.text();
         })

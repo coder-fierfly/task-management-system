@@ -8,7 +8,7 @@ const DistributionOfTasks = () => {
 
   const [studentList, setStudentList] = useState([]); // лист студентов
   const [tasks, setTasks] = useState([]); // лист с задачами
-  const [message, setMessage] = useState('Loading...'); // сообщение
+  const [message, setMessage] = useState('Загрузка...'); // сообщение
   const [loading, setLoading] = useState(true); // статус загрузки
   const { chosenIteration, chosenProject, token, setToken } = useContext(IterationContext); // выбранные задачи и проект
 
@@ -16,7 +16,7 @@ const DistributionOfTasks = () => {
   useEffect(() => {
     setLoading(true);
     if (chosenIteration) {
-      Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration, token, setToken), getTasksList(setTasks, chosenProject, chosenIteration, token, setToken)])
+      Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration, token, setToken), getTasksList(setTasks, chosenProject, chosenIteration, token, setToken, setMessage)])
         .then(() => {
           if (studentList && tasks) {
             setLoading(false);
@@ -76,7 +76,7 @@ const DistributionOfTasks = () => {
   const handleClickDownloadList = () => {
     console.log("обновление списков")
     setLoading(true);
-    Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration, token, setToken), getTasksList(setTasks, chosenProject, chosenIteration, token, setToken)])
+    Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration, token, setToken), getTasksList(setTasks, chosenProject, chosenIteration, token, setToken, setMessage)])
       .then(() => {
         setLoading(false);
       })
@@ -95,7 +95,7 @@ const DistributionOfTasks = () => {
         tasksList: selectedTasks.map(({ isChecked, ...rest }) => rest), // Исключаем isChecked из объектов
         studentList: selectedStudents.map(({ isChecked, ...rest }) => rest)
       };
-      postAssign(dataToPass, token, setToken);
+      postAssign(dataToPass, token, setToken, setMessage);
     }
   };
 

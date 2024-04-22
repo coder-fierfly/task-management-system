@@ -21,7 +21,7 @@ function Tasks() {
   const [chosenTest, setChosenTest] = useState(''); // тест выбранный
   const [config, setConfig] = useState(''); // текст конфигурации задачи
   const [chosenTheme, setChosenTheme] = useState(''); // тема выбранная 
-  const [message, setMessage] = useState('Loading...'); // сообщение в окне загрузки
+  const [message, setMessage] = useState('Загрузка...'); // сообщение в окне загрузки
   const [loading, setLoading] = useState(true); // статус загрузки
   const [nameOfTask, setNameOfTask] = useState(''); // название задачи
   const [nameConf, setConf] = useState(''); // конфигурация
@@ -63,7 +63,7 @@ function Tasks() {
   // просмотр тестов
   const handleSaveTests = () => {
     console.log("handleSaveTests");
-    putTest(chosenTask, inputData, inputExpRes, setLoading, token, setToken);
+    putTest(chosenTask, inputData, inputExpRes, setLoading, token, setToken, setMessage);
   }
 
   // реагирует на изменение в поле ввода с ожидаемым результатом
@@ -292,7 +292,7 @@ function Tasks() {
               </div>
             </div>
             <button onClick={handleSaveTests} className="b-button b-width" disabled={!chosenTask}>Сохранить</button>
-            <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} passedName={nameOfTask} passedDesc={descOfTask} passedConf={config} taskChange={taskChange} themeList={themeList} chosenTheme={chosenTheme} chosenTask={chosenTask} descOfTask={descOfTask} setLoading={setLoading} token={token} setToken={setToken} />
+            <CreateNewTask isOpen={isCreateNewTaskOpen} onClose={closeCreateNewTask} passedName={nameOfTask} passedDesc={descOfTask} passedConf={config} taskChange={taskChange} themeList={themeList} chosenTheme={chosenTheme} chosenTask={chosenTask} descOfTask={descOfTask} setLoading={setLoading} token={token} setToken={setToken} setMessage={setMessage} />
             <ConfirmationWindow isOpen={isConfOpen} onClose={closeConf} delBtn={setDel} whatDel={nameConf} />
           </>}
         </div>

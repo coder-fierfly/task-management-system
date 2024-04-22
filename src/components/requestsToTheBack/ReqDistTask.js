@@ -14,7 +14,6 @@ export const getStudentsList = (setMessage, setStudentList, chosenIteration, tok
         }
         if (!response.ok) {
           setMessage('Ошибка сервера: ' + response.status);
-          throw new Error('Ошибка сервера: ' + response.status);
         }
         return response.json();
       })
@@ -39,7 +38,7 @@ export const getStudentsList = (setMessage, setStudentList, chosenIteration, tok
   });
 };
 
-export const getTasksList = (setTasks, chosenProject, chosenIteration, token, setToken) => {
+export const getTasksList = (setTasks, chosenProject, chosenIteration, token, setToken, setMessage) => {
   return new Promise((resolve, reject) => {
     fetch(`/api/v1/issueChecker/getTasksList/${chosenProject}/${chosenIteration}`, {
       method: 'get',
@@ -54,7 +53,7 @@ export const getTasksList = (setTasks, chosenProject, chosenIteration, token, se
           setToken('')
         }
         if (!response.ok) {
-          throw new Error('Ошибка сервера: ' + response.status);
+          setMessage('Ошибка сервера: ' + response.status);
         }
         return response.json();
       })
@@ -74,7 +73,7 @@ export const getTasksList = (setTasks, chosenProject, chosenIteration, token, se
   });
 };
 
-export const postAssign = (dataToPass, token, setToken) => {
+export const postAssign = (dataToPass, token, setToken, setMessage) => {
   fetch(`/api/v1/issueChecker/assignTasksToStudents`, {
     method: 'POST',
     headers: {
@@ -89,7 +88,7 @@ export const postAssign = (dataToPass, token, setToken) => {
         setToken('')
       }
       if (!response.ok) {
-        throw new Error(`Ошибка сервера: ${response.status}`);
+        setMessage(`Ошибка сервера: ${response.status}`);
       }
       return response.text();
     })

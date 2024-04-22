@@ -11,11 +11,15 @@ import IterationContext from '../IterationContext';
 
 
 const Connection = () => {
-    // TODO: посмотреть ответ сервера при проверке одной задачи
     const { chosenIteration, setChosenIteration, chosenProject, setChosenProject, token, setToken } = useContext(IterationContext);
+    const [logs, setLogs] = useState(() => {
+        const savedLogs = localStorage.getItem('logs');
+        return savedLogs ? JSON.parse(savedLogs) : [];
+    });    // логи
 
-    const [logs, setLogs] = useState([]); // логи
-    const [stop, setStop] = useState(false); // старт логов
+    useEffect(() => {
+        localStorage.setItem('logs', JSON.stringify(logs));
+    }, [logs]);
 
     // выпадающие списки проект и итерация
     const [listOfIterations, setListOfIterations] = useState([]);
@@ -23,7 +27,7 @@ const Connection = () => {
     // здесь хранится введенный url
     const [inputUrl, setInputUrl] = useState('');
     const [loading, setLoading] = useState(true);  // загрузка
-    const [message, setMessage] = useState('Loading...'); // сообщение в окне загрузки
+    const [message, setMessage] = useState('Загрузка...'); // сообщение в окне загрузки
 
     // значения checkbox
     const [checkboxValues, setMCheckboxValues] = useState({
@@ -33,14 +37,13 @@ const Connection = () => {
         assignTasksToStudent: false
     });
 
-
     const [listOfStudents, setListOfStudents] = useState('');     // список студентов
     const [inputNumber, setInputNumber] = useState();    // номер задачи
     const [isPlagiarismOpen, setPlagiarismOpen] = useState(false);    // открытие окна плагиата
     const [isOpen, setIsOpen] = useState(false);    // кнопка закрытия окошек
 
     useEffect(() => {
-        setMessage('Loading...');
+        setMessage('Загрузка...');
         getConRobotSettings(setMCheckboxValues, setLoading, token, setToken);
         getPersonalData(token, setToken)
             .then(data => {
@@ -76,6 +79,7 @@ const Connection = () => {
 
     // открытие отчета
     const toggleModal = () => {
+        getLogs();
         setIsOpen(!isOpen);
     };
 
@@ -119,7 +123,7 @@ const Connection = () => {
         console.log('Кнопка проверки была нажата');
         getLogs();
         if (chosenProject && chosenIteration) {
-            postStartChecking(chosenProject, chosenIteration, checkboxValues, token, setToken);
+            postStartChecking(chosenProject, chosenIteration, checkboxValues, token, setToken, setMessage);
             setIsOpen(true);
         } else {
             setErrorCheck("Вы не выбрали проект или итерацию");
@@ -129,7 +133,7 @@ const Connection = () => {
     // получение логов
     const getLogs = useCallback(() => {
         console.log("idStart ", idStart)
-        getStartChecking(idStart, setLogs, setMessage, setStop, token, setToken).then((logs) => {
+        getStartChecking(idStart, setLogs, setMessage, token, setToken).then((logs) => {
             if (logs.length > 0) {
                 const lastLog = logs[logs.length - 1];
                 const lastRecordId = lastLog.recordId;
@@ -140,11 +144,11 @@ const Connection = () => {
     }, [idStart, setLogs, setMessage]);
 
     useEffect(() => {
-        if (idStart !== 0 && isOpen && !stop) {
-            const intervalId = setInterval(getLogs, 5000);
+        if (idStart !== 0 && isOpen) {
+            const intervalId = setInterval(getLogs, 180000); // 3 минуты
             return () => clearInterval(intervalId);
         }
-    }, [getLogs, idStart, isOpen, stop]);
+    }, [getLogs, idStart, isOpen]);
 
     // открытие окошка плагиата
     const openPlagiarism = () => {
@@ -183,7 +187,6 @@ const Connection = () => {
         }
     }
 
-
     useEffect(() => {
         // Проверка, что chosenIteration и chosenProject не пустые
         if (chosenIteration && chosenProject) {
@@ -192,6 +195,7 @@ const Connection = () => {
             handleIterationsChange(chosenIteration);
         }
     }, [chosenIteration, chosenProject]);
+
 
     return (
         <>

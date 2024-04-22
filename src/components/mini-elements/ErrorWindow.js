@@ -12,15 +12,13 @@ const ErrorWindow = ({ isOpen, onClose, error }) => {
     }
     return (
         <div className="popup-overlay">
-            <div className="popup">
+            <div className="popup min-h-w">
                 <div className="popup-content">
-                    <div className="del-wind">
                         <div>
-                            <div>
+                            <div className='pop-cont-w'>
                                 {error}
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>

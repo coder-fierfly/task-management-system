@@ -8,7 +8,7 @@ import IterationContext from '../IterationContext';
 const PersonalAcc = ({ handleLogout }) => {
     const [PersonalData, setPersonalData] = useState(null); // личные данные
     const [loading, setLoading] = useState(true); // статус загрузки
-    const [message, setMessage] = useState('Loading...'); // сообщение в окне загрузки
+    const [message, setMessage] = useState('Загрузка...'); // сообщение в окне загрузки
     const { token, setToken } = useContext(IterationContext);
 
     // useEffect(() => {
@@ -32,30 +32,19 @@ const PersonalAcc = ({ handleLogout }) => {
 
     useEffect(() => {
         setLoading(true);
-        let tokenTimeout;
-
-        // Функция для проверки токена
-        const checkToken = () => {
-            if (token !== '') {
-                getPersonalData(token, setToken)
-                    .then(data => {
-                        setPersonalData(data);
-                        setLoading(false);
-                    })
-                    .catch(error => {
-                        setMessage(error.message);
-                        console.error('Ошибка в запросе к серверу:', error.message);
-                    });
-            } else {
-                // Если токен так и не появился после задержки, вызываем handleLogout
-                handleLogout();
-            }
-        };
-
-        // Устанавливаем таймер на 500 мс, чтобы проверить, установлен ли токен
-        tokenTimeout = setTimeout(checkToken, 500);
-        // Очищаем таймер при размонтировании компонента
-        return () => clearTimeout(tokenTimeout);
+        if (token !== '') {
+            getPersonalData(token, setToken)
+                .then(data => {
+                    setPersonalData(data);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    setMessage(error.message);
+                    console.error('Ошибка в запросе к серверу:', error.message);
+                });
+        } else {
+            handleLogout();
+        }
     }, [token]);
 
 

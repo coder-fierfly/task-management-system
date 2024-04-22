@@ -14,7 +14,6 @@ export const getAllTopics = (setThemeList, setLoading, setMessage, token, setTok
             }
             if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-                throw new Error('Ошибка сервера: ' + response.status);
             }
             return response.json();
         })
@@ -134,7 +133,7 @@ export const handleIter = (chosenTask, setMessage, chosenIteration, token, setTo
                 setToken('')
             }
             if (!response.ok) {
-                throw new Error('Ошибка сети: ' + response.status);
+                setMessage('Ошибка сети: ' + response.status);
             }
             return response.text();
         })
@@ -146,7 +145,7 @@ export const handleIter = (chosenTask, setMessage, chosenIteration, token, setTo
         });
 }
 
-export const putTest = (chosenTask, inputData, inputExpRes, setLoading, token, setToken) => {
+export const putTest = (chosenTask, inputData, inputExpRes, setLoading, token, setToken, setMessage) => {
     fetch('/api/v1/tasks/addOrUpdateTest', {
         method: 'PUT',
         headers: {
@@ -166,7 +165,7 @@ export const putTest = (chosenTask, inputData, inputExpRes, setLoading, token, s
                 setToken('')
             }
             if (!response.ok) {
-                throw new Error('Ошибка сервера: ' + response.status);
+                setMessage('Ошибка сервера: ' + response.status);
             }
             return response.text();
         })
@@ -197,7 +196,7 @@ export const postIssue = (chosenTask, setMessage, chosenIteration, token, setTok
                 setToken('')
             }
             if (!response.ok) {
-                throw new Error('Ошибка сети: ' + response.status);
+                setMessage('Ошибка сети: ' + response.status);
             }
             return response.text();
         })

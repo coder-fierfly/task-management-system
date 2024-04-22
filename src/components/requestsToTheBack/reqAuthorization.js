@@ -14,7 +14,7 @@ export const getIterations = (username, password, setToken, setMessage) => {
             .then(response => {
                 if (!response.ok) {
                     console.log(response)
-                    throw new Error('Ошибка: ' + response.status);
+                    setMessage('Ошибка: ' + response.status);
                 }
                 return response.text();
             })

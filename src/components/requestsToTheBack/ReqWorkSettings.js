@@ -14,7 +14,6 @@ export const getRobotSettings = (setCheckboxValues, setErrLint, setSelectedOptio
         }
         if (!response.ok) {
           setMessage('Ошибка сервера: ' + response.status);
-          throw new Error('Network response was not ok');
         }
         return response.json();
       })
@@ -67,7 +66,6 @@ export const putRobotSettings = (checkboxValues, errLint, selectedOptionSuccess,
       }
       if (!response.ok) {
         setMessage('Ошибка сервера: ' + response.status);
-        throw new Error('Ошибка сервера: ' + response.status);
       }
       return response.text();
     })

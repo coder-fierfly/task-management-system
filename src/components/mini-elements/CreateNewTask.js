@@ -7,11 +7,12 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { putCreateNewTask } from '../requestsToTheBack/reqCreateNew';
 
-const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, taskChange, chosenTheme, chosenTask, setLoading, token, setToken }) => {
+const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, taskChange, chosenTheme, chosenTask, setLoading, token, setToken, setMessage }) => {
     const [inputName, setInputName] = useState(''); // название
     const [inputDesc, setInputDesc] = useState(''); // описание
     const [inputConf, setInputConf] = useState(''); // конфигурация
     const [expanded, setExpanded] = useState('panel1'); // раскрытая панель
+
 
     const handleChange = (panel) => (isExpanded) => {
         // if (panel === 'panel1') {
@@ -55,12 +56,12 @@ const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, ta
         // меняем задание
         if (taskChange) {
             console.log('меняем')
-            putCreateNewTask(chosenTheme, chosenTask, inputName, inputDesc, inputConf, setLoading, token, setToken );
+            putCreateNewTask(chosenTheme, chosenTask, inputName, inputDesc, inputConf, setLoading, setMessage, token, setToken);
         }
         //новое задание
         else {
             console.log('новое')
-            putCreateNewTask(chosenTheme, 0, '', '', '', setLoading, token, setToken );
+            putCreateNewTask(chosenTheme, 0, '', '', '', setLoading, setMessage, token, setToken);
         }
         console.log("сохранить")
     }
