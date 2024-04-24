@@ -149,7 +149,7 @@ export const postStartChecking = (chosenProject, chosenIteration, checkboxValues
         });
 };
 
-export const getIterations = (value, setListOfIterations, setLoading, token, setToken) => {
+export const getIterations = (value, setListOfIterations, setLoading, token, setToken, setMessage) => {
     return new Promise((resolve, reject) => {
         fetch(`/api/v1/project/iterations/${value}`, {
             method: 'get',
@@ -162,6 +162,9 @@ export const getIterations = (value, setListOfIterations, setLoading, token, set
             .then(response => {
                 if (response.status === 403) {
                     setToken('')
+                }
+                if (!response.ok) {
+                    setMessage('Ошибка сети: ' + response.status);
                 }
                 return response.json();
             })
@@ -182,6 +185,47 @@ export const getIterations = (value, setListOfIterations, setLoading, token, set
             });
     });
 }
+
+
+export const getAllTasks = (setListOfTasks, token, setToken, setMessage) => {
+    return new Promise((resolve, reject) => {
+        fetch(`/api/v1/tasks/getAllTasks`, {
+            method: 'get',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                if (response.status === 403) {
+                    setToken('')
+                }
+                if (!response.ok) {
+                    setMessage('Ошибка сети: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                let ListOfTasks = [];
+                data.forEach(task => {
+                    // Извлекаем только taskSubject и taskId
+                    const { taskSubject, taskId } = task;
+                    // Создаем объект с нужными полями
+                    const taskData = { name: taskSubject, id: taskId};
+                    ListOfTasks.push(taskData);
+
+                });
+                setListOfTasks(ListOfTasks);
+                resolve(); // Разрешаем обещание после успешного выполнения всех операций
+            })
+            .catch(error => {
+                console.error('Нет таких данных:', error);
+                reject(error); // Отклоняем обещание в случае ошибки
+            });
+    });
+}
+
 
 export const postCheckTask = (inputNumber, chosenProject, checkboxValues, token, setToken, setMessage) => {
     fetch('/api/v1/issueChecker/startCheckSingleIssue', {

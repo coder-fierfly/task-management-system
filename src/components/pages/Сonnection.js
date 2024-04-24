@@ -4,7 +4,7 @@ import DropdownList from '../mini-elements/DropdownList';
 import Plagiarism from '../mini-elements/Plagiarism';
 import MoreInfo from '../mini-elements/MoreInfo';
 import ErrorWindow from '../mini-elements/ErrorWindow';
-import { getConRobotSettings, putConRobotSettings, postStartChecking, getIterations, postCheckTask, getStartChecking } from '../requestsToTheBack/ReqConWorkSettings';
+import { getConRobotSettings, putConRobotSettings, postStartChecking, getIterations, getAllTasks, postCheckTask, getStartChecking } from '../requestsToTheBack/ReqConWorkSettings';
 import { getPlagiarism } from '../requestsToTheBack/ReqPlagiarismSt';
 import { getPersonalData } from '../requestsToTheBack/ReqPersonalData';
 import IterationContext from '../IterationContext';
@@ -17,13 +17,16 @@ const Connection = () => {
         return savedLogs ? JSON.parse(savedLogs) : [];
     });    // логи
 
+    const [chosenTask, setchosenTask] = useState();
+
     useEffect(() => {
         localStorage.setItem('logs', JSON.stringify(logs));
     }, [logs]);
 
-    // выпадающие списки проект и итерация
+    // выпадающие списки проект и итерация и задач
     const [listOfIterations, setListOfIterations] = useState([]);
     const [listOfProjects, setListOfProjects] = useState([]);
+    const [listOfTasks, setListOfTasks] = useState([]);
     // здесь хранится введенный url
     const [inputUrl, setInputUrl] = useState('');
     const [loading, setLoading] = useState(true);  // загрузка
@@ -45,27 +48,29 @@ const Connection = () => {
     useEffect(() => {
         setMessage('Загрузка...');
         getConRobotSettings(setMCheckboxValues, setLoading, token, setToken);
-        getPersonalData(token, setToken)
-            .then(data => {
-                setInputUrl(data.url);
-                const transformedData = data.projectsList.map(project => ({
-                    name: project.projectName,
-                    id: project.projectId
-                }));
-                setListOfProjects(transformedData);
-                setLoading(false);
-            })
-            .catch(error => {
-                setMessage(error.message);
-                console.error('Ошибка в запросе к серверу:', error.message);
-            });
+        getAllTasks(setListOfTasks, token, setToken).then(() => {
+            getPersonalData(token, setToken)
+                .then(data => {
+                    setInputUrl(data.url);
+                    const transformedData = data.projectsList.map(project => ({
+                        name: project.projectName,
+                        id: project.projectId
+                    }));
+                    setListOfProjects(transformedData);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    setMessage(error.message);
+                    console.error('Ошибка в запросе к серверу:', error.message);
+                });
+        });
         setLoading(false);
     }, []);
 
     // изменение выбранного проекта
     const handleProjectChange = (value) => {
         setLoading(true);
-        getIterations(value, setListOfIterations, setLoading, token, setToken).then(() => {
+        getIterations(value, setListOfIterations, setLoading, token, setToken, setMessage).then(() => {
             setChosenProject(value);
         });
         setChosenIteration(''); // сброс выбранной задачи при изменении темы
@@ -75,6 +80,11 @@ const Connection = () => {
     const handleIterationsChange = (id) => {
         console.log("handleIterationsChange")
         setChosenIteration(id)
+    }
+
+    // изменение выбранного проекта
+    const handleTaskChange = (value) => {
+        setchosenTask(value);
     }
 
     // открытие отчета
@@ -152,22 +162,23 @@ const Connection = () => {
 
     // открытие окошка плагиата
     const openPlagiarism = () => {
-        setLoading(true);
-        getPlagiarism({ inputNumber, setListOfStudents, setLoading, setMessage, token, setToken })
-            .then((listOfStudents) => {
-                if (listOfStudents) {
-                    setPlagiarismOpen(true);
-                } else {
-                    setError('Задание с таким номером не найдено');
-                }
-            })
-            .catch((error) => {
-                console.error('Error occurred: ', error);
-                setError('Произошла ошибка при загрузке данных');
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+        if (chosenTask) {
+            setLoading(true);
+            getPlagiarism(chosenTask, setListOfStudents, setLoading, setMessage, token, setToken)
+                .then((listOfStudents) => {
+                    if (listOfStudents) {
+                        setPlagiarismOpen(true);
+                    } else {
+                        setError('Задание с таким номером не найдено');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Ошибка: ', error);
+                    setError('Произошла ошибка при загрузке данных');
+                });
+        } else {
+            setError("Вы не выбрали задачу")
+        }
     };
 
     //закрытие окошка плагиата
@@ -178,12 +189,12 @@ const Connection = () => {
     // нажата проверить задачу
     const handleCheckTask = () => {
         console.log('Кнопка проверить задачу нажата')
-        if (inputNumber) {
-            postCheckTask(inputNumber, chosenProject, checkboxValues, token, setToken);
+        if (chosenTask) {
+            postCheckTask(chosenTask, chosenProject, checkboxValues, token, setToken);
             getLogs();
             setIsOpen(true);
         } else {
-            setError("Вы не ввели не верное значение")
+            setError("Вы не выбрали задачу")
         }
     }
 
@@ -255,8 +266,12 @@ const Connection = () => {
                             </div>
                             <div className="form-container">
                                 <div>
-                                    <input className="input-field" id="inputNumId" type="textarea" defaultValue={inputNumber}
-                                        onChange={handleInputNumber} placeholder="Введите номер задачи" />
+                                    <DropdownList
+                                        options={listOfTasks}
+                                        selectedValue={chosenTask}
+                                        onSelectedValueChange={handleTaskChange}
+                                        outputLabel="Выберите задачу"
+                                    />
                                     {error && <div className="error-message">{error}</div>}</div>
                                 <div className='flex-class'>  <button onClick={handleCheckTask} className="b-button b-height">Проверить задачу</button>
                                     <button onClick={openPlagiarism} className="b-button b-height">Плагиат</button></div>

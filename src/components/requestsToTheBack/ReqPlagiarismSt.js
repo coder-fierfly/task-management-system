@@ -1,7 +1,7 @@
-export const getPlagiarism = ({ inputNumber, setListOfStudents, setLoading, setMessage, token, setToken }) => {
+export const getPlagiarism = (chosenTasks, setListOfStudents, setLoading, setMessage, token, setToken) => {
     setMessage("Загрузка...");
     return new Promise((resolve, reject) => {
-        fetch(`api/v1/plagiat/getPlagiat/${inputNumber}`, {
+        fetch(`api/v1/plagiat/getPlagiat/${chosenTasks}`, {
             method: 'get',
             headers: {
                 'Accept': 'application/json',
