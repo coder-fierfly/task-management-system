@@ -11,11 +11,11 @@ export const getStudentsList = (setMessage, setStudentList, chosenIteration, tok
       .then(response => {
         if (response.status === 403) {
           setToken('')
-        }
-        if (!response.ok) {
+        } else if (!response.ok) {
           setMessage('Ошибка сервера: ' + response.status);
+        } else {
+          return response.json();
         }
-        return response.json();
       })
       .then(data => {
         var updatedStudentList = data.studentList.map(student => ({
@@ -51,11 +51,11 @@ export const getTasksList = (setTasks, chosenProject, chosenIteration, token, se
       .then(response => {
         if (response.status === 403) {
           setToken('')
-        }
-        if (!response.ok) {
+        } else if (!response.ok) {
           setMessage('Ошибка сервера: ' + response.status);
+        } else {
+          return response.json();
         }
-        return response.json();
       })
       .then(data => {
         var updatedIssueList = data.issueList.map(task => ({
@@ -83,15 +83,15 @@ export const postAssign = (dataToPass, token, setToken, setMessage) => {
     },
     body: JSON.stringify(dataToPass)
   })
-    .then(response => {
-      if (response.status === 403) {
+  .then(response => {
+    if (response.status === 403) {
         setToken('')
-      }
-      if (!response.ok) {
-        setMessage(`Ошибка сервера: ${response.status}`);
-      }
-      return response.text();
-    })
+    } else if (!response.ok) {
+        setMessage('Ошибка сервера: ' + response.status);
+    } else {
+        return response.text();
+    }
+})
     .then(result => {
       console.log('Результат:', result);
     })

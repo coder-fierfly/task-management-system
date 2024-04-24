@@ -49,7 +49,7 @@ const Connection = () => {
         setMessage('Загрузка...');
         getConRobotSettings(setMCheckboxValues, setLoading, token, setToken);
         getAllTasks(setListOfTasks, token, setToken).then(() => {
-            getPersonalData(token, setToken)
+            getPersonalData(token, setToken, setMessage)
                 .then(data => {
                     setInputUrl(data.url);
                     const transformedData = data.projectsList.map(project => ({
@@ -174,7 +174,7 @@ const Connection = () => {
                 })
                 .catch((error) => {
                     console.error('Ошибка: ', error);
-                    setError('Произошла ошибка при загрузке данных');
+                    setMessage('Произошла ошибка при загрузке данных');
                 });
         } else {
             setError("Вы не выбрали задачу")

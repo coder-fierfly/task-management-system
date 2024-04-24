@@ -11,11 +11,11 @@ export const getAllTopics = (setThemeList, setLoading, setMessage, token, setTok
         .then(response => {
             if (response.status === 403) {
                 setToken('')
-            }
-            if (!response.ok) {
+            } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
+            } else {
+                return response.json();
             }
-            return response.json();
         })
         .then(data => {
             const transformedData = data.themeListList.map(theme => ({
@@ -47,8 +47,11 @@ export const getTasks = (value, setChosenTheme, setListTask, setMessage, token, 
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+            } else if (!response.ok) {
+                setMessage('Ошибка сервера: ' + response.status);
+            } else {
+                return response.json();
             }
-            return response.json();
         })
         .then(data => {
             setChosenTheme(value);
@@ -93,9 +96,12 @@ export const getTests = (value, setListTest, setChosenTask, setMessage, token, s
         })
             .then(response => {
                 if (response.status === 403) {
-                    setToken('');
+                    setToken('')
+                } else if (!response.ok) {
+                    setMessage('Ошибка сервера: ' + response.status);
+                } else {
+                    return response.json();
                 }
-                return response.json();
             })
             .then(data => {
                 const testArray = data.taskTests.map(task => ({
@@ -131,11 +137,11 @@ export const handleIter = (chosenTask, setMessage, chosenIteration, token, setTo
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+            } else if (!response.ok) {
+                setMessage('Ошибка сервера: ' + response.status);
+            } else {
+                return response.text();
             }
-            if (!response.ok) {
-                setMessage('Ошибка сети: ' + response.status);
-            }
-            return response.text();
         })
         .then(result => {
             console.log('Результат:', result);
@@ -163,11 +169,11 @@ export const putTest = (chosenTask, inputData, inputExpRes, setLoading, token, s
         .then(response => {
             if (response.status === 403) {
                 setToken('')
-            }
-            if (!response.ok) {
+            } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
+            } else {
+                return response.text();
             }
-            return response.text();
         })
         .then(result => {
             console.log('Результат:', result);
@@ -194,11 +200,11 @@ export const postIssue = (chosenTask, setMessage, chosenIteration, token, setTok
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+            } else if (!response.ok) {
+                setMessage('Ошибка сервера: ' + response.status);
+            } else {
+                return response.text();
             }
-            if (!response.ok) {
-                setMessage('Ошибка сети: ' + response.status);
-            }
-            return response.text();
         })
         .then(result => {
             console.log('Результат:', result);

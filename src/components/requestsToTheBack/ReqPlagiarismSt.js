@@ -12,11 +12,11 @@ export const getPlagiarism = (chosenTasks, setListOfStudents, setLoading, setMes
             .then(response => {
                 if (response.status === 403) {
                     setToken('')
-                }
-                if (!response.ok) {
+                } else if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
+                } else {
+                    return response.json();
                 }
-                return response.json();
             })
             .then(data => {
                 const listOfStudents = data.studentPlagiatPercentage;

@@ -19,11 +19,11 @@ export const putCreateNewTask = (chosenTheme, chosenTask, inputName, descOfTask,
         .then(response => {
             if (response.status === 403) {
                 setToken('')
-            }
-            if (!response.ok) {
+            } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
+            } else {
+                return response.text();
             }
-            return response.text();
         })
         .then(result => {
             console.log('Результат:', result);

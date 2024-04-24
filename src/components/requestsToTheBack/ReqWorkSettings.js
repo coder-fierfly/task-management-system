@@ -11,11 +11,11 @@ export const getRobotSettings = (setCheckboxValues, setErrLint, setSelectedOptio
       .then(response => {
         if (response.status === 403) {
           setToken('')
-        }
-        if (!response.ok) {
+        } else if (!response.ok) {
           setMessage('Ошибка сервера: ' + response.status);
+        } else {
+          return response.json();
         }
-        return response.json();
       })
       .then(data => {
         const { needLint, assignTasksToStudent, needCloseTasks, lintInformation } = data;
@@ -63,11 +63,11 @@ export const putRobotSettings = (checkboxValues, errLint, selectedOptionSuccess,
     .then(response => {
       if (response.status === 403) {
         setToken('')
-      }
-      if (!response.ok) {
+      } else if (!response.ok) {
         setMessage('Ошибка сервера: ' + response.status);
+      } else {
+        return response.text();
       }
-      return response.text();
     })
     .then(result => {
       console.log('Результат:', result);

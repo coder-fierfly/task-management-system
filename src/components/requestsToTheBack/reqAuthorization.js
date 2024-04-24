@@ -12,11 +12,13 @@ export const getIterations = (username, password, setToken, setMessage) => {
             })
         })
             .then(response => {
-                if (!response.ok) {
-                    console.log(response)
-                    setMessage('Ошибка: ' + response.status);
+                if (response.status === 403) {
+                    setToken('')
+                } else if (!response.ok) {
+                    setMessage('Ошибка сервера: ' + response.status);
+                } else {
+                    return response.text();
                 }
-                return response.text();
             })
             .then(result => {
                 const jsonResponse = JSON.parse(result);

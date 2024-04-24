@@ -10,11 +10,11 @@ export const getConRobotSettings = (setMCheckboxVal, setMessage, token, setToken
         .then(response => {
             if (response.status === 403) {
                 setToken('')
-            }
-            if (!response.ok) {
+            } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
+            } else {
+                return response.json();
             }
-            return response.json();
         })
         .then(data => {
             const { showErrorResponse, checkAllIterations, needLint, assignTasksToStudent } = data;
@@ -50,11 +50,11 @@ export const getStartChecking = (idStart, setLogs, setMessage, token, setToken) 
             .then(response => {
                 if (response.status === 403) {
                     setToken('')
-                }
-                if (!response.ok) {
+                } else if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
+                } else {
+                    return response.json();
                 }
-                return response.json();
             })
             .then(data => {
                 setLogs(prevLogs => [...prevLogs, ...data]);
@@ -93,12 +93,11 @@ export const putConRobotSettings = (checkboxValues, setMessage, setLoading, toke
         .then(response => {
             if (response.status === 403) {
                 setToken('')
-            }
-            if (!response.ok) {
+            } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
+            } else {
+                return response.text();
             }
-            setLoading(false);
-            return response.text();
         })
         .then(result => {
             console.log('Результат:', result);
@@ -135,11 +134,11 @@ export const postStartChecking = (chosenProject, chosenIteration, checkboxValues
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+            } else if (!response.ok) {
+                setMessage('Ошибка сервера: ' + response.status);
+            } else {
+                return response.text();
             }
-            if (!response.ok) {
-                setMessage('Ошибка сети: ' + response.status);
-            }
-            return response.text();
         })
         .then(result => {
             console.log('Результат:', result);
@@ -162,11 +161,11 @@ export const getIterations = (value, setListOfIterations, setLoading, token, set
             .then(response => {
                 if (response.status === 403) {
                     setToken('')
+                } else if (!response.ok) {
+                    setMessage('Ошибка сервера: ' + response.status);
+                } else {
+                    return response.json();
                 }
-                if (!response.ok) {
-                    setMessage('Ошибка сети: ' + response.status);
-                }
-                return response.json();
             })
 
             .then(data => {
@@ -200,11 +199,11 @@ export const getAllTasks = (setListOfTasks, token, setToken, setMessage) => {
             .then(response => {
                 if (response.status === 403) {
                     setToken('')
+                } else if (!response.ok) {
+                    setMessage('Ошибка сервера: ' + response.status);
+                } else {
+                    return response.json();
                 }
-                if (!response.ok) {
-                    setMessage('Ошибка сети: ' + response.status);
-                }
-                return response.json();
             })
             .then(data => {
                 let ListOfTasks = [];
@@ -212,7 +211,7 @@ export const getAllTasks = (setListOfTasks, token, setToken, setMessage) => {
                     // Извлекаем только taskSubject и taskId
                     const { taskSubject, taskId } = task;
                     // Создаем объект с нужными полями
-                    const taskData = { name: taskSubject, id: taskId};
+                    const taskData = { name: taskSubject, id: taskId };
                     ListOfTasks.push(taskData);
 
                 });
@@ -249,12 +248,12 @@ export const postCheckTask = (inputNumber, chosenProject, checkboxValues, token,
     })
         .then(response => {
             if (response.status === 403) {
-                setToken('');
+                setToken('')
+            } else if (!response.ok) {
+                setMessage('Ошибка сервера: ' + response.status);
+            } else {
+                return response.text();
             }
-            if (!response.ok) {
-                setMessage('Ошибка сети: ' + response.status);
-            }
-            return response.text();
         })
         .then(result => {
             console.log('Результат:', result);
