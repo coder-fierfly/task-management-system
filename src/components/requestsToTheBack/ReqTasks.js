@@ -137,14 +137,16 @@ export const handleIter = (chosenTask, setMessage, chosenIteration, token, setTo
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+                return;
             } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-            } else {
-                return response.text();
+                return;
             }
+            return response.text();
         })
         .then(result => {
-            console.log('Результат:', result);
+            if (!result) return;
+            console.log("Результат: ", result)
         })
         .catch(error => {
             setMessage('Ошибка при выполнении запроса:', error);
@@ -169,14 +171,16 @@ export const putTest = (chosenTask, inputData, inputExpRes, setLoading, token, s
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+                return;
             } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-            } else {
-                return response.text();
+                return;
             }
+            return response.text();
         })
         .then(result => {
-            console.log('Результат:', result);
+            if (!result) return;
+            console.log("Результат: ", result)
             setLoading(false);
         })
         .catch(error => {
@@ -200,14 +204,16 @@ export const postIssue = (chosenTask, setMessage, chosenIteration, token, setTok
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+                return;
             } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-            } else {
-                return response.text();
+                return;
             }
+            return response.text();
         })
         .then(result => {
-            console.log('Результат:', result);
+            if (!result) return;
+            console.log("Результат: ", result)
         })
         .catch(error => {
             setMessage('Ошибка при выполнении запроса:', error);

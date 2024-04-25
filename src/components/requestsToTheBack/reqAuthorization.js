@@ -14,13 +14,15 @@ export const getIterations = (username, password, setToken, setMessage) => {
             .then(response => {
                 if (response.status === 403) {
                     setToken('')
+                    return;
                 } else if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
-                } else {
-                    return response.text();
+                    return;
                 }
+                return response.text();
             })
             .then(result => {
+                if (!result) return;
                 const jsonResponse = JSON.parse(result);
                 const token = jsonResponse.token;
                 setToken(token);

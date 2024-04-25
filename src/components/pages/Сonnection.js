@@ -17,6 +17,8 @@ const Connection = () => {
         return savedLogs ? JSON.parse(savedLogs) : [];
     });    // логи
 
+    // TODO: плагиат
+
     const [chosenTask, setchosenTask] = useState();
 
     useEffect(() => {

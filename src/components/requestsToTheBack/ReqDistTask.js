@@ -83,17 +83,19 @@ export const postAssign = (dataToPass, token, setToken, setMessage) => {
     },
     body: JSON.stringify(dataToPass)
   })
-  .then(response => {
-    if (response.status === 403) {
+    .then(response => {
+      if (response.status === 403) {
         setToken('')
-    } else if (!response.ok) {
+        return;
+      } else if (!response.ok) {
         setMessage('Ошибка сервера: ' + response.status);
-    } else {
-        return response.text();
-    }
-})
+        return;
+      }
+      return response.text();
+    })
     .then(result => {
-      console.log('Результат:', result);
+      if (!result) return;
+      console.log("Результат: ", result)
     })
     .catch(error => {
       console.error('Ошибка при выполнении запроса:', error.message);

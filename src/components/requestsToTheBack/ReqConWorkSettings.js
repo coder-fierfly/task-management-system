@@ -93,14 +93,16 @@ export const putConRobotSettings = (checkboxValues, setMessage, setLoading, toke
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+                return;
             } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-            } else {
-                return response.text();
+                return;
             }
+            return response.text();
         })
         .then(result => {
-            console.log('Результат:', result);
+            if (!result) return;
+            console.log("Результат: ", result)
         })
         .catch(error => {
             if (error.name === 'AbortError') {
@@ -134,14 +136,16 @@ export const postStartChecking = (chosenProject, chosenIteration, checkboxValues
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+                return;
             } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-            } else {
-                return response.text();
+                return;
             }
+            return response.text();
         })
         .then(result => {
-            console.log('Результат:', result);
+            if (!result) return;
+            console.log("Результат: ", result)
         })
         .catch(error => {
             console.error('Ошибка при выполнении запроса:', error);
@@ -199,13 +203,15 @@ export const getAllTasks = (setListOfTasks, token, setToken, setMessage) => {
             .then(response => {
                 if (response.status === 403) {
                     setToken('')
+                    return;
                 } else if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
-                } else {
-                    return response.json();
+                    return;
                 }
+                return response.json();
             })
             .then(data => {
+                if (!data) return;
                 let ListOfTasks = [];
                 data.forEach(task => {
                     // Извлекаем только taskSubject и taskId
@@ -249,14 +255,16 @@ export const postCheckTask = (inputNumber, chosenProject, checkboxValues, token,
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+                return;
             } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-            } else {
-                return response.text();
+                return;
             }
+            return response.text();
         })
         .then(result => {
-            console.log('Результат:', result);
+            if (!result) return;
+            console.log("Результат: ", result)
         })
         .catch(error => {
             console.error('Ошибка при выполнении запроса:', error);

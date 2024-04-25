@@ -55,7 +55,7 @@ const PersonalAcc = ({ handleLogout }) => {
     };
     return (
         <>
-            {loading ? <><div className='main-conn-wrap mess-per-wrap' >         <ErrorWindow isOpen={loading} error={message} />
+            {(loading || !PersonalData.userDisplayName) ? <><div className='main-conn-wrap mess-per-wrap' >         <ErrorWindow isOpen={loading} error={message} />
             </div> </> : <>
                 <div className='main-conn-wrap per-acc-wrap'>
                     <h1>Личный кабинет</h1>
