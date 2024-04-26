@@ -10,13 +10,15 @@ export const getConRobotSettings = (setMCheckboxVal, setMessage, token, setToken
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+                return;
             } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-            } else {
-                return response.json();
+                return;
             }
+            return response.json();
         })
         .then(data => {
+            if (!data) return;
             const { showErrorResponse, checkAllIterations, needLint, assignTasksToStudent } = data;
             setMCheckboxVal({
                 checkboxShowAns: showErrorResponse,
@@ -37,7 +39,6 @@ export const getConRobotSettings = (setMCheckboxVal, setMessage, token, setToken
 };
 
 export const getStartChecking = (idStart, setLogs, setMessage, token, setToken) => {
-    console.log("getStartChecking");
     return new Promise((resolve, reject) => {
         fetch(`/api/v1/issueChecker/getLogs/${idStart}`, {
             method: 'get',
@@ -50,13 +51,15 @@ export const getStartChecking = (idStart, setLogs, setMessage, token, setToken) 
             .then(response => {
                 if (response.status === 403) {
                     setToken('')
+                    return;
                 } else if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
-                } else {
-                    return response.json();
+                    return;
                 }
+                return response.json();
             })
             .then(data => {
+                if (!data) return;
                 setLogs(prevLogs => [...prevLogs, ...data]);
                 resolve(data); // Резолвим данные после успешного получения
             })
@@ -165,14 +168,15 @@ export const getIterations = (value, setListOfIterations, setLoading, token, set
             .then(response => {
                 if (response.status === 403) {
                     setToken('')
+                    return;
                 } else if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
-                } else {
-                    return response.json();
+                    return;
                 }
+                return response.json();
             })
-
             .then(data => {
+                if (!data) return;
                 const transformedData = data.projectIterations.map((projectIteration, index) => ({
                     id: index + 1,
                     name: projectIteration

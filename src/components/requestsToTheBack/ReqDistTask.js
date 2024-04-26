@@ -11,13 +11,15 @@ export const getStudentsList = (setMessage, setStudentList, chosenIteration, tok
       .then(response => {
         if (response.status === 403) {
           setToken('')
+          return;
         } else if (!response.ok) {
           setMessage('Ошибка сервера: ' + response.status);
-        } else {
-          return response.json();
+          return;
         }
+        return response.json();
       })
       .then(data => {
+        if (!data) return;
         var updatedStudentList = data.studentList.map(student => ({
           ...student,
           isChecked: false
@@ -51,13 +53,15 @@ export const getTasksList = (setTasks, chosenProject, chosenIteration, token, se
       .then(response => {
         if (response.status === 403) {
           setToken('')
+          return;
         } else if (!response.ok) {
           setMessage('Ошибка сервера: ' + response.status);
-        } else {
-          return response.json();
+          return;
         }
+        return response.json();
       })
       .then(data => {
+        if (!data) return;
         var updatedIssueList = data.issueList.map(task => ({
           ...task,
           isChecked: false

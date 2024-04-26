@@ -11,13 +11,15 @@ export const getAllTopics = (setThemeList, setLoading, setMessage, token, setTok
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+                return;
             } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-            } else {
-                return response.json();
+                return;
             }
+            return response.json();
         })
         .then(data => {
+            if (!data) return;
             const transformedData = data.themeListList.map(theme => ({
                 name: theme.themeName,
                 id: theme.themeId
@@ -47,13 +49,15 @@ export const getTasks = (value, setChosenTheme, setListTask, setMessage, token, 
         .then(response => {
             if (response.status === 403) {
                 setToken('')
+                return;
             } else if (!response.ok) {
                 setMessage('Ошибка сервера: ' + response.status);
-            } else {
-                return response.json();
+                return;
             }
+            return response.json();
         })
         .then(data => {
+            if (!data) return;
             setChosenTheme(value);
             const taskArray = data.tasksInTheme.map(task => ({
                 id: task.taskId,
@@ -97,13 +101,15 @@ export const getTests = (value, setListTest, setChosenTask, setMessage, token, s
             .then(response => {
                 if (response.status === 403) {
                     setToken('')
+                    return;
                 } else if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
-                } else {
-                    return response.json();
+                    return;
                 }
+                return response.json();
             })
             .then(data => {
+                if (!data) return;
                 const testArray = data.taskTests.map(task => ({
                     id: task.testId,
                     name: task.testId,

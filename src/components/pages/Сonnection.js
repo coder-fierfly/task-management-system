@@ -4,6 +4,7 @@ import DropdownList from '../mini-elements/DropdownList';
 import Plagiarism from '../mini-elements/Plagiarism';
 import MoreInfo from '../mini-elements/MoreInfo';
 import ErrorWindow from '../mini-elements/ErrorWindow';
+import ChooseTask from '../mini-elements/ChooseTask';
 import { getConRobotSettings, putConRobotSettings, postStartChecking, getIterations, getAllTasks, postCheckTask, getStartChecking } from '../requestsToTheBack/ReqConWorkSettings';
 import { getPlagiarism } from '../requestsToTheBack/ReqPlagiarismSt';
 import { getPersonalData } from '../requestsToTheBack/ReqPersonalData';
@@ -18,9 +19,6 @@ const Connection = () => {
     });    // логи
 
     // TODO: плагиат
-
-    const [chosenTask, setchosenTask] = useState();
-
     useEffect(() => {
         localStorage.setItem('logs', JSON.stringify(logs));
     }, [logs]);
@@ -46,6 +44,8 @@ const Connection = () => {
     const [inputNumber, setInputNumber] = useState();    // номер задачи
     const [isPlagiarismOpen, setPlagiarismOpen] = useState(false);    // открытие окна плагиата
     const [isOpen, setIsOpen] = useState(false);    // кнопка закрытия окошек
+    const [chosenTask, setChosenTask] = useState();
+
 
     useEffect(() => {
         setMessage('Загрузка...');
@@ -84,10 +84,6 @@ const Connection = () => {
         setChosenIteration(id)
     }
 
-    // изменение выбранного проекта
-    const handleTaskChange = (value) => {
-        setchosenTask(value);
-    }
 
     // открытие отчета
     const toggleModal = () => {
@@ -164,23 +160,7 @@ const Connection = () => {
 
     // открытие окошка плагиата
     const openPlagiarism = () => {
-        if (chosenTask) {
-            setLoading(true);
-            getPlagiarism(chosenTask, setListOfStudents, setLoading, setMessage, token, setToken)
-                .then((listOfStudents) => {
-                    if (listOfStudents) {
-                        setPlagiarismOpen(true);
-                    } else {
-                        setError('Задание с таким номером не найдено');
-                    }
-                })
-                .catch((error) => {
-                    console.error('Ошибка: ', error);
-                    setMessage('Произошла ошибка при загрузке данных');
-                });
-        } else {
-            setError("Вы не выбрали задачу")
-        }
+        setPlagiarismOpen(true);
     };
 
     //закрытие окошка плагиата
@@ -191,8 +171,9 @@ const Connection = () => {
     // нажата проверить задачу
     const handleCheckTask = () => {
         console.log('Кнопка проверить задачу нажата')
-        if (chosenTask) {
-            postCheckTask(chosenTask, chosenProject, checkboxValues, token, setToken);
+        if (inputNumber) {
+            setError("")
+            postCheckTask(inputNumber, chosenProject, checkboxValues, token, setToken);
             getLogs();
             setIsOpen(true);
         } else {
@@ -214,7 +195,7 @@ const Connection = () => {
         <>
             <IterationContext.Provider value={{ chosenIteration, setChosenIteration, chosenProject, setChosenProject }}>
                 {loading ? <div> <ErrorWindow isOpen={loading} error={message} /></div> : <>
-                    <Plagiarism isOpen={isPlagiarismOpen} onClose={closePlagiarism} listOfStudents={listOfStudents} />
+                    {/* <Plagiarism isOpen={isPlagiarismOpen} onClose={closePlagiarism} listOfStudents={listOfStudents} /> */}
                     <div className='main-conn-wrap connection-wrap'>
                         <div className='mini-conn-wrap'>
                             <div className="form-container">
@@ -267,13 +248,10 @@ const Connection = () => {
                                 </div>
                             </div>
                             <div className="form-container">
+
                                 <div>
-                                    <DropdownList
-                                        options={listOfTasks}
-                                        selectedValue={chosenTask}
-                                        onSelectedValueChange={handleTaskChange}
-                                        outputLabel="Выберите задачу"
-                                    />
+                                    <input className="input-field" id="inputNumId" type="textarea" defaultValue={inputNumber}
+                                        onChange={handleInputNumber} placeholder="Введите номер задачи" />
                                     {error && <div className="error-message">{error}</div>}</div>
                                 <div className='flex-class'>  <button onClick={handleCheckTask} className="b-button b-height">Проверить задачу</button>
                                     <button onClick={openPlagiarism} className="b-button b-height">Плагиат</button></div>
@@ -281,6 +259,7 @@ const Connection = () => {
                         </div>
                     </div >
                     <MoreInfo isOpen={isOpen} toggleModal={toggleModal} logs={logs} />
+                    <ChooseTask isOpen={isPlagiarismOpen} onClose={closePlagiarism} listOfTasks={listOfTasks} token={token} setToken={setToken} />
                 </>}
             </IterationContext.Provider>
         </>

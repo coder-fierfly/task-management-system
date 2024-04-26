@@ -11,25 +11,6 @@ const PersonalAcc = ({ handleLogout }) => {
     const [message, setMessage] = useState('Загрузка...'); // сообщение в окне загрузки
     const { token, setToken } = useContext(IterationContext);
 
-    // useEffect(() => {
-    //     setLoading(true);
-    //     if (token !== '') {
-    //         getPersonalData(token)
-    //             .then(data => {
-    //                 console.log(data)
-    //                 setPersonalData(data);
-    //                 setLoading(false);
-    //             })
-    //             .catch(error => {
-    //                 setMessage(error.message);
-    //                 console.error('Ошибка в запросе к серверу:', error.message);
-    //             });
-    //     } else {
-    //         getPersonalData(token)
-    //         handleLogout();
-    //     }
-    // }, [token]);
-
     useEffect(() => {
         setLoading(true);
         if (token !== '') {
@@ -47,7 +28,6 @@ const PersonalAcc = ({ handleLogout }) => {
         }
     }, [token]);
 
-
     // разлогирование
     const handleLogoutClick = () => {
         handleLogout();
@@ -55,7 +35,7 @@ const PersonalAcc = ({ handleLogout }) => {
     };
     return (
         <>
-            {(loading || !PersonalData.userDisplayName) ? <><div className='main-conn-wrap mess-per-wrap' >         <ErrorWindow isOpen={loading} error={message} />
+            {(loading || !PersonalData) ? <><div className='main-conn-wrap mess-per-wrap' >         <ErrorWindow isOpen={loading} error={message} />
             </div> </> : <>
                 <div className='main-conn-wrap per-acc-wrap'>
                     <h1>Личный кабинет</h1>

@@ -11,13 +11,17 @@ export const getPersonalData = (token, setToken, setMessage) => {
             .then(response => {
                 if (response.status === 403) {
                     setToken('')
+                    return;
                 } else if (!response.ok) {
                     setMessage('Ошибка сервера: ' + response.status);
-                } else {
-                    return response.json();
+                    return;
                 }
+                return response.json();
             })
-            .then(data => resolve(data))
+            .then(data => {
+                if (!data) return;
+                resolve(data)
+            })
             .catch(error => {
                 if (error.name === 'AbortError') {
                     reject(new Error('Время ожидания запроса истекло'));

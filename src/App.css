@@ -156,20 +156,24 @@
   outline: none;
 }
 
+.max-scroll,
 .more-info-container {
   border: none;
 }
+.max-scroll::-webkit-scrollbar,
 .more-info-container::-webkit-scrollbar,
 .input-height::-webkit-scrollbar {
   width: 8px;
   height: 10px;
 }
 
+.max-scroll:focus-visible,
 .more-info-container:focus-visible,
 .input-height:focus-visible {
   outline: none;
 }
 
+.max-scroll::-webkit-scrollbar-thumb,
 .more-info-container::-webkit-scrollbar-thumb,
 .input-height::-webkit-scrollbar-thumb {
   background-color: #c8ccd0b2;
@@ -177,6 +181,7 @@
   height: 10px;
 }
 
+.max-scroll::-webkit-scrollbar-track,
 .more-info-container::-webkit-scrollbar-track,
 .input-height::-webkit-scrollbar-track {
   border-radius: 6px;
@@ -221,6 +226,22 @@
   margin-bottom: 1rem;
 }
 
+.padd-wrap {
+  padding: 1rem;
+  height: 20vh;
+  width: 15rem;
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.btn-wrap-plag {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
 .desk-wrap {
   grid-gap: 0.7rem;
   display: grid;
@@ -263,6 +284,15 @@
   min-height: 20vh;
   max-width: 50vw;
   max-height: 80vh;
+}
+
+.chooseTask {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* padding-left: 1rem; */
+  /* padding-right: 1rem; */
 }
 .pop-cont-w {
   padding-left: 10vw;
@@ -340,10 +370,12 @@
 .desk-wrap {
   height: 100%;
 }
+
 .del-wind {
   width: 20rem;
   margin-top: 1rem;
 }
+
 .popup {
   background: white;
   border-radius: 0.5rem;
@@ -889,7 +921,11 @@ input[type="radio"]:focus {
   overflow-y: auto;
   height: 100%;
 }
-
+.max-scroll {
+  max-height: 50vh;
+  overflow-y: auto;
+  outline: none;
+}
 .scroll-checkbox::-webkit-scrollbar {
   width: 8px;
   height: 10px;

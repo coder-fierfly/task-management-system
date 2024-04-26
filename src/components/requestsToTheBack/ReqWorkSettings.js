@@ -11,13 +11,15 @@ export const getRobotSettings = (setCheckboxValues, setErrLint, setSelectedOptio
       .then(response => {
         if (response.status === 403) {
           setToken('')
+          return;
         } else if (!response.ok) {
           setMessage('Ошибка сервера: ' + response.status);
-        } else {
-          return response.json();
+          return;
         }
+        return response.json();
       })
       .then(data => {
+        if (!data) return;
         const { needLint, assignTasksToStudent, needCloseTasks, lintInformation } = data;
         setCheckboxValues(needLint);
         setSelectedOptionTranslate(assignTasksToStudent ? "student" : "teacher");

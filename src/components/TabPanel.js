@@ -72,6 +72,7 @@ export default function TabPanel() {
   }, [chosenProject]);
 
   useEffect(() => {
+    console.log("token", token)
     localStorage.setItem('token', JSON.stringify(token));
     if (token === "") {
       handleLogout();
