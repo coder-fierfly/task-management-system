@@ -32,6 +32,6 @@ export const putCreateNewTask = (chosenTheme, chosenTask, inputName, descOfTask,
         })
         .then(setLoading(false))
         .catch(error => {
-            console.error('Произошла ошибка:', error);
+            console.log('Произошла ошибка:', error);
         });
 }

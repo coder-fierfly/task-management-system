@@ -36,7 +36,7 @@ const WorkSettings = () => {
         setLoading(false);
       })
       .catch(error => {
-        console.error('Ошибка при получении настроек:', error);
+        console.log('Ошибка при получении настроек:', error);
       });
   }, []);
 
@@ -94,9 +94,9 @@ const WorkSettings = () => {
           />
           <div>
             <div className="label-center">
-              <label htmlFor="checkboxSuccessId">
+              <p>
                 Статус задачи при успешной проверке
-              </label>
+              </p>
             </div>
             <div className="label-container radio-conn">
               <div className="form_radio margin-form"><input
@@ -125,9 +125,9 @@ const WorkSettings = () => {
             </div>
           </div>
           <div>
-            <label className="label">
+            <p className="label">
               Назначение задачи по результатам проверки
-            </label>
+            </p>
             <div className="label-container radio-conn">
               <div className="form_radio margin-form ">
                 <input

@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
 import '../../App.css';
 import DropdownList from '../mini-elements/DropdownList';
-import Plagiarism from '../mini-elements/Plagiarism';
 import MoreInfo from '../mini-elements/MoreInfo';
 import ErrorWindow from '../mini-elements/ErrorWindow';
 import ChooseTask from '../mini-elements/ChooseTask';
 import { getConRobotSettings, putConRobotSettings, postStartChecking, getIterations, getAllTasks, postCheckTask, getStartChecking } from '../requestsToTheBack/ReqConWorkSettings';
-import { getPlagiarism } from '../requestsToTheBack/ReqPlagiarismSt';
 import { getPersonalData } from '../requestsToTheBack/ReqPersonalData';
 import IterationContext from '../IterationContext';
 
@@ -18,7 +16,6 @@ const Connection = () => {
         return savedLogs ? JSON.parse(savedLogs) : [];
     });    // логи
 
-    // TODO: плагиат
     useEffect(() => {
         localStorage.setItem('logs', JSON.stringify(logs));
     }, [logs]);
@@ -63,7 +60,7 @@ const Connection = () => {
                 })
                 .catch(error => {
                     setMessage(error.message);
-                    console.error('Ошибка в запросе к серверу:', error.message);
+                    console.log('Ошибка в запросе к серверу:', error.message);
                 });
         });
         setLoading(false);
@@ -207,6 +204,7 @@ const Connection = () => {
                                     options={listOfProjects}
                                     selectedValue={chosenProject}
                                     onSelectedValueChange={handleProjectChange}
+                                    id="chosenPro"
                                 />
                                 <div className="label-container">  <p className="label">Выберите итерацию:</p>
                                 </div>

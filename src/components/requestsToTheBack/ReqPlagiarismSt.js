@@ -30,7 +30,7 @@ export const getPlagiarism = (chosenTasks, setListOfStudents, setMessage, token,
                     setMessage('Время ожидания запроса истекло');
                 } else {
                     setMessage(error.message);
-                    console.error('Ошибка в запросе к серверу:', error.message);
+                    console.log('Ошибка в запросе к серверу:', error.message);
                 }
                 reject(error); // Реджектим обещание с ошибкой
             });
@@ -64,7 +64,6 @@ export const getDiffPlagiarism = (taskId, student, otherStudent, setMessage, tok
             .then(data => {
                 if (!data) return;
                 setStudents(Object.keys(data.twoIssuesDto))
-                console.log("aaaaaaaaaaaa", Object.values(data.twoIssuesDto))
                 setCode(Object.values(data.twoIssuesDto))
                 const listOfStudents = data.studentPlagiatPercentage;
 
@@ -75,7 +74,7 @@ export const getDiffPlagiarism = (taskId, student, otherStudent, setMessage, tok
                     setMessage('Время ожидания запроса истекло');
                 } else {
                     setMessage(error.message);
-                    console.error('Ошибка в запросе к серверу:', error.message);
+                    console.log('Ошибка в запросе к серверу:', error.message);
                 }
                 reject(error); // Реджектим обещание с ошибкой
             });

@@ -32,7 +32,7 @@ export const getAllTopics = (setThemeList, setLoading, setMessage, token, setTok
                 setMessage('Время ожидания запроса истекло');
             } else {
                 setMessage(error.message);
-                console.error('Ошибка в запросе к серверу:', error.message);
+                console.log('Ошибка в запросе к серверу:', error.message);
             }
         });
 };
@@ -190,7 +190,7 @@ export const putTest = (chosenTask, inputData, inputExpRes, setLoading, token, s
             setLoading(false);
         })
         .catch(error => {
-            console.error('Произошла ошибка:', error);
+            console.log('Произошла ошибка:', error);
         });
 }
 

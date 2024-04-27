@@ -3,17 +3,18 @@ import '../../App.css';
 import DropdownList from './DropdownList';
 import Plagiarism from './Plagiarism';
 import { getPlagiarism } from '../requestsToTheBack/ReqPlagiarismSt';
-import ReactDiffViewer from 'react-diff-viewer';
+import ErrorWindow from '../mini-elements/ErrorWindow';
+
 
 const ChooseTask = ({ isOpen, onClose, listOfTasks, token, setToken }) => {
     const [listOfStudents, setListOfStudents] = useState('');     // список студентов
-    const [loading, setLoading] = useState(true);  // загрузка
+    const [loading, setLoading] = useState(false);  // загрузка
     const [chosenTask, setChosenTask] = useState('');
-    const [error, setError] = useState('');
-
+    const [nameTask, setNameTask] = useState('');
 
     const [message, setMessage] = useState('Загрузка...'); // сообщение в окне загрузки
     const [isPlagiarismOpen, setPlagiarismOpen] = useState(false);    // открытие окна плагиата
+    const [err, setErr] = useState(false)
 
     const onCloseBtn = () => {
         console.log("onCloseBtn")
@@ -24,33 +25,32 @@ const ChooseTask = ({ isOpen, onClose, listOfTasks, token, setToken }) => {
 
     // открытие окошка плагиата
     const openPlagiarism = () => {
-        console.log("chosenTask", chosenTask)
         if (chosenTask !== '') {
+            setErr(false);
             setLoading(true);
             getPlagiarism(chosenTask, setListOfStudents, setMessage, token, setToken)
                 .then((listOfStudents) => {
                     if (listOfStudents) {
-                        console.log(listOfStudents)
                         setPlagiarismOpen(true);
-                    } else {
-                        setError('Задание с таким номером не найдено');
                     }
                 })
                 .then(() => {
                     setLoading(false);
                 })
                 .catch((error) => {
-                    console.error('Ошибка: ', error);
-                    setMessage('Произошла ошибка при загрузке данных');
+                    console.log('Ошибка: ', error);
+                    setMessage('Произошла ошибка при загрузке данных',  error);
                 });
         } else {
-            setError("Вы не выбрали задачу")
+            setErr(true);
         }
     };
 
     // изменение выбранного проекта
     const handleTaskChange = (value) => {
         setChosenTask(value);
+        var buff = listOfTasks.find((task) => task.id === value);
+        setNameTask(buff.name);
     }
 
     // если закрыто, то не отображается
@@ -58,9 +58,10 @@ const ChooseTask = ({ isOpen, onClose, listOfTasks, token, setToken }) => {
         return null;
     }
     return (
-        <div className="popup-overlay">
+        <> {loading ? <div> <ErrorWindow isOpen={loading} error={message} /></div> : <div className="popup-overlay">
             <div className="popup">
-                <div className="close-btn-container">
+                <div className="close-btn-container plag-top">
+                    <p className="vertical-center">{!isPlagiarismOpen ? "Плагиат" : nameTask}</p>
                     <button className="clear-btn" onClick={onCloseBtn}>
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg>
                     </button>
@@ -76,16 +77,19 @@ const ChooseTask = ({ isOpen, onClose, listOfTasks, token, setToken }) => {
                                             selectedValue={chosenTask}
                                             onSelectedValueChange={handleTaskChange}
                                             outputLabel="Выберите задачу"
-                                        /><button className='b-button width-btn' onClick={openPlagiarism}>Ок</button>
+                                        />
+                                        <div className='btn-text'> {err && <p>Вы не выбрали задачу.</p>}<button className='b-button width-btn' onClick={openPlagiarism}>Ок</button>
+                                        </div>
                                     </div>
-                                        : <Plagiarism isOpen={isPlagiarismOpen} listOfStudents={listOfStudents} taskId={chosenTask} token={token} setToken={setToken} setMessage={setMessage} />}
+                                        : <Plagiarism isOpen={isPlagiarismOpen} listOfStudents={listOfStudents} taskId={chosenTask} token={token} setToken={setToken} setMessage={setMessage} onClose={onClose} nameTask={nameTask} setPlagiarismOpen={setPlagiarismOpen} />}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>}</>
+
     );
 };
 

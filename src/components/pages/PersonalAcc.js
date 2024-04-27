@@ -21,7 +21,7 @@ const PersonalAcc = ({ handleLogout }) => {
                 })
                 .catch(error => {
                     setMessage(error.message);
-                    console.error('Ошибка в запросе к серверу:', error.message);
+                    console.log('Ошибка в запросе к серверу:', error.message);
                 });
         } else {
             handleLogout();

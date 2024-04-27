@@ -24,6 +24,16 @@
   align-items: center;
 }
 
+.plag-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.vertical-center {
+  display: grid;
+  place-items: center;
+  margin-left: 0.5rem;
+}
 .close-btn-container {
   position: relative;
   text-align: right;
@@ -187,6 +197,12 @@
   border-radius: 6px;
 }
 
+.btn-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -198,6 +214,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.error-win {
+  z-index: 5 !important;
 }
 
 .ws-container {
@@ -939,6 +959,10 @@ input[type="radio"]:focus {
 
 .scroll-checkbox::-webkit-scrollbar-track {
   border-radius: 6px;
+}
+
+.br-05 {
+  border-radius: 0 0 0.5rem 0.5rem;
 }
 
 .red-cell {

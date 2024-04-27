@@ -11,7 +11,7 @@ const ErrorWindow = ({ isOpen, onClose, error }) => {
         return null;
     }
     return (
-        <div className="popup-overlay">
+        <div className="popup-overlay error-win">
             <div className="popup min-h-w">
                 <div className="popup-content">
                         <div>

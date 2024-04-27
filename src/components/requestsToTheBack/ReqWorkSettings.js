@@ -36,7 +36,7 @@ export const getRobotSettings = (setCheckboxValues, setErrLint, setSelectedOptio
           setMessage('Время ожидания запроса истекло');
         } else {
           setMessage(error.message);
-          console.error('Ошибка в запросе к серверу:', error.message);
+          console.log('Ошибка в запросе к серверу:', error.message);
         }
         reject(error); // Отклоняем Promise
       });
@@ -82,7 +82,7 @@ export const putRobotSettings = (checkboxValues, errLint, selectedOptionSuccess,
         setMessage('Время ожидания запроса истекло');
       } else {
         setMessage(error.message);
-        console.error('Ошибка в запросе к серверу:', error.message);
+        console.log('Ошибка в запросе к серверу:', error.message);
       }
     });
 };

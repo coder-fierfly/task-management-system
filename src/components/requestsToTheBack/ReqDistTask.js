@@ -33,9 +33,13 @@ export const getStudentsList = (setMessage, setStudentList, chosenIteration, tok
           setMessage('Время ожидания запроса истекло');
         } else {
           setMessage(error.message);
-          console.error('Ошибка в запросе к серверу:', error.message);
+          console.log('Ошибка в запросе к серверу:', error.message);
         }
         reject(error);
+      })
+      .catch(error => {
+        setMessage('Ошибка при выполнении запроса: ' + error.message);
+        console.log('Ошибка при выполнении запроса:', error.message);
       });
   });
 };
@@ -71,7 +75,8 @@ export const getTasksList = (setTasks, chosenProject, chosenIteration, token, se
         resolve();
       })
       .catch(error => {
-        console.error('Ошибка:', error.message);
+        setMessage('Ошибка: ' + error.message);
+        console.log('Ошибка: ', error.message);
         reject(error);
       });
   });
@@ -102,6 +107,7 @@ export const postAssign = (dataToPass, token, setToken, setMessage) => {
       console.log("Результат: ", result)
     })
     .catch(error => {
-      console.error('Ошибка при выполнении запроса:', error.message);
-    });
+      setMessage('Ошибка: ' + error.message);
+      console.log('Ошибка: ', error.message);
+    })    
 }

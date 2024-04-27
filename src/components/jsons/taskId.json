@@ -1,7 +1,0 @@
-{
-    "listOfTests": [
-        {"testId": "testId1", "inputData": "1 1 1", "outPutData": "3"},
-        {"testId": "testId2", "inputData": "1 2 3","outPutData": "1 2 3"},
-        {"testId": "testId3", "inputData": "1 \n 1", "outPutData": ""}
-    ]
-}

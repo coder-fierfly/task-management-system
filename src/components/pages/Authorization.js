@@ -25,7 +25,7 @@ const Authorization = ({ handleLogin }) => {
         <div className='main-auth-group'>
             {loading ? <div> <ErrorWindow isOpen={loading} error={message} /></div> : <>
                 <div className='auth-group'>
-                    <p className='auth-label'>Авторизация</p>
+                    <p className='auth-label'>Войти</p>
                     <div className='log_group'><p className='log-pass-label'>Логин</p><input className='log-pass-holder'
                         type="text"
                         value={logValue}

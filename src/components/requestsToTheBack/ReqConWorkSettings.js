@@ -33,7 +33,7 @@ export const getConRobotSettings = (setMCheckboxVal, setMessage, token, setToken
                 setMessage('Время ожидания запроса истекло');
             } else {
                 setMessage(error.message);
-                console.error('Ошибка в запросе к серверу:', error.message);
+                console.log('Ошибка в запросе к серверу:', error.message);
             }
         });
 };
@@ -68,7 +68,7 @@ export const getStartChecking = (idStart, setLogs, setMessage, token, setToken) 
                     setMessage('Время ожидания запроса истекло');
                 } else {
                     setMessage(error.message);
-                    console.error('Ошибка в запросе к серверу:', error.message);
+                    console.log('Ошибка в запросе к серверу:', error.message);
                 }
                 reject(error); // Реджектим ошибку в случае неудачи
             });
@@ -112,7 +112,7 @@ export const putConRobotSettings = (checkboxValues, setMessage, setLoading, toke
                 setMessage('Время ожидания запроса истекло');
             } else {
                 setMessage(error.message);
-                console.error('Ошибка в запросе к серверу:', error.message);
+                console.log('Ошибка в запросе к серверу:', error.message);
             }
         });
 };
@@ -151,7 +151,7 @@ export const postStartChecking = (chosenProject, chosenIteration, checkboxValues
             console.log("Результат: ", result)
         })
         .catch(error => {
-            console.error('Ошибка при выполнении запроса:', error);
+            console.log('Ошибка при выполнении запроса:', error);
         });
 };
 
@@ -187,7 +187,7 @@ export const getIterations = (value, setListOfIterations, setLoading, token, set
             })
             .catch(error => {
                 setListOfIterations('');
-                console.error('Нет таких данных:', error);
+                console.log('Нет таких данных:', error);
                 reject(error); // Отклоняем обещание в случае ошибки
             });
     });
@@ -229,7 +229,7 @@ export const getAllTasks = (setListOfTasks, token, setToken, setMessage) => {
                 resolve(); // Разрешаем обещание после успешного выполнения всех операций
             })
             .catch(error => {
-                console.error('Нет таких данных:', error);
+                console.log('Нет таких данных:', error);
                 reject(error); // Отклоняем обещание в случае ошибки
             });
     });
@@ -271,6 +271,6 @@ export const postCheckTask = (inputNumber, chosenProject, checkboxValues, token,
             console.log("Результат: ", result)
         })
         .catch(error => {
-            console.error('Ошибка при выполнении запроса:', error);
+            console.log('Ошибка при выполнении запроса:', error);
         });
 }

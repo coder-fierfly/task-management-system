@@ -72,7 +72,6 @@ export default function TabPanel() {
   }, [chosenProject]);
 
   useEffect(() => {
-    console.log("token", token)
     localStorage.setItem('token', JSON.stringify(token));
     if (token === "") {
       handleLogout();
@@ -95,7 +94,7 @@ export default function TabPanel() {
                     <ellipse cx="12.4997" cy="5.65968" rx="4.16667" ry="3.77297" fill="#1C274C" />
                     <ellipse cx="12.4997" cy="16.0352" rx="7.29167" ry="3.77297" fill="#1C274C" />
                   </svg>
-                  <p className="per-text">{isLogged ? 'Личный кабинет' : 'Авторизация'}</p>
+                  <p className="per-text">{isLogged ? 'Личный кабинет' : 'Войти'}</p>
                 </button>
               </Link>
             </div>

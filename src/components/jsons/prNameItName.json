@@ -1,8 +1,0 @@
-{
-    "taskList": [
-        {"taskName": "h", "taskId": "taskId1"},
-        {"taskName": "c", "taskId": "taskId2"},
-        {"taskName": "o", "taskId": "taskId3"},
-        {"taskName": "я", "taskId": "taskId4"}
-    ]
-}
