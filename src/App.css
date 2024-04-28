@@ -949,6 +949,7 @@ input[type="radio"]:focus {
   height: 100%;
 }
 .max-scroll {
+  max-width: 70vw;
   max-height: 70vh;
   overflow-y: auto;
   outline: none;
