@@ -48,6 +48,14 @@ const Plagiarism = ({ isOpen, listOfStudents, taskId, token, setToken, setMessag
                 <div className="popup-content">
                     <div>
                         {isDiffOpen ? <div className='scroll-checkbox br-05'> <div className='max-scroll' >
+
+                            <ReactDiffViewer
+                                oldValue={code[0]}
+                                newValue={code[1]}
+                                splitView={true}
+                                leftTitle={students[0]}
+                                rightTitle={students[1]}
+                            /></div>
                             <div className="button-container">
                                 <div>
                                     <button onClick={() => downloadTxtFile(code[0], `${students[0]} ${nameTask}.txt`)} className="b-button little-btn">
@@ -60,13 +68,6 @@ const Plagiarism = ({ isOpen, listOfStudents, taskId, token, setToken, setMessag
                                     </button>
                                 </div>
                             </div>
-                            <ReactDiffViewer
-                                oldValue={code[0]}
-                                newValue={code[1]}
-                                splitView={true}
-                                leftTitle={students[0]}
-                                rightTitle={students[1]}
-                            /></div>
                         </div>
                             :
                             <table className="table-container">
