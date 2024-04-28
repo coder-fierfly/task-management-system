@@ -38,7 +38,7 @@ const Plagiarism = ({ isOpen, listOfStudents, taskId, token, setToken, setMessag
 
     return (
         <div className="popup-overlay">
-            <div className="popup">
+            <div className="popup margin-pop">
                 <div className="close-btn-container plag-top">
                     <p className="vertical-center">{nameTask}</p>
                     <button className="clear-btn" onClick={setClose}>
