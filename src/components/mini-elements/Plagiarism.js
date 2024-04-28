@@ -47,19 +47,26 @@ const Plagiarism = ({ isOpen, listOfStudents, taskId, token, setToken, setMessag
                 </div>
                 <div className="popup-content">
                     <div>
-                        {isDiffOpen ? <div className='scroll-checkbox br-05'> <div className='max-scroll' >    <ReactDiffViewer
-                            oldValue={code[0]}
-                            newValue={code[1]}
-                            splitView={true}
-                            leftTitle={students[0]}
-                            rightTitle={students[1]}
-                        /></div>
-                            {/* <button onClick={() => downloadTxtFile(code[0], 'oldValue.txt')}>
-                                Скачать
-                            </button>
-                            <button onClick={() => downloadTxtFile(code[1], 'newValue.txt')}>
-                                Скачать
-                            </button> */}
+                        {isDiffOpen ? <div className='scroll-checkbox br-05'> <div className='max-scroll' >
+                            <div className="button-container">
+                                <div>
+                                    <button onClick={() => downloadTxtFile(code[0], `${students[0]} ${nameTask}.txt`)} className="b-button little-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="19" viewBox="0 -960 960 960" width="19"><path d="M480-341 296.5-524.5l47-46 103 103V-806h67v338.5l103-103 47 46L480-341ZM268.72-202q-27.66 0-47.19-19.68Q202-241.36 202-269v-69.5h67v69.5h422v-69.5h67v69.5q0 27.64-19.69 47.32Q718.61-202 690.96-202H268.72Z" /></svg>
+                                    </button>
+                                </div>
+                                <div>
+                                    <button onClick={() => downloadTxtFile(code[1], `${students[1]} ${nameTask}.txt`)} className="b-button little-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="19" viewBox="0 -960 960 960" width="19"><path d="M480-341 296.5-524.5l47-46 103 103V-806h67v338.5l103-103 47 46L480-341ZM268.72-202q-27.66 0-47.19-19.68Q202-241.36 202-269v-69.5h67v69.5h422v-69.5h67v69.5q0 27.64-19.69 47.32Q718.61-202 690.96-202H268.72Z" /></svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <ReactDiffViewer
+                                oldValue={code[0]}
+                                newValue={code[1]}
+                                splitView={true}
+                                leftTitle={students[0]}
+                                rightTitle={students[1]}
+                            /></div>
                         </div>
                             :
                             <table className="table-container">
@@ -81,8 +88,7 @@ const Plagiarism = ({ isOpen, listOfStudents, taskId, token, setToken, setMessag
                                                     style={{
                                                         backgroundColor: studentData.values.find(({ userName }) => userName === otherStudentData.student)?.percent <= 0.2 ? '#F4CCCC' : 'inherit'
                                                     }}
-                                                    onClick={() => handleCellClick(studentData.student, otherStudentData.student)}
-                                                >
+                                                    onClick={() => handleCellClick(studentData.student, otherStudentData.student)}>
                                                     {studentData.values.find(({ userName }) => userName === otherStudentData.student)?.percent || '-'}
                                                 </td>
                                             ))}

@@ -29,6 +29,13 @@
   justify-content: space-between;
 }
 
+.button-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
 .vertical-center {
   display: grid;
   place-items: center;
