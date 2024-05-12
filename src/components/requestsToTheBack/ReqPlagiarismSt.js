@@ -23,7 +23,7 @@ export const getPlagiarism = (chosenTasks, setListOfStudents, setMessage, token,
                 if (!data) return;
                 const listOfStudents = data.studentPlagiatPercentage;
                 setListOfStudents(listOfStudents);
-                resolve(listOfStudents); // Резолвим обещание с данными
+                resolve(listOfStudents);
             })
             .catch(error => {
                 if (error.name === 'AbortError') {
@@ -32,7 +32,7 @@ export const getPlagiarism = (chosenTasks, setListOfStudents, setMessage, token,
                     setMessage(error.message);
                     console.log('Ошибка в запросе к серверу:', error.message);
                 }
-                reject(error); // Реджектим обещание с ошибкой
+                reject(error); // Отклоняем обещание с ошибкой
             });
     });
 };
@@ -66,8 +66,7 @@ export const getDiffPlagiarism = (taskId, student, otherStudent, setMessage, tok
                 setStudents(Object.keys(data.twoIssuesDto))
                 setCode(Object.values(data.twoIssuesDto))
                 const listOfStudents = data.studentPlagiatPercentage;
-
-                resolve(listOfStudents); // Резолвим обещание с данными
+                resolve(listOfStudents);
             })
             .catch(error => {
                 if (error.name === 'AbortError') {
@@ -76,7 +75,7 @@ export const getDiffPlagiarism = (taskId, student, otherStudent, setMessage, tok
                     setMessage(error.message);
                     console.log('Ошибка в запросе к серверу:', error.message);
                 }
-                reject(error); // Реджектим обещание с ошибкой
+                reject(error); // Отклоняем обещание с ошибкой
             });
     });
 };

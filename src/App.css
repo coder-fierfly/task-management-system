@@ -60,10 +60,6 @@
   z-index: 999;
 }
 
-.left-btn {
-  margin-left: 0;
-}
-
 .save-btn {
   width: 40% !important;
   height: 1.9rem;
@@ -134,10 +130,6 @@
   width: 100%;
   justify-content: flex-end;
   gap: 1rem;
-}
-
-.flip-btn {
-  width: height;
 }
 
 .flex-class {
@@ -275,10 +267,6 @@
   height: 50%;
 }
 
-.modal-wrapper {
-  position: relative;
-}
-
 .more-info-cont {
   height: 100% !important;
   display: flex;
@@ -317,9 +305,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
-  /* padding-left: 1rem; */
-  /* padding-right: 1rem; */
 }
 .pop-cont-w {
   padding-left: 10vw;
@@ -333,7 +318,7 @@
 }
 
 .modal.open {
-  display: block; /* Показываем модальное окно, если есть класс "open" */
+  display: block;
 }
 
 .close {
@@ -341,18 +326,6 @@
   top: 10px;
   right: 10px;
   cursor: pointer;
-}
-
-.group-62-Dsb {
-  background-color: #cde2f6;
-  border-radius: 4.25rem;
-  box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
-  box-sizing: border-box;
-  flex-shrink: 0;
-  height: 3.8rem;
-  cursor: pointer;
-  border: none;
-  width: 3.8rem;
 }
 
 .more-info-xKP {

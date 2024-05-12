@@ -5,7 +5,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { putCreateNewTask } from '../requestsToTheBack/reqCreateNew';
+import { putCreateNewTask } from '../requestsToTheBack/ReqCreateNew';
 
 const CreateNewTask = ({ isOpen, onClose, passedName, passedDesc, passedConf, taskChange, chosenTheme, chosenTask, setLoading, token, setToken, setMessage }) => {
     const [inputName, setInputName] = useState(''); // название

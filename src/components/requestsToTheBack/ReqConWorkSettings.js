@@ -61,7 +61,7 @@ export const getStartChecking = (idStart, setLogs, setMessage, token, setToken) 
             .then(data => {
                 if (!data) return;
                 setLogs(prevLogs => [...prevLogs, ...data]);
-                resolve(data); // Резолвим данные после успешного получения
+                resolve(data); // Разрешить после успешного получения
             })
             .catch(error => {
                 if (error.name === 'AbortError') {
@@ -70,7 +70,7 @@ export const getStartChecking = (idStart, setLogs, setMessage, token, setToken) 
                     setMessage(error.message);
                     console.log('Ошибка в запросе к серверу:', error.message);
                 }
-                reject(error); // Реджектим ошибку в случае неудачи
+                reject(error); // Отклонять ошибку в случае неудачи
             });
     });
 };

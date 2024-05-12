@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { getIterations, postIssue } from '../requestsToTheBack/reqAuthorization';
+import { getIterations} from '../requestsToTheBack/ReqAuthorization';
 import ErrorWindow from '../mini-elements/ErrorWindow';
 import IterationContext from '../IterationContext';
 
