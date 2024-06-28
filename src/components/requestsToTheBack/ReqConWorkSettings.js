@@ -178,7 +178,7 @@ export const getIterations = (value, setListOfIterations, setLoading, token, set
             .then(data => {
                 if (!data) return;
                 const transformedData = data.projectIterations.map((projectIteration, index) => ({
-                    id: index + 1,
+                    id: projectIteration,
                     name: projectIteration
                 }));
                 setListOfIterations(transformedData);
