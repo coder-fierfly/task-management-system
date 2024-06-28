@@ -16,7 +16,7 @@ const DistributionOfTasks = () => {
   useEffect(() => {
     setLoading(true);
     if (chosenIteration) {
-      Promise.all([getStudentsList(setMessage, setStudentList, chosenIteration, token, setToken), getTasksList(setTasks, chosenProject, chosenIteration, token, setToken, setMessage)])
+      Promise.all([getStudentsList(setMessage, setStudentList, chosenProject, token, setToken), getTasksList(setTasks, chosenProject, chosenIteration, token, setToken, setMessage)])
         .then(() => {
           if (studentList && tasks) {
             setLoading(false);
